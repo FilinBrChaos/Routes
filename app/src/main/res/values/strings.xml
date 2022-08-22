@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Routes</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="route_generator_frag_label">Route generator</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="color_name_placeholder_for_card">Color name</string>
+    <string name="del">del</string>
+    <string name="wall_c">Wall C</string>
+    <string name="add_new_color">add new color</string>
+    <string name="wall_b">Wall B</string>
+    <string name="wall_a">Wall A</string>
+    <string name="wall_adjustments">Wall adjustments</string>
+    <string name="app_version_label">Version 1.0</string>
+    <string name="release_date">Date release: 12.08.2022</string>
+    <string name="always_stay_awake">Always stay awake</string>
+    <string name="night_mode">Night mode</string>
+    <string name="random">random</string>
+    <string name="save">Save</string>
+    <string name="leve_colors_for_random_sequence">Leve colors for random sequence</string>
+</resources>

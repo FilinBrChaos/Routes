@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="palette_light_blue">#c0dedd</color>
+    <color name="palette_light_yellow">#f2eee9</color>
+    <color name="palette_light_pink">#f1dfde</color>
+    <color name="palette_dark_pink">#AC9F9F</color>
+
+    <!--Night mode-->
+    <color name="text_dark">#d0eaf9</color>
+    <color name="dark_primary">#363636</color>
+    <color name="dark_primary_variant">#2a2a2a</color>
+    <color name="dark_secondary">#879a97</color>
+    <color name="dark_secondary_variant">#515f5d</color>
+
+
+    <color name="light_primary">#3F51B5</color>
+    <color name="light_primary_variant">#303F9F</color>
+    <color name="surface">#C5CAE9</color>
+    <color name="light_secondary">#03A9F4</color>
+    <color name="light_secondary_variant">#046F9F</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#757575</color>
+    <color name="icons">#FFFFFF</color>
+    <color name="divider">#BDBDBD</color>
+</resources>
