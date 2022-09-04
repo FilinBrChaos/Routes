@@ -42,7 +42,7 @@ class RouteGeneratorFrag : Fragment() {
             val random = Random
 
             for (i in 1..20){
-                var tempColor = myRandomList[Random.nextInt(myRandomList.size - 1)].clone() as MyColor
+                var tempColor = myRandomList[random.nextInt(myRandomList.size - 1)].clone() as MyColor
                 tempColor.colorName = i.toString() + ") " + tempColor.colorName
                 randomSequence.add(tempColor)
             }

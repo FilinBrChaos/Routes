@@ -70,6 +70,7 @@ class ColorPickerActivity : ComponentActivity() {
                     .focusable(enabled = true)
             ) {
                 // TODO: make constraint layout here
+
                 CompositionLocalProvider(
                     LocalRippleTheme provides ClearRippleTheme
                 ) {
@@ -226,9 +227,12 @@ class ColorPickerActivity : ComponentActivity() {
         )
     }
 
-    fun returnResult(colorName: String, colorValue: String) {
+    private fun returnResult(colorName: String, colorValue: String) {
         val data = Intent().apply {
-            putExtra(RESULT_COLOR_NAME, colorName)
+            var resultColorName =
+                if (colorName == "") colorValue
+                else colorName
+            putExtra(RESULT_COLOR_NAME, resultColorName)
             putExtra(RESULT_COLOR_VALUE, colorValue)
         }
         setResult(RESULT_OK, data)

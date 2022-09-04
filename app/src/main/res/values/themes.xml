@@ -15,6 +15,7 @@
         <item name="colorSurface">@color/surface</item>
         <item name="backgroundColor">@color/white</item>
         <item name="android:textColorPrimary">@color/primary_text</item>
+        <item name="android:textColorSecondary">@color/dark_primary_variant</item>
         <item name="iconTint">@color/icons</item>
     </style>
 

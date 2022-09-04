@@ -44,6 +44,8 @@ class GlobalSettingsActivity : AppCompatActivity() {
         binding = GlobalSettingsActivityBinding.inflate(layoutInflater)
         sharedPreferences = getSharedPreferences("settings", Context.MODE_PRIVATE)
         setContentView(binding.root)
+        //binding.recyclerViewWallA.setHasFixedSize(false)
+        //binding.recyclerViewWallA.isNestedScrollingEnabled = false
         binding.nightModeSwitch.isChecked = sharedPreferences.getBoolean("nightMode", false)
 
         binding.addButtonWallA.setOnClickListener{

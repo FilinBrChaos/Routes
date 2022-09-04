@@ -13,10 +13,12 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatDelegate
+import com.example.routes.RoutesListActivity.RoutesListActivity
 import com.example.routes.dataStuff.DbManager
 import com.example.routes.dataStuff.MyColor
 import com.example.routes.databinding.ActivityMainBinding
 import com.example.routes.globalSettings.GlobalSettingsActivity
+import java.util.ArrayList
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,17 +32,22 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
+
         AppRuntimeData.globalDbManager = DbManager(this)
         val sharedPreferences = getSharedPreferences("settings", Context.MODE_PRIVATE)
         if (sharedPreferences.getBoolean("nightMode", false)){
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         } else AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
-        AppRuntimeData.colorsListInLocalSettings = arrayListOf(MyColor("red", 1, "red", "red"),
-            MyColor("red", 1, "blue", "blue"),
-            MyColor("red", 1, "yellow", "yellow"),
-            MyColor("red", 1, "green", "green"),
-            MyColor("red", 1, "black", "black"))
+
+        val jsonStr = sharedPreferences.getString("lastArrayForRandomSequence", "")
+        val jsonArr = jsonStr!!.split("/")
+        val savedColorsListInLocalSettings: ArrayList<MyColor> = arrayListOf()
+        for (colorInStr in jsonArr)
+            if (colorInStr != "")
+                savedColorsListInLocalSettings.add(MyColor.parseFromString(colorInStr))
+        AppRuntimeData.colorsListInLocalSettings = savedColorsListInLocalSettings
+
 
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(navController.graph)
@@ -60,6 +67,11 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_settings -> {
                 val intent = Intent(this, GlobalSettingsActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.action_home -> {
+                val intent = Intent(this, RoutesListActivity::class.java)
                 startActivity(intent)
                 true
             }

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
+    android:label="@string/local_settings_fragment_label"
     app:startDestination="@id/RouteGeneratorFrag">
 
     <fragment
@@ -12,16 +13,16 @@
         tools:layout="@layout/route_generator_fragment">
         <action
             android:id="@+id/action_RandomGeneratorFrag_to_RoutesListFrag"
-            app:destination="@id/RoutesListFrag" />
+            app:destination="@id/SaveRouteFrag" />
         <action
             android:id="@+id/action_RouteGeneratorFrag_to_localSettingsFrag"
             app:destination="@id/localSettingsFrag" />
     </fragment>
     <fragment
-        android:id="@+id/RoutesListFrag"
-        android:name="com.example.routes.appFragments.RoutesListFrag"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/routes_list_fragment">
+        android:id="@+id/SaveRouteFrag"
+        android:name="com.example.routes.saveRouteForm.SaveRouteFormFrag"
+        android:label="@string/save_route_fragment_label"
+        tools:layout="@layout/save_route_fragment">
         <action
             android:id="@+id/action_RoutesListFrag_to_RandomGeneratorFrag"
             app:destination="@id/RouteGeneratorFrag" />
@@ -29,8 +30,8 @@
     <fragment
         android:id="@+id/localSettingsFrag"
         android:name="com.example.routes.appFragments.LocalSettingsFrag"
-        android:label="fragment_local_settings"
-        tools:layout="@layout/fragment_local_settings" >
+        android:label="Local settings"
+        tools:layout="@layout/fragment_local_settings">
         <action
             android:id="@+id/action_localSettingsFrag_to_RouteGeneratorFrag"
             app:destination="@id/RouteGeneratorFrag" />

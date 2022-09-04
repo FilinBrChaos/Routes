@@ -22,7 +22,7 @@ class GlobalSettingsCardAdapter(
     }
 
     override fun onBindViewHolder(holder: GlobalSettingsCardViewHolder, position: Int) {
-        holder.bindColor(callerActivity, colors[position], dbManager, updateRecyclerView)
+        holder.bindColor(callerActivity, colors[position], position, dbManager, updateRecyclerView)
     }
 
     override fun getItemCount(): Int = colors.size

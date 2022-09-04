@@ -22,6 +22,7 @@ class DbManager(context: Context?) : SQLiteOpenHelper(context, "app_data", null,
         private const val TABLE_ROUTES = "routes"
         private const val COLUMN_ROUTES_ID = "id"
         private const val COLUMN_ROUTES_ROUTE_NAME = "route_name"
+        private const val COLUMN_ROUTES_WALL_NAME = "wall_name"
         private const val COLUMN_ROUTES_CREATION_DATE = "creation_date"
         private const val COLUMN_ROUTES_CREATOR = "creator"
         private const val COLUMN_ROUTES_ROUTE_COLORS = "routes_colors"
@@ -49,8 +50,9 @@ class DbManager(context: Context?) : SQLiteOpenHelper(context, "app_data", null,
                 COLUMN_WALL_COLOR_VALUE + " text);")
 
         db?.execSQL("create table $TABLE_ROUTES(" +
-                COLUMN_ROUTES_ID + "text, " +
+                COLUMN_ROUTES_ID + " text, " +
                 COLUMN_ROUTES_ROUTE_NAME + " text, " +
+                COLUMN_ROUTES_WALL_NAME + " text, " +
                 COLUMN_ROUTES_CREATION_DATE + " int, " +
                 COLUMN_ROUTES_CREATOR + " text, " +
                 COLUMN_ROUTES_ROUTE_COLORS + " text, " +
@@ -67,7 +69,6 @@ class DbManager(context: Context?) : SQLiteOpenHelper(context, "app_data", null,
     }
 
     fun getWall(wallName: String): WallDTO{
-        // TODO: remove exception?
         val db = this.readableDatabase
         val resultWall = WallDTO()
         val tableData: Cursor?
@@ -117,24 +118,46 @@ class DbManager(context: Context?) : SQLiteOpenHelper(context, "app_data", null,
         }
     }
 
-/*
-    fun addRouteRecord(routeData: RouteObject){
+    fun addRouteRecord(routeData: RouteDTO){
         val db: SQLiteDatabase = this.readableDatabase
 
-        // TODO: how store route colors data
         val contentValues = ContentValues()
         contentValues.put(COLUMN_ROUTES_ROUTE_NAME, routeData.routeName)
-        contentValues.put(COLUMN_ROUTES_CREATION_DATE, routeData.creationDate.toString())
-        contentValues.put(COLUMN_ROUTES_CREATOR, routeData.Creator)
-        contentValues.put(COLUMN_ROUTES_ROUTE_COLORS, routeData.getRouteContentInString())
+        contentValues.put(COLUMN_ROUTES_WALL_NAME, routeData.wallName)
+        contentValues.put(COLUMN_ROUTES_CREATION_DATE, routeData.creationDate)
+        contentValues.put(COLUMN_ROUTES_CREATOR, routeData.routeCreator)
+        contentValues.put(COLUMN_ROUTES_ROUTE_COLORS, routeData.getRouteColorsInString())
+        contentValues.put(COLUMN_ROUTES_PICTURES_DATA, routeData.picturesData)
 
         val res: Long = db.insert(TABLE_ROUTES, null, contentValues)
-
         if (res == -1L) println("failed")
     }
-*/
 
-    fun getAllRoutesRecords(){
-        // TODO: do this
+    fun getAllRoutesRecords(): ArrayList<RouteDTO>{
+        val db = this.readableDatabase
+        val result: ArrayList<RouteDTO> = arrayListOf()
+        val tableData: Cursor?
+        var selectQuery = "SELECT * FROM $TABLE_ROUTES"
+
+        println("problem here")
+        try { tableData = db.rawQuery(selectQuery, null) }
+        catch (e: Exception) { e.printStackTrace(); throw e }
+        if (tableData.moveToFirst()){
+            do {
+                println(tableData.getString(2))
+                result.add(
+                    RouteDTO(tableData.getInt(0),
+                    tableData.getString(1),
+                    tableData.getString(2),
+                    tableData.getString(3),
+                    tableData.getString(4),
+                    RouteDTO.parseColorsFromSolidJsonStr(tableData.getString(5)),
+                    tableData.getString(6))
+                )
+            }
+            while (tableData.moveToNext())
+        }
+        println("or here")
+        return result
     }
 }

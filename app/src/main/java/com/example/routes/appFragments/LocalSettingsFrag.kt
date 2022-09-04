@@ -1,17 +1,22 @@
 package com.example.routes.appFragments
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.routes.AppRuntimeData
+import com.example.routes.R
 import com.example.routes.dataStuff.MyColor
 import com.example.routes.dataStuff.DbManager
 import com.example.routes.databinding.FragmentLocalSettingsBinding
+import com.example.routes.globalSettings.GlobalSettingsActivity
+import java.lang.StringBuilder
 
 class LocalSettingsFrag : Fragment() {
     private var _binding: FragmentLocalSettingsBinding? = null
@@ -35,23 +40,26 @@ class LocalSettingsFrag : Fragment() {
         sharedSettingsPreferences = requireActivity().getSharedPreferences("settings", Context.MODE_PRIVATE)
         sharedPreferencesEditor = sharedSettingsPreferences.edit()
 
-        when(sharedSettingsPreferences.getString("selectedWall", binding.wallARadioBtn.id.toString())){
-            binding.wallARadioBtn.id.toString() -> binding.wallARadioBtn.isChecked = true
-            binding.wallBRadioBtn.id.toString() -> binding.wallBRadioBtn.isChecked = true
-            binding.wallCRadioBtn.id.toString() -> binding.wallCRadioBtn.isChecked = true
+        when(sharedSettingsPreferences.getString("currentWall", DbManager.TABLE_WALL_A)){
+            DbManager.TABLE_WALL_A -> binding.wallARadioBtn.isChecked = true
+            DbManager.TABLE_WALL_B -> binding.wallBRadioBtn.isChecked = true
+            DbManager.TABLE_WALL_C -> binding.wallCRadioBtn.isChecked = true
             else -> {}
         }
 
         binding.refreshColorsButton.setOnClickListener { refreshColorsAndUpdateRecyclerView() }
         binding.radioGroup.setOnCheckedChangeListener { radioGroup, checkedId ->
-//            Toast.makeText(activity, binding.radioGroup.checkedRadioButtonId.toString(), Toast.LENGTH_SHORT).show()
-            sharedPreferencesEditor.putString("selectedWall", binding.radioGroup.checkedRadioButtonId.toString())
+            var currentWall = when (binding.radioGroup.checkedRadioButtonId.toString()){
+                binding.wallARadioBtn.id.toString() -> DbManager.TABLE_WALL_A
+                binding.wallBRadioBtn.id.toString() -> DbManager.TABLE_WALL_B
+                binding.wallCRadioBtn.id.toString() -> DbManager.TABLE_WALL_C
+                else -> ""
+            }
+            sharedPreferencesEditor.putString("currentWall", currentWall)
             sharedPreferencesEditor.apply()
             refreshColorsAndUpdateRecyclerView()
             updateRecyclerView()
         }
-        refreshColorsAndUpdateRecyclerView()
-        updateRecyclerView()
 
         super.onViewCreated(view, savedInstanceState)
     }
@@ -69,9 +77,18 @@ class LocalSettingsFrag : Fragment() {
             binding.wallARadioBtn.id.toString() -> dbManager.getWall(dbManager.wallName_A).colorsOnTheWall as ArrayList<MyColor> /* = java.util.ArrayList<com.example.routes.dataStuff.MyColor> */
             binding.wallBRadioBtn.id.toString() -> dbManager.getWall(dbManager.wallName_B).colorsOnTheWall as ArrayList<MyColor> /* = java.util.ArrayList<com.example.routes.dataStuff.MyColor> */
             binding.wallCRadioBtn.id.toString() -> dbManager.getWall(dbManager.wallName_C).colorsOnTheWall as ArrayList<MyColor> /* = java.util.ArrayList<com.example.routes.dataStuff.MyColor> */
-            else -> throw Exception("Database don't contain records relative with this wiew")
+            else -> throw Exception("Database don't contain records relative with this view")
         }
         updateRecyclerView()
+    }
+
+    fun saveLastArrayForRandomSequence(){
+        var stringBuilder = StringBuilder()
+
+        for (color in AppRuntimeData.colorsListInLocalSettings)
+            stringBuilder.append(color.toString() + "/")
+        sharedPreferencesEditor.putString("lastArrayForRandomSequence", stringBuilder.toString())
+        sharedPreferencesEditor.apply()
     }
 
     override fun onResume() {
@@ -79,7 +96,13 @@ class LocalSettingsFrag : Fragment() {
         super.onResume()
     }
 
+    override fun onPause() {
+        saveLastArrayForRandomSequence()
+        super.onPause()
+    }
+
     override fun onDestroyView() {
+        saveLastArrayForRandomSequence()
         _binding = null
         super.onDestroyView()
     }

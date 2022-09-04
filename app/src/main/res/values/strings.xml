@@ -2,13 +2,12 @@
     <string name="app_name">Routes</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="route_generator_frag_label">Route generator</string>
-    <string name="second_fragment_label">Second Fragment</string>
+    <string name="route_generator_frag_label">Routes generator</string>
+    <string name="save_route_fragment_label">Save route</string>
+    <string name="local_settings_fragment_label">Local settings</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="color_name_placeholder_for_card">Color name</string>
