@@ -35,6 +35,7 @@
 
             </androidx.cardview.widget.CardView>
 
+<!--
             <ImageView
                 android:id="@+id/separated_line"
                 android:layout_width="match_parent"
@@ -42,6 +43,7 @@
                 android:layout_marginHorizontal="60dp"
                 android:background="@color/gray"
                 app:layout_constraintTop_toTopOf="parent" />
+-->
 
             <TextView
                 android:id="@+id/color_name_text"
@@ -68,7 +70,8 @@
                 android:src="@drawable/ic_delete"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="SpeakableTextPresentCheck" />
             <!--
             <Button
                 android:id="@+id/delete_button"

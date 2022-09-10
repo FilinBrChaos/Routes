@@ -29,6 +29,7 @@
         <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/drawable/settings_icon.xml" value="0.338" />
         <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layout/activity_color_picker.xml" value="0.38697916666666665" />
         <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layout/activity_main.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layout/activity_route.xml" value="0.47415443522654754" />
         <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layout/activity_routes_list.xml" value="0.195382642154767" />
         <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layout/card_for_random_route.xml" value="0.38697916666666665" />
         <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layout/color_card.xml" value="0.25" />
@@ -44,8 +45,9 @@
         <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layout/route_generator_fragment.xml" value="0.2557291666666667" />
         <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layout/routes_list_fragment.xml" value="0.38697916666666665" />
         <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layout/save_route_activity.xml" value="0.2557291666666667" />
-        <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layout/save_route_fragment.xml" value="0.22" />
+        <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layout/save_route_fragment.xml" value="0.41773308957952465" />
         <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layouts/settings/layout/global_settings_activity.xml" value="0.25677083333333334" />
+        <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/menu/menu_for_route_activity.xml" value="0.19452757588713127" />
         <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/menu/menu_main.xml" value="0.2015625" />
       </map>
     </option>

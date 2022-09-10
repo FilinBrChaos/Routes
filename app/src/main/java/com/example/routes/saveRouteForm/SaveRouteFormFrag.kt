@@ -1,28 +1,25 @@
 package com.example.routes.saveRouteForm
 
-import com.example.routes.*
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.media.Image
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
-import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.ui.res.colorResource
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.dsphotoeditor.sdk.activity.DsPhotoEditorActivity
 import com.dsphotoeditor.sdk.utils.DsPhotoEditorConstants
 import com.example.routes.AppRuntimeData
 import com.example.routes.R
-import com.example.routes.colorPicker.ColorPickerActivity
 import com.example.routes.dataStuff.DbManager
 import com.example.routes.dataStuff.RouteDTO
 import com.example.routes.databinding.SaveRouteFragmentBinding
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class SaveRouteFormFrag : Fragment() {
     private var _binding: SaveRouteFragmentBinding? = null
@@ -86,6 +83,7 @@ class SaveRouteFormFrag : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val sharedSettingsPreferences = requireActivity().getSharedPreferences("settings", Context.MODE_PRIVATE)
 
@@ -97,21 +95,25 @@ class SaveRouteFormFrag : Fragment() {
 
         binding.saveRouteButton.setOnClickListener {
             val currentWall = sharedSettingsPreferences.getString("currentWall", DbManager.TABLE_WALL_A)
+            val currentDate = LocalDateTime.now()
+            val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
             dbManager.addRouteRecord(RouteDTO(1,
                 binding.routeNameTextField.text.toString(),
                 currentWall!!,
+                currentDate.format(formatter),
                 binding.routeCreatorTextField.text.toString(),
-                "01.02.2022",
-                AppRuntimeData.colorsListInLocalSettings,
-                "pictures data"))
-            // TODO: make date and pictures data
+                AppRuntimeData.currentGeneratedRouteColors,
+                ""))
+            // TODO: make pictures data
             // TODO: close fragment after saving route and show toast with status message
+            activity?.onBackPressed()
         }
         super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
+        Toast.makeText(activity, "Route saved", Toast.LENGTH_SHORT).show()
         _binding = null
+        super.onDestroyView()
     }
 }

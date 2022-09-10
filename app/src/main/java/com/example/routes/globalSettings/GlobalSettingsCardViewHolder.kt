@@ -10,9 +10,9 @@ import com.example.routes.dataStuff.MyColor
 import com.example.routes.databinding.ColorCardBinding
 
 class GlobalSettingsCardViewHolder(private val colorCardBinding: ColorCardBinding) : RecyclerView.ViewHolder(colorCardBinding.root) {
-    fun bindColor(callerActivity: Activity, color: MyColor, position: Int, dbManager: DbManager, updateRecyclerView: () -> Unit){
+    fun bindColor(callerActivity: Activity, color: MyColor, position: Int, dbManager: DbManager){
         colorCardBinding.colorPreview.setBackgroundColor(Color.parseColor(color.colorValue))
-        if (position == 0) colorCardBinding.separatedLine.setBackgroundColor(colorCardBinding.root.solidColor)
+        //if (position == 0) colorCardBinding.separatedLine.setBackgroundColor(colorCardBinding.root.solidColor)
         colorCardBinding.colorNameText.text = color.colorName
         colorCardBinding.deleteButton.setOnClickListener {
             var dialogBuilder = AlertDialog.Builder(callerActivity)
@@ -28,7 +28,7 @@ class GlobalSettingsCardViewHolder(private val colorCardBinding: ColorCardBindin
             var alert = dialogBuilder.create()
             alert.show()
 
-            updateRecyclerView()
+            //updateRecyclerView()
         }
 
     }

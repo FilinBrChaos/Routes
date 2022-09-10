@@ -3,8 +3,8 @@ package com.example.routes.dataStuff
 class RouteDTO(val id: Int,
                val routeName: String,
                val wallName: String,
-               val routeCreator: String,
                val creationDate: String,
+               val routeCreator: String,
                val routeColors: ArrayList<MyColor>,
                val picturesData: String) {
     companion object{

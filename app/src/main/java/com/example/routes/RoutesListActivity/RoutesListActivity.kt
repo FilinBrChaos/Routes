@@ -1,11 +1,13 @@
 package com.example.routes.RoutesListActivity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.routes.AppRuntimeData
 import com.example.routes.dataStuff.DbManager
 import com.example.routes.databinding.ActivityRoutesListBinding
+import com.example.routes.routeViewActivity.RouteActivity
 
 class RoutesListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRoutesListBinding
@@ -19,14 +21,20 @@ class RoutesListActivity : AppCompatActivity() {
         updateRoutesCardsList()
     }
 
-    fun updateRoutesCardsList(){
+    private fun updateRoutesCardsList(){
         val routes = AppRuntimeData.globalDbManager!!.getAllRoutesRecords()
-        // TODO: move adapter and view holder in this folder
         if (routes.isNotEmpty()){
             binding.routesListRecyclerView.apply {
                 layoutManager = LinearLayoutManager(applicationContext)
-                adapter = RoutesListCardAdapter(routes)
+                adapter = RoutesListCardAdapter(routes, startRouteActivity = {
+                    val intent = Intent(this@RoutesListActivity, RouteActivity::class.java);
+                    startActivity(intent) })
             }
         }
+    }
+
+    override fun onResume() {
+        updateRoutesCardsList()
+        super.onResume()
     }
 }

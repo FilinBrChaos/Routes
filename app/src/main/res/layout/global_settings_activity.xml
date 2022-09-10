@@ -164,12 +164,21 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/add_button_wall_a">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/fix_recycle"
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"/>
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler_view_wall_a"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"/>
+                        android:layout_marginTop="15dp" />
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -222,7 +231,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:nestedScrollingEnabled="false"
-                        android:clipToPadding="true"
                         android:layout_marginTop="15dp"/>
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>

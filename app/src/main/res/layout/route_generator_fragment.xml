@@ -43,37 +43,41 @@
 
     <Button
         android:id="@+id/random_button"
-        android:layout_width="130dp"
+        android:layout_width="0dp"
         android:layout_height="60dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginHorizontal="10dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/button_theme"
+        android:paddingHorizontal="40dp"
         android:text="@string/random"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/local_settings_button"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
         android:id="@+id/local_settings_button"
         android:layout_width="80dp"
         android:layout_height="60dp"
+        android:layout_marginHorizontal="10dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/button_theme"
         android:src="@drawable/ic_settings_2"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/save_route_button"
-        app:layout_constraintHorizontal_bias="0.519"
-        app:layout_constraintStart_toEndOf="@+id/random_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
         android:id="@+id/save_route_button"
-        android:layout_width="130dp"
+        android:layout_width="0dp"
         android:layout_height="60dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginHorizontal="10dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/button_theme"
+        android:paddingHorizontal="40dp"
         android:text="@string/save"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/local_settings_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

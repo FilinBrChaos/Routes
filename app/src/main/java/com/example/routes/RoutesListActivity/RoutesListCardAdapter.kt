@@ -6,7 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.routes.dataStuff.RouteDTO
 import com.example.routes.databinding.RouteCardBinding
 
-class RoutesListCardAdapter(val routes: ArrayList<RouteDTO>): RecyclerView.Adapter<RoutesListCardViewHolder>() {
+class RoutesListCardAdapter(
+    val routes: ArrayList<RouteDTO>,
+    val startRouteActivity: () -> Unit): RecyclerView.Adapter<RoutesListCardViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoutesListCardViewHolder {
         val from = LayoutInflater.from(parent.context)
         val binding = RouteCardBinding.inflate(from, parent, false)
@@ -14,7 +16,7 @@ class RoutesListCardAdapter(val routes: ArrayList<RouteDTO>): RecyclerView.Adapt
     }
 
     override fun onBindViewHolder(holder: RoutesListCardViewHolder, position: Int) {
-        holder.bindCard(routes[position])
+        holder.bindCard(startRouteActivity, routes[position])
     }
 
     override fun getItemCount(): Int = routes.size

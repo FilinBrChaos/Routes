@@ -6,10 +6,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.transition.AutoTransition
-import android.transition.TransitionManager
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
@@ -63,19 +60,25 @@ class GlobalSettingsActivity : AppCompatActivity() {
             val intent = Intent(this, ColorPickerActivity::class.java)
             resultLauncher.launch(intent)
         }
-
         dbManager = DbManager(this)
+
+//        val colorsOnTheWall = arrayListOf<MyColor>(MyColor("nan", 1, "red", "000"))
+//        binding.fixRecycle.apply {
+//            layoutManager = LinearLayoutManager(applicationContext)
+//            adapter = GlobalSettingsCardAdapter(this@GlobalSettingsActivity, colorsOnTheWall, dbManager)
+//        }
+
         dbManager.onDbChanged = {
-            updateRecyclerViews(binding.recyclerViewWallA)
-            updateRecyclerViews(binding.recyclerViewWallB)
-            updateRecyclerViews(binding.recyclerViewWallC)
+            updateRecyclerView(binding.recyclerViewWallA)
+            updateRecyclerView(binding.recyclerViewWallB)
+            updateRecyclerView(binding.recyclerViewWallC)
         }
-        updateRecyclerViews(binding.recyclerViewWallA)
-        updateRecyclerViews(binding.recyclerViewWallB)
-        updateRecyclerViews(binding.recyclerViewWallC)
+        updateRecyclerView(binding.recyclerViewWallA)
+        updateRecyclerView(binding.recyclerViewWallB)
+        updateRecyclerView(binding.recyclerViewWallC)
     }
 
-    private fun updateRecyclerViews(recyclerView: RecyclerView){
+    private fun updateRecyclerView(recyclerView: RecyclerView){
         val colorsOnTheWall: List<MyColor> = when(recyclerView){
             binding.recyclerViewWallA -> dbManager.getWall(dbManager.wallName_A).colorsOnTheWall
             binding.recyclerViewWallB -> dbManager.getWall(dbManager.wallName_B).colorsOnTheWall
@@ -83,23 +86,12 @@ class GlobalSettingsActivity : AppCompatActivity() {
             else -> throw Exception("Database don't contain records relative with this wiew")
         }
 
-        if (colorsOnTheWall.isNotEmpty()) {
+//        if (colorsOnTheWall.isNotEmpty()) {
             recyclerView.apply {
                 layoutManager = LinearLayoutManager(applicationContext)
-                adapter = GlobalSettingsCardAdapter(this@GlobalSettingsActivity, colorsOnTheWall, dbManager, updateRecyclerView = { updateRecyclerViews(recyclerView) })
+                adapter = GlobalSettingsCardAdapter(this@GlobalSettingsActivity, colorsOnTheWall, dbManager)
             }
-        }
-    }
-
-    fun expand(view: View) {
-        val cardLayout = (view as ViewGroup).getChildAt(0) as ViewGroup
-        val content = cardLayout.getChildAt(1)
-
-        val v = if (content.visibility == View.GONE) View.VISIBLE else View.GONE
-
-        TransitionManager.beginDelayedTransition(cardLayout, AutoTransition())
-        content.visibility = v
-
+//        }
     }
 
     private fun addColorRecordToDb(colorName: String, colorValue: String){

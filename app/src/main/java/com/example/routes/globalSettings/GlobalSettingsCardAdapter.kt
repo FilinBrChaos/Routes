@@ -12,7 +12,6 @@ class GlobalSettingsCardAdapter(
     private val callerActivity: Activity,
     private val colors: List<MyColor>,
     private val dbManager: DbManager,
-    private val updateRecyclerView: () -> Unit,
 ): RecyclerView.Adapter<GlobalSettingsCardViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GlobalSettingsCardViewHolder {
@@ -22,7 +21,7 @@ class GlobalSettingsCardAdapter(
     }
 
     override fun onBindViewHolder(holder: GlobalSettingsCardViewHolder, position: Int) {
-        holder.bindColor(callerActivity, colors[position], position, dbManager, updateRecyclerView)
+        holder.bindColor(callerActivity, colors[position], position, dbManager)
     }
 
     override fun getItemCount(): Int = colors.size

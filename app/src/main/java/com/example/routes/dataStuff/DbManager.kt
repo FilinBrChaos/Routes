@@ -1,5 +1,6 @@
 package com.example.routes.dataStuff
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
@@ -50,7 +51,7 @@ class DbManager(context: Context?) : SQLiteOpenHelper(context, "app_data", null,
                 COLUMN_WALL_COLOR_VALUE + " text);")
 
         db?.execSQL("create table $TABLE_ROUTES(" +
-                COLUMN_ROUTES_ID + " text, " +
+                COLUMN_ROUTES_ID + " integer PRIMARY key AUTOINCREMENT, " +
                 COLUMN_ROUTES_ROUTE_NAME + " text, " +
                 COLUMN_ROUTES_WALL_NAME + " text, " +
                 COLUMN_ROUTES_CREATION_DATE + " int, " +
@@ -133,18 +134,18 @@ class DbManager(context: Context?) : SQLiteOpenHelper(context, "app_data", null,
         if (res == -1L) println("failed")
     }
 
+    @SuppressLint("Recycle")
     fun getAllRoutesRecords(): ArrayList<RouteDTO>{
         val db = this.readableDatabase
         val result: ArrayList<RouteDTO> = arrayListOf()
         val tableData: Cursor?
-        var selectQuery = "SELECT * FROM $TABLE_ROUTES"
+        val selectQuery = "SELECT * FROM $TABLE_ROUTES"
 
-        println("problem here")
         try { tableData = db.rawQuery(selectQuery, null) }
         catch (e: Exception) { e.printStackTrace(); throw e }
         if (tableData.moveToFirst()){
             do {
-                println(tableData.getString(2))
+                println("table data" + tableData.getString(0))
                 result.add(
                     RouteDTO(tableData.getInt(0),
                     tableData.getString(1),
@@ -157,7 +158,13 @@ class DbManager(context: Context?) : SQLiteOpenHelper(context, "app_data", null,
             }
             while (tableData.moveToNext())
         }
-        println("or here")
         return result
+    }
+
+    fun removeRouteRecord(routeId: Int){
+        val db: SQLiteDatabase = this.readableDatabase
+        val res: Int = db.delete(TABLE_ROUTES, COLUMN_ROUTES_ID + "=" + routeId, null)
+        if (res == -1) println("failed")
+        onDbChanged()
     }
 }

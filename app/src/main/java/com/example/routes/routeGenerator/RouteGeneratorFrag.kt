@@ -5,11 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.routes.AppRuntimeData
 import com.example.routes.R
-import com.example.routes.appFragments.LocalSettingsCardAdapter
 import com.example.routes.dataStuff.MyColor
 import com.example.routes.databinding.RouteGeneratorFragmentBinding
 import java.util.ArrayList
@@ -33,31 +33,40 @@ class RouteGeneratorFrag : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        if (AppRuntimeData.generatedColorsInColorsView.length > 1) binding.outputTextview.text =
-//            AppRuntimeData.generatedColorsInColorsView
-
+        updateColorsListRecyclerView(AppRuntimeData.currentGeneratedRouteColors)
         binding.randomButton.setOnClickListener {
             val myRandomList = AppRuntimeData.colorsListInLocalSettings
+            if (myRandomList.size <= 1) {
+                Toast.makeText(activity, "There is not enough colors to create random sequence", Toast.LENGTH_SHORT).show();
+                return@setOnClickListener
+            }
             val randomSequence: ArrayList<MyColor> = arrayListOf()
-            val random = Random
 
             for (i in 1..20){
-                var tempColor = myRandomList[random.nextInt(myRandomList.size - 1)].clone() as MyColor
+                var tempColor = myRandomList[Random.nextInt(myRandomList.size - 1)].clone() as MyColor
                 tempColor.colorName = i.toString() + ") " + tempColor.colorName
                 randomSequence.add(tempColor)
             }
 
-            if (AppRuntimeData.colorsListInLocalSettings.isNotEmpty())
-                binding.recyclerView.apply {
-                    layoutManager = LinearLayoutManager(activity)
-                    adapter = RouteGenCardAdapter(randomSequence)
-
-            }
-//            AppRuntimeData.generatedColorsInColorsView = textResult.toString()
+            updateColorsListRecyclerView(randomSequence)
+            AppRuntimeData.currentGeneratedRouteColors = randomSequence
         }
 
         binding.saveRouteButton.setOnClickListener { findNavController().navigate(R.id.action_RandomGeneratorFrag_to_RoutesListFrag) }
         binding.localSettingsButton.setOnClickListener { findNavController().navigate(R.id.action_RouteGeneratorFrag_to_localSettingsFrag) }
+    }
+
+    fun updateColorsListRecyclerView(randomSequence: List<MyColor>) {
+        if (randomSequence.isNotEmpty())
+            binding.recyclerView.apply {
+                layoutManager = LinearLayoutManager(activity)
+                adapter = RouteGenCardAdapter(randomSequence)
+            }
+    }
+
+    override fun onResume() {
+        updateColorsListRecyclerView(AppRuntimeData.currentGeneratedRouteColors)
+        super.onResume()
     }
 
     override fun onDestroyView() {
