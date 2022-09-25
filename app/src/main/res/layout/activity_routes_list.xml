@@ -6,8 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".RoutesListActivity.RoutesListActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/routes_list_recycler_view"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/routes_list_linear_layout"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

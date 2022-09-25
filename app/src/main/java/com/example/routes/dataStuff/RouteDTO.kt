@@ -1,5 +1,13 @@
 package com.example.routes.dataStuff
 
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.net.Uri
+import android.os.Build
+import android.provider.MediaStore
+import androidx.core.content.ContentProviderCompat.requireContext
+
 class RouteDTO(val id: Int,
                val routeName: String,
                val wallName: String,

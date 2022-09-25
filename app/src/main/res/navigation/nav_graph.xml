@@ -8,11 +8,11 @@
 
     <fragment
         android:id="@+id/RouteGeneratorFrag"
-        android:name="com.example.routes.routeGenerator.RouteGeneratorFrag"
+        android:name="com.example.routes.routeGenerator.RouteGeneratorFragment"
         android:label="@string/route_generator_frag_label"
         tools:layout="@layout/route_generator_fragment">
         <action
-            android:id="@+id/action_RandomGeneratorFrag_to_RoutesListFrag"
+            android:id="@+id/action_RouteGeneratorFrag_to_SaveRouteFrag"
             app:destination="@id/SaveRouteFrag" />
         <action
             android:id="@+id/action_RouteGeneratorFrag_to_localSettingsFrag"
@@ -20,20 +20,12 @@
     </fragment>
     <fragment
         android:id="@+id/SaveRouteFrag"
-        android:name="com.example.routes.saveRouteForm.SaveRouteFormFrag"
+        android:name="com.example.routes.saveRouteForm.SaveRouteFormFragment"
         android:label="@string/save_route_fragment_label"
-        tools:layout="@layout/save_route_fragment">
-        <action
-            android:id="@+id/action_RoutesListFrag_to_RandomGeneratorFrag"
-            app:destination="@id/RouteGeneratorFrag" />
-    </fragment>
+        tools:layout="@layout/save_route_fragment"/>
     <fragment
         android:id="@+id/localSettingsFrag"
         android:name="com.example.routes.appFragments.LocalSettingsFrag"
         android:label="Local settings"
-        tools:layout="@layout/fragment_local_settings">
-        <action
-            android:id="@+id/action_localSettingsFrag_to_RouteGeneratorFrag"
-            app:destination="@id/RouteGeneratorFrag" />
-    </fragment>
+        tools:layout="@layout/fragment_local_settings"/>
 </navigation>

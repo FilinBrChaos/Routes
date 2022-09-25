@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="10dp"
     tools:context=".routeViewActivity.RouteActivity">
 
     <ScrollView
@@ -19,8 +20,6 @@
                 android:id="@+id/linearLayout1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_marginTop="16dp"
                 android:background="@drawable/round_corners_for_settings_block"
                 android:padding="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -94,7 +93,7 @@
                 android:id="@+id/images_layout_block"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/round_corners_for_settings_block"
                 android:padding="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -110,23 +109,27 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/image_recycler_view"
-                    android:layout_width="0dp"
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView6" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView6">
+                    <LinearLayout
+                        android:id="@+id/route_images_linear_layout"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </HorizontalScrollView>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/linearLayout3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/round_corners_for_settings_block"
                 android:padding="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -152,17 +155,16 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/colors_recycler_view"
+                <LinearLayout
+                    android:id="@+id/route_color_linear_layout"
+                    android:orientation="vertical"
+                    android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:nestedScrollingEnabled="false"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/button2" />
+                    app:layout_constraintTop_toBottomOf="@+id/button2"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

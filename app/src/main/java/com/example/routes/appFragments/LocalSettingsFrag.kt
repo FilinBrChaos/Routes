@@ -1,21 +1,17 @@
 package com.example.routes.appFragments
 
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.routes.AppRuntimeData
-import com.example.routes.R
+import com.example.routes.cardsStuff.CardAdapter
 import com.example.routes.dataStuff.MyColor
 import com.example.routes.dataStuff.DbManager
 import com.example.routes.databinding.FragmentLocalSettingsBinding
-import com.example.routes.globalSettings.GlobalSettingsActivity
 import java.lang.StringBuilder
 
 class LocalSettingsFrag : Fragment() {
@@ -47,7 +43,6 @@ class LocalSettingsFrag : Fragment() {
             else -> {}
         }
 
-        binding.refreshColorsButton.setOnClickListener { refreshColorsAndUpdateRecyclerView() }
         binding.radioGroup.setOnCheckedChangeListener { radioGroup, checkedId ->
             var currentWall = when (binding.radioGroup.checkedRadioButtonId.toString()){
                 binding.wallARadioBtn.id.toString() -> DbManager.TABLE_WALL_A
@@ -65,11 +60,9 @@ class LocalSettingsFrag : Fragment() {
     }
 
     private fun updateRecyclerView(){
+        val cardAdapter = CardAdapter()
         if (AppRuntimeData.colorsListInLocalSettings.isNotEmpty())
-            binding.recyclerView.apply {
-                layoutManager = LinearLayoutManager(activity)
-                adapter = LocalSettingsCardAdapter(AppRuntimeData.colorsListInLocalSettings, updateRecyclerView = { updateRecyclerView() })
-            }
+            CardAdapter.drawCheckableColorCards(binding.localSettingsLinearLayout, AppRuntimeData.colorsListInLocalSettings)
     }
 
     private fun refreshColorsAndUpdateRecyclerView() {

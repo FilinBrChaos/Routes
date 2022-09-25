@@ -10,12 +10,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.routes.AppRuntimeData
 import com.example.routes.R
+import com.example.routes.cardsStuff.CardAdapter
+import com.example.routes.dataStuff.DbManager
 import com.example.routes.dataStuff.MyColor
 import com.example.routes.databinding.RouteGeneratorFragmentBinding
-import java.util.ArrayList
+import kotlin.collections.ArrayList
 import kotlin.random.Random
 
-class RouteGeneratorFrag : Fragment() {
+class RouteGeneratorFragment : Fragment() {
 
     private var _binding: RouteGeneratorFragmentBinding? = null
 
@@ -35,7 +37,7 @@ class RouteGeneratorFrag : Fragment() {
 
         updateColorsListRecyclerView(AppRuntimeData.currentGeneratedRouteColors)
         binding.randomButton.setOnClickListener {
-            val myRandomList = AppRuntimeData.colorsListInLocalSettings
+            val myRandomList = getAllCheckedColors(AppRuntimeData.colorsListInLocalSettings)
             if (myRandomList.size <= 1) {
                 Toast.makeText(activity, "There is not enough colors to create random sequence", Toast.LENGTH_SHORT).show();
                 return@setOnClickListener
@@ -43,7 +45,7 @@ class RouteGeneratorFrag : Fragment() {
             val randomSequence: ArrayList<MyColor> = arrayListOf()
 
             for (i in 1..20){
-                var tempColor = myRandomList[Random.nextInt(myRandomList.size - 1)].clone() as MyColor
+                var tempColor = myRandomList[Random.nextInt(myRandomList.size)].clone() as MyColor
                 tempColor.colorName = i.toString() + ") " + tempColor.colorName
                 randomSequence.add(tempColor)
             }
@@ -52,16 +54,20 @@ class RouteGeneratorFrag : Fragment() {
             AppRuntimeData.currentGeneratedRouteColors = randomSequence
         }
 
-        binding.saveRouteButton.setOnClickListener { findNavController().navigate(R.id.action_RandomGeneratorFrag_to_RoutesListFrag) }
+        binding.saveRouteButton.setOnClickListener { findNavController().navigate(R.id.action_RouteGeneratorFrag_to_SaveRouteFrag) }
+//        binding.saveRouteButton.setOnClickListener { DbManager(activity).deleteFrom(DbManager.TABLE_ROUTES) }
         binding.localSettingsButton.setOnClickListener { findNavController().navigate(R.id.action_RouteGeneratorFrag_to_localSettingsFrag) }
     }
 
-    fun updateColorsListRecyclerView(randomSequence: List<MyColor>) {
-        if (randomSequence.isNotEmpty())
-            binding.recyclerView.apply {
-                layoutManager = LinearLayoutManager(activity)
-                adapter = RouteGenCardAdapter(randomSequence)
-            }
+    private fun getAllCheckedColors(colors: ArrayList<MyColor>): ArrayList<MyColor>{
+        val result: ArrayList<MyColor> = arrayListOf()
+        for (color in colors) if (color.isCheckedInLocalSettings) result.add(color)
+        return result
+    }
+
+    private fun updateColorsListRecyclerView(randomSequence: ArrayList<MyColor>) {
+//        if (randomSequence.isNotEmpty())
+        CardAdapter.drawColorCards(binding.routeGeneratorLinearLayout, randomSequence)
     }
 
     override fun onResume() {

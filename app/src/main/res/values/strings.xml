@@ -24,4 +24,6 @@
     <string name="random">random</string>
     <string name="save">Save</string>
     <string name="leve_colors_for_random_sequence">Leve colors for random sequence</string>
+    <string name="drawer_open">drawer open</string>
+    <string name="drawer_close">drawer close</string>
 </resources>

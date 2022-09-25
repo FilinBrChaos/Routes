@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".saveRouteForm.SaveRouteFormFrag">
+    tools:context=".saveRouteForm.SaveRouteFormFragment">
 
     <ScrollView
         android:layout_width="0dp"
@@ -38,26 +38,32 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/image_recycler_view"
-                    android:layout_width="0dp"
+                <HorizontalScrollView
+                    android:id="@+id/scrollView2"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginTop="10dp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView6" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView6">
+
+                    <LinearLayout
+                        android:id="@+id/save_route_images_linear_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" />
+                </HorizontalScrollView>
 
                 <Button
-                    android:id="@+id/button"
+                    android:id="@+id/save_route_add_image_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="add"
+                    android:layout_margin="2dp"
                     android:background="@drawable/button_theme"
-                    android:layout_marginTop="10dp"
+                    android:text="add"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/image_recycler_view" />
+                    app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout

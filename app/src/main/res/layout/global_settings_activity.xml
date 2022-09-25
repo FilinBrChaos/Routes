@@ -36,6 +36,7 @@
                     android:textSize="19sp"
                     android:layout_gravity="center"/>
                 <TextView
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/release_date"
@@ -169,16 +170,12 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/add_button_wall_a">
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/fix_recycle"
-                        android:visibility="gone"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"/>
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recycler_view_wall_a"
+                    <LinearLayout
+                        android:id="@+id/linear_layout_wall_a"
+                        android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp" />
+                        android:layout_marginTop="15dp"/>
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -226,11 +223,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@+id/add_button_wall_b">
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recycler_view_wall_b"
+                    <LinearLayout
+                        android:id="@+id/linear_layout_wall_b"
+                        android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:nestedScrollingEnabled="false"
                         android:layout_marginTop="15dp"/>
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -278,12 +275,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@+id/add_button_wall_c">
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recycler_view_wall_c"
+                    <LinearLayout
+                        android:id="@+id/linear_layout_wall_c"
+                        android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:nestedScrollingEnabled="false"
-                        android:clipToPadding="true"
                         android:layout_marginTop="15dp"/>
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>

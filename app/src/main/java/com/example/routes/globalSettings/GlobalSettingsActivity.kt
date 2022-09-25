@@ -8,10 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.LinearLayout
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.routes.cardsStuff.CardAdapter
 import com.example.routes.colorPicker.ColorPickerActivity
 import com.example.routes.dataStuff.MyColor
 import com.example.routes.dataStuff.DbManager
@@ -62,36 +64,24 @@ class GlobalSettingsActivity : AppCompatActivity() {
         }
         dbManager = DbManager(this)
 
-//        val colorsOnTheWall = arrayListOf<MyColor>(MyColor("nan", 1, "red", "000"))
-//        binding.fixRecycle.apply {
-//            layoutManager = LinearLayoutManager(applicationContext)
-//            adapter = GlobalSettingsCardAdapter(this@GlobalSettingsActivity, colorsOnTheWall, dbManager)
-//        }
-
         dbManager.onDbChanged = {
-            updateRecyclerView(binding.recyclerViewWallA)
-            updateRecyclerView(binding.recyclerViewWallB)
-            updateRecyclerView(binding.recyclerViewWallC)
+            updateRecyclerView(binding.linearLayoutWallA)
+            updateRecyclerView(binding.linearLayoutWallB)
+            updateRecyclerView(binding.linearLayoutWallC)
         }
-        updateRecyclerView(binding.recyclerViewWallA)
-        updateRecyclerView(binding.recyclerViewWallB)
-        updateRecyclerView(binding.recyclerViewWallC)
+        updateRecyclerView(binding.linearLayoutWallA)
+        updateRecyclerView(binding.linearLayoutWallB)
+        updateRecyclerView(binding.linearLayoutWallC)
     }
 
-    private fun updateRecyclerView(recyclerView: RecyclerView){
-        val colorsOnTheWall: List<MyColor> = when(recyclerView){
-            binding.recyclerViewWallA -> dbManager.getWall(dbManager.wallName_A).colorsOnTheWall
-            binding.recyclerViewWallB -> dbManager.getWall(dbManager.wallName_B).colorsOnTheWall
-            binding.recyclerViewWallC -> dbManager.getWall(dbManager.wallName_C).colorsOnTheWall
+    private fun updateRecyclerView(linearLayout: LinearLayout){
+        val colorsOnTheWall: ArrayList<MyColor> = when(linearLayout){
+            binding.linearLayoutWallA -> dbManager.getWall(dbManager.wallName_A).colorsOnTheWall
+            binding.linearLayoutWallB -> dbManager.getWall(dbManager.wallName_B).colorsOnTheWall
+            binding.linearLayoutWallC -> dbManager.getWall(dbManager.wallName_C).colorsOnTheWall
             else -> throw Exception("Database don't contain records relative with this wiew")
         }
-
-//        if (colorsOnTheWall.isNotEmpty()) {
-            recyclerView.apply {
-                layoutManager = LinearLayoutManager(applicationContext)
-                adapter = GlobalSettingsCardAdapter(this@GlobalSettingsActivity, colorsOnTheWall, dbManager)
-            }
-//        }
+        CardAdapter.drawEditableDeletableColorCards(linearLayout, this@GlobalSettingsActivity, colorsOnTheWall, dbManager)
     }
 
     private fun addColorRecordToDb(colorName: String, colorValue: String){

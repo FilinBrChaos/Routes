@@ -15,12 +15,12 @@ class DbManager(context: Context?) : SQLiteOpenHelper(context, "app_data", null,
         const val TABLE_WALL_A = "wall_a"
         const val TABLE_WALL_B = "wall_b"
         const val TABLE_WALL_C = "wall_c"
+        const val TABLE_ROUTES = "routes"
 
         private const val COLUMN_WALL_ID = "id"
         private const val COLUMN_WALL_COLOR_NAME = "color_name"
         private const val COLUMN_WALL_COLOR_VALUE = "color_value"
 
-        private const val TABLE_ROUTES = "routes"
         private const val COLUMN_ROUTES_ID = "id"
         private const val COLUMN_ROUTES_ROUTE_NAME = "route_name"
         private const val COLUMN_ROUTES_WALL_NAME = "wall_name"
@@ -75,13 +75,13 @@ class DbManager(context: Context?) : SQLiteOpenHelper(context, "app_data", null,
         val tableData: Cursor?
         var selectQuery = ""
 
-        if (wallNameValidation(wallName)) { selectQuery = "SELECT * FROM $wallName"; resultWall.wallName = wallName }
+        if (tableNameValidation(wallName)) { selectQuery = "SELECT * FROM $wallName"; resultWall.wallName = wallName }
 
         try { tableData = db.rawQuery(selectQuery, null) }
         catch (e: Exception) { e.printStackTrace(); throw e }
 
         if (tableData.moveToFirst()){
-            do { resultWall.colorsOnTheWall.add(MyColor(resultWall.wallName, tableData.getInt(0), tableData.getString(1), tableData.getString(2))) }
+            do { resultWall.colorsOnTheWall.add(MyColor(resultWall.wallName, tableData.getInt(0), tableData.getString(1), tableData.getString(2), false)) }
             while (tableData.moveToNext())
         }
         return resultWall
@@ -95,7 +95,7 @@ class DbManager(context: Context?) : SQLiteOpenHelper(context, "app_data", null,
         contentValues.put(COLUMN_WALL_COLOR_VALUE, colorValue)
 
         var res: Long = 0
-        if (wallNameValidation(wallName)) { res = db.insert(wallName, null, contentValues) }
+        if (tableNameValidation(wallName)) { res = db.insert(wallName, null, contentValues) }
         if (res == -1L) println("failed")
         onDbChanged()
     }
@@ -104,12 +104,21 @@ class DbManager(context: Context?) : SQLiteOpenHelper(context, "app_data", null,
         val db = this.readableDatabase
 
         var res: Int = 0
-        if (wallNameValidation(wallName)) { res = db.delete(wallName, COLUMN_WALL_ID + "=" + colorId, null) }
+        if (tableNameValidation(wallName)) { res = db.delete(wallName, COLUMN_WALL_ID + "=" + colorId, null) }
         if (res == -1) println("failed")
         onDbChanged()
     }
 
-    private fun wallNameValidation(wallName: String): Boolean{
+    fun updateColorOnTheWall(color: MyColor){
+        val db = this.readableDatabase
+
+        if (tableNameValidation(color.wallName)) db.execSQL("UPDATE " + color.wallName +
+                " SET " + COLUMN_WALL_COLOR_NAME + " = '" + color.colorName + "', " +
+                COLUMN_WALL_COLOR_VALUE + " = '" + color.colorValue + "' " +
+                "WHERE " + COLUMN_WALL_ID + " = '" + color.id + "';")
+    }
+
+    private fun tableNameValidation(wallName: String): Boolean{
         return when (wallName){
             TABLE_WALL_A -> true
             TABLE_WALL_B -> true
@@ -145,7 +154,7 @@ class DbManager(context: Context?) : SQLiteOpenHelper(context, "app_data", null,
         catch (e: Exception) { e.printStackTrace(); throw e }
         if (tableData.moveToFirst()){
             do {
-                println("table data" + tableData.getString(0))
+                //println("table data" + tableData.getString(0))
                 result.add(
                     RouteDTO(tableData.getInt(0),
                     tableData.getString(1),
@@ -166,5 +175,11 @@ class DbManager(context: Context?) : SQLiteOpenHelper(context, "app_data", null,
         val res: Int = db.delete(TABLE_ROUTES, COLUMN_ROUTES_ID + "=" + routeId, null)
         if (res == -1) println("failed")
         onDbChanged()
+    }
+
+    fun deleteFrom(tableName: String){
+        if (tableNameValidation(tableName)){
+            this.readableDatabase.execSQL("delete from $tableName")
+        }
     }
 }

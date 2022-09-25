@@ -3,8 +3,8 @@ package com.example.routes.RoutesListActivity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.routes.AppRuntimeData
+import com.example.routes.cardsStuff.CardAdapter
 import com.example.routes.dataStuff.DbManager
 import com.example.routes.databinding.ActivityRoutesListBinding
 import com.example.routes.routeViewActivity.RouteActivity
@@ -23,14 +23,11 @@ class RoutesListActivity : AppCompatActivity() {
 
     private fun updateRoutesCardsList(){
         val routes = AppRuntimeData.globalDbManager!!.getAllRoutesRecords()
-        if (routes.isNotEmpty()){
-            binding.routesListRecyclerView.apply {
-                layoutManager = LinearLayoutManager(applicationContext)
-                adapter = RoutesListCardAdapter(routes, startRouteActivity = {
-                    val intent = Intent(this@RoutesListActivity, RouteActivity::class.java);
-                    startActivity(intent) })
-            }
-        }
+        if (routes.isNotEmpty())
+            CardAdapter.drawRouteCards(binding.routesListLinearLayout, routes, startRouteActivity = {
+                val intent = Intent(this@RoutesListActivity, RouteActivity::class.java)
+                startActivity(intent)
+            })
     }
 
     override fun onResume() {

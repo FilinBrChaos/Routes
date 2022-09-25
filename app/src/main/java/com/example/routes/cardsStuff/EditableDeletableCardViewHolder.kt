@@ -1,4 +1,4 @@
-package com.example.routes.globalSettings
+package com.example.routes.cardsStuff
 
 import android.app.Activity
 import android.content.DialogInterface
@@ -7,15 +7,14 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.example.routes.dataStuff.DbManager
 import com.example.routes.dataStuff.MyColor
-import com.example.routes.databinding.ColorCardBinding
+import com.example.routes.databinding.EditDeleteColorCardBinding
 
-class GlobalSettingsCardViewHolder(private val colorCardBinding: ColorCardBinding) : RecyclerView.ViewHolder(colorCardBinding.root) {
-    fun bindColor(callerActivity: Activity, color: MyColor, position: Int, dbManager: DbManager){
-        colorCardBinding.colorPreview.setBackgroundColor(Color.parseColor(color.colorValue))
-        //if (position == 0) colorCardBinding.separatedLine.setBackgroundColor(colorCardBinding.root.solidColor)
-        colorCardBinding.colorNameText.text = color.colorName
-        colorCardBinding.deleteButton.setOnClickListener {
-            var dialogBuilder = AlertDialog.Builder(callerActivity)
+class EditableDeletableCardViewHolder(val binding: EditDeleteColorCardBinding) {
+    fun bindCard(callerActivity: Activity, color: MyColor, dbManager: DbManager){
+        binding.colorPreview.setBackgroundColor(Color.parseColor(color.colorValue))
+        binding.colorNameText.text = color.colorName
+        binding.deleteButton.setOnClickListener {
+            val dialogBuilder = AlertDialog.Builder(callerActivity)
             dialogBuilder.setTitle("Confirm delete")
             dialogBuilder.setMessage("Are you sure to delete this item")
             dialogBuilder.setPositiveButton("Yes", DialogInterface.OnClickListener{ dialog, _ ->
@@ -25,11 +24,8 @@ class GlobalSettingsCardViewHolder(private val colorCardBinding: ColorCardBindin
             dialogBuilder.setNegativeButton("No", DialogInterface.OnClickListener{ dialog, _ ->
                 dialog.cancel()
             })
-            var alert = dialogBuilder.create()
+            val alert = dialogBuilder.create()
             alert.show()
-
-            //updateRecyclerView()
         }
-
     }
 }
