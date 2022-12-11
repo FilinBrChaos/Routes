@@ -52,15 +52,15 @@ class CardAdapter {
 
         fun drawEditableDeletableColorCards(
             parentElement: LinearLayout,
-            callerActivity: Activity,
             colors: ArrayList<MyColor>,
-            dbManager: DbManager
+            deleteButtonHandler: (color: MyColor) -> Unit,
+            editButtonHandler: (color: MyColor) -> Unit
         ) {
             parentElement.removeAllViews()
             val cards: ArrayList<EditableDeletableCardViewHolder> = arrayListOf()
             for (i in 0 until colors.size) {
                 cards.add(createEditableDeletableColorCardViewHolder(parentElement))
-                cards[i].bindCard(callerActivity, colors[i], dbManager)
+                cards[i].bindCard(colors[i], deleteButtonHandler, editButtonHandler)
                 parentElement.addView(cards[i].binding.root)
             }
         }
@@ -74,7 +74,7 @@ class CardAdapter {
         fun drawRouteCards(
             parentElement: LinearLayout,
             routes: ArrayList<RouteDTO>,
-            startRouteActivity: () -> Unit
+            startRouteActivity: (route: RouteDTO) -> Unit
         ) {
             parentElement.removeAllViews()
             val cards: ArrayList<RouteCardViewHolder> = arrayListOf()

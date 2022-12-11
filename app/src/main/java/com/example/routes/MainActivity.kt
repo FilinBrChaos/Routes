@@ -34,21 +34,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(binding.root)
         setSupportActionBar(binding.appBarLayout.toolbar)
 
-        AppRuntimeData.globalDbManager = DbManager(this)
         val sharedPreferences = getSharedPreferences("settings", Context.MODE_PRIVATE)
         if (sharedPreferences.getBoolean("nightMode", false)){
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         } else AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-
-
-        val jsonStr = sharedPreferences.getString("lastArrayForRandomSequence", "")
-        val jsonArr = jsonStr!!.split("/")
-        val savedColorsListInLocalSettings: ArrayList<MyColor> = arrayListOf()
-        for (colorInStr in jsonArr)
-            if (colorInStr != "")
-                savedColorsListInLocalSettings.add(MyColor.parseFromString(colorInStr))
-        AppRuntimeData.colorsListInLocalSettings = savedColorsListInLocalSettings
-
 
         appBarConfiguration = AppBarConfiguration(setOf(R.id.side_bar_share_activity, R.id.side_bar_discover_activity,
         R.id.side_bar_generator_activity, R.id.side_bar_my_routes_activity, R.id.side_bar_global_settings_activity), binding.activityMainDrawerLayout)
@@ -61,23 +50,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
 //            R.id.action_settings -> {
 //                val intent = Intent(this, GlobalSettingsActivity::class.java)
-//                startActivity(intent)
-//                true
-//            }
-//            R.id.action_home -> {
-//                val intent = Intent(this, RoutesListActivity::class.java)
 //                startActivity(intent)
 //                true
 //            }
@@ -111,9 +91,5 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding.activityMainDrawerLayout.closeDrawer(GravityCompat.START)
         //TODO make beautiful drawer closing
         super.onResume()
-    }
-    override fun onPause() {
-        //binding.activityMainDrawerLayout.closeDrawer(GravityCompat.START)
-        super.onPause()
     }
 }

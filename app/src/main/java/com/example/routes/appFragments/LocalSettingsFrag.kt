@@ -7,15 +7,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.routes.AppRuntimeData
 import com.example.routes.cardsStuff.CardAdapter
-import com.example.routes.dataStuff.MyColor
 import com.example.routes.dataStuff.DbManager
+import com.example.routes.dataStuff.WallDTO
 import com.example.routes.databinding.FragmentLocalSettingsBinding
-import java.lang.StringBuilder
 
 class LocalSettingsFrag : Fragment() {
     private var _binding: FragmentLocalSettingsBinding? = null
+    private lateinit var walls: ArrayList<WallDTO>
     private lateinit var dbManager: DbManager
     private lateinit var sharedSettingsPreferences: SharedPreferences
     private lateinit var sharedPreferencesEditor: SharedPreferences.Editor
@@ -24,9 +23,9 @@ class LocalSettingsFrag : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         _binding = FragmentLocalSettingsBinding.inflate(inflater, container, false)
         dbManager = DbManager(activity)
+        walls = arrayListOf(dbManager.getWall(DbManager.WALLS_NAMES[0]))
         return binding.root
     }
 
@@ -36,66 +35,60 @@ class LocalSettingsFrag : Fragment() {
         sharedSettingsPreferences = requireActivity().getSharedPreferences("settings", Context.MODE_PRIVATE)
         sharedPreferencesEditor = sharedSettingsPreferences.edit()
 
-        when(sharedSettingsPreferences.getString("currentWall", DbManager.TABLE_WALL_A)){
-            DbManager.TABLE_WALL_A -> binding.wallARadioBtn.isChecked = true
-            DbManager.TABLE_WALL_B -> binding.wallBRadioBtn.isChecked = true
-            DbManager.TABLE_WALL_C -> binding.wallCRadioBtn.isChecked = true
-            else -> {}
+        val lastUsedWall = sharedSettingsPreferences.getString("currentWall", DbManager.WALLS_NAMES[0])
+        when(lastUsedWall){
+//            DataManager.WALL_A_NAME -> binding.wallARadioBtn.isChecked = true
+//            DataManager.WALL_B_NAME -> binding.wallBRadioBtn.isChecked = true
+//            DataManager.WALL_C_NAME -> binding.wallCRadioBtn.isChecked = true
+            else -> { binding.wallARadioBtn.isChecked = true }
         }
-
+        updateRecyclerView(lastUsedWall!!)
+//todo this
         binding.radioGroup.setOnCheckedChangeListener { radioGroup, checkedId ->
             var currentWall = when (binding.radioGroup.checkedRadioButtonId.toString()){
-                binding.wallARadioBtn.id.toString() -> DbManager.TABLE_WALL_A
-                binding.wallBRadioBtn.id.toString() -> DbManager.TABLE_WALL_B
-                binding.wallCRadioBtn.id.toString() -> DbManager.TABLE_WALL_C
+//                binding.wallARadioBtn.id.toString() -> DataManager.WALL_A_NAME
+//                binding.wallBRadioBtn.id.toString() -> DataManager.WALL_B_NAME
+//                binding.wallCRadioBtn.id.toString() -> DataManager.WALL_C_NAME
                 else -> ""
             }
             sharedPreferencesEditor.putString("currentWall", currentWall)
             sharedPreferencesEditor.apply()
-            refreshColorsAndUpdateRecyclerView()
-            updateRecyclerView()
+            updateRecyclerView(currentWall)
         }
 
         super.onViewCreated(view, savedInstanceState)
     }
 
-    private fun updateRecyclerView(){
-        val cardAdapter = CardAdapter()
-        if (AppRuntimeData.colorsListInLocalSettings.isNotEmpty())
-            CardAdapter.drawCheckableColorCards(binding.localSettingsLinearLayout, AppRuntimeData.colorsListInLocalSettings)
-    }
-
-    private fun refreshColorsAndUpdateRecyclerView() {
-        AppRuntimeData.colorsListInLocalSettings = when(binding.radioGroup.checkedRadioButtonId.toString()){
-            binding.wallARadioBtn.id.toString() -> dbManager.getWall(dbManager.wallName_A).colorsOnTheWall as ArrayList<MyColor> /* = java.util.ArrayList<com.example.routes.dataStuff.MyColor> */
-            binding.wallBRadioBtn.id.toString() -> dbManager.getWall(dbManager.wallName_B).colorsOnTheWall as ArrayList<MyColor> /* = java.util.ArrayList<com.example.routes.dataStuff.MyColor> */
-            binding.wallCRadioBtn.id.toString() -> dbManager.getWall(dbManager.wallName_C).colorsOnTheWall as ArrayList<MyColor> /* = java.util.ArrayList<com.example.routes.dataStuff.MyColor> */
-            else -> throw Exception("Database don't contain records relative with this view")
+    private fun updateRecyclerView(wall: String){
+        val colorsToDraw = when(wall){
+            DbManager.WALLS_NAMES[0] -> walls[0].colorsOnTheWall
+//            DataManager.WALL_B_NAME -> walls[1].colorsOnTheWall
+//            DataManager.WALL_C_NAME -> walls[2].colorsOnTheWall
+            else -> arrayListOf()
         }
-        updateRecyclerView()
+        if (colorsToDraw.isNotEmpty())
+            CardAdapter.drawCheckableColorCards(binding.localSettingsLinearLayout, colorsToDraw)
     }
 
-    fun saveLastArrayForRandomSequence(){
-        var stringBuilder = StringBuilder()
-
-        for (color in AppRuntimeData.colorsListInLocalSettings)
-            stringBuilder.append(color.toString() + "/")
-        sharedPreferencesEditor.putString("lastArrayForRandomSequence", stringBuilder.toString())
-        sharedPreferencesEditor.apply()
+    private fun saveAllWalls(){
+//        dataManager.saveWall(walls[0])
+//        dataManager.saveWall(walls[1])
+//        dataManager.saveWall(walls[2])
     }
 
     override fun onResume() {
-        updateRecyclerView()
+//        walls = arrayListOf(dataManager.getWall(DataManager.WALL_A_NAME)!!, dataManager.getWall(DataManager.WALL_B_NAME)!!, dataManager.getWall(DataManager.WALL_C_NAME)!!)
+//        updateRecyclerView(sharedSettingsPreferences.getString("currentWall", DataManager.WALL_A_NAME)!!)
         super.onResume()
     }
 
     override fun onPause() {
-        saveLastArrayForRandomSequence()
+        saveAllWalls()
         super.onPause()
     }
 
     override fun onDestroyView() {
-        saveLastArrayForRandomSequence()
+        saveAllWalls()
         _binding = null
         super.onDestroyView()
     }

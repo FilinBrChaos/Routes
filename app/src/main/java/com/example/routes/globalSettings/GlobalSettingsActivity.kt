@@ -1,7 +1,9 @@
 package com.example.routes.globalSettings
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
@@ -11,17 +13,17 @@ import android.widget.Button
 import android.widget.LinearLayout
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.routes.cardsStuff.CardAdapter
 import com.example.routes.colorPicker.ColorPickerActivity
-import com.example.routes.dataStuff.MyColor
 import com.example.routes.dataStuff.DbManager
+import com.example.routes.dataStuff.MyColor
+import com.example.routes.dataStuff.WallDTO
 import com.example.routes.databinding.GlobalSettingsActivityBinding
 
 class GlobalSettingsActivity : AppCompatActivity() {
     private lateinit var binding: GlobalSettingsActivityBinding
-    private lateinit var dbManager: DbManager
+    private  lateinit var dbManager: DbManager
+
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var colorPickerCallerButton: Button
     private val resultLauncher = registerForActivityResult(
@@ -32,7 +34,7 @@ class GlobalSettingsActivity : AppCompatActivity() {
                 data.apply {
                     val colorName = getStringExtra(ColorPickerActivity.RESULT_COLOR_NAME)
                     val colorValue = getStringExtra(ColorPickerActivity.RESULT_COLOR_VALUE)
-                    if (colorName != null && colorValue != null) { addColorRecordToDb(colorName, colorValue) }
+                    if (colorName != null && colorValue != null) { saveColor(colorName, colorValue) }
                 }
             else {}
         }
@@ -43,8 +45,6 @@ class GlobalSettingsActivity : AppCompatActivity() {
         binding = GlobalSettingsActivityBinding.inflate(layoutInflater)
         sharedPreferences = getSharedPreferences("settings", Context.MODE_PRIVATE)
         setContentView(binding.root)
-        //binding.recyclerViewWallA.setHasFixedSize(false)
-        //binding.recyclerViewWallA.isNestedScrollingEnabled = false
         binding.nightModeSwitch.isChecked = sharedPreferences.getBoolean("nightMode", false)
 
         binding.addButtonWallA.setOnClickListener{
@@ -62,33 +62,58 @@ class GlobalSettingsActivity : AppCompatActivity() {
             val intent = Intent(this, ColorPickerActivity::class.java)
             resultLauncher.launch(intent)
         }
+
         dbManager = DbManager(this)
 
-        dbManager.onDbChanged = {
-            updateRecyclerView(binding.linearLayoutWallA)
-            updateRecyclerView(binding.linearLayoutWallB)
-            updateRecyclerView(binding.linearLayoutWallC)
-        }
         updateRecyclerView(binding.linearLayoutWallA)
-        updateRecyclerView(binding.linearLayoutWallB)
-        updateRecyclerView(binding.linearLayoutWallC)
+        //updateRecyclerView(binding.linearLayoutWallB)
+        //updateRecyclerView(binding.linearLayoutWallC)
     }
 
     private fun updateRecyclerView(linearLayout: LinearLayout){
-        val colorsOnTheWall: ArrayList<MyColor> = when(linearLayout){
-            binding.linearLayoutWallA -> dbManager.getWall(dbManager.wallName_A).colorsOnTheWall
-            binding.linearLayoutWallB -> dbManager.getWall(dbManager.wallName_B).colorsOnTheWall
-            binding.linearLayoutWallC -> dbManager.getWall(dbManager.wallName_C).colorsOnTheWall
-            else -> throw Exception("Database don't contain records relative with this wiew")
+        val colorsOnTheWall = when(linearLayout){
+            binding.linearLayoutWallA -> dbManager.getWall(DbManager.WALLS_NAMES[0]).colorsOnTheWall
+            binding.linearLayoutWallB -> dbManager.getWall(DbManager.WALLS_NAMES[1]).colorsOnTheWall
+            binding.linearLayoutWallC -> dbManager.getWall(DbManager.WALLS_NAMES[2]).colorsOnTheWall
+            else -> { throw Exception("No colors on that wall") }
         }
-        CardAdapter.drawEditableDeletableColorCards(linearLayout, this@GlobalSettingsActivity, colorsOnTheWall, dbManager)
+        val editButtonHandler = { color: MyColor ->
+            val dialogBuilder = AlertDialog.Builder(this)
+            dialogBuilder.setTitle("Confirm edit")
+            dialogBuilder.setMessage("You want to edit this item")
+            dialogBuilder.setPositiveButton("Yes", DialogInterface.OnClickListener{ dialog, _ ->
+                dialog.cancel()
+            })
+            dialogBuilder.setNegativeButton("No", DialogInterface.OnClickListener{ dialog, _ ->
+                dialog.cancel()
+            })
+            val alert = dialogBuilder.create()
+            alert.show()
+        }
+        val deleteButtonHandler = { color: MyColor ->
+            val dialogBuilder = AlertDialog.Builder(this)
+            dialogBuilder.setTitle("Confirm delete")
+            dialogBuilder.setMessage("Are you sure to delete this item")
+            dialogBuilder.setPositiveButton("Yes", DialogInterface.OnClickListener{ dialog, _ ->
+                dbManager.removeColorFromTheWall(color.id)
+                updateRecyclerView(linearLayout)
+                dialog.cancel()
+            })
+            dialogBuilder.setNegativeButton("No", DialogInterface.OnClickListener{ dialog, _ ->
+                dialog.cancel()
+            })
+            val alert = dialogBuilder.create()
+            alert.show()
+        }
+
+        CardAdapter.drawEditableDeletableColorCards(linearLayout, colorsOnTheWall, deleteButtonHandler, editButtonHandler)
     }
 
-    private fun addColorRecordToDb(colorName: String, colorValue: String){
+    private fun saveColor(colorName: String, colorValue: String){
         when(colorPickerCallerButton){
-            binding.addButtonWallA -> dbManager.addColorToWall(dbManager.wallName_A, colorName, colorValue);
-            binding.addButtonWallB -> dbManager.addColorToWall(dbManager.wallName_B, colorName, colorValue);
-            binding.addButtonWallC -> dbManager.addColorToWall(dbManager.wallName_C, colorName, colorValue);
+            binding.addButtonWallA -> dbManager.addColorToWall(MyColor(DbManager.WALLS_NAMES[0], colorName, colorValue, false))
+            binding.addButtonWallB -> dbManager.addColorToWall(MyColor(DbManager.WALLS_NAMES[1], colorName, colorValue, false))
+            binding.addButtonWallC -> dbManager.addColorToWall(MyColor(DbManager.WALLS_NAMES[2], colorName, colorValue, false))
         }
     }
 
@@ -104,4 +129,12 @@ class GlobalSettingsActivity : AppCompatActivity() {
         }
         editor.apply()
     }
+
+    override fun onResume() {
+        updateRecyclerView(binding.linearLayoutWallA)
+        updateRecyclerView(binding.linearLayoutWallB)
+        updateRecyclerView(binding.linearLayoutWallC)
+        super.onResume()
+    }
+
 }

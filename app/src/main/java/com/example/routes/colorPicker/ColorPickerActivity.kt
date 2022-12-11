@@ -40,12 +40,18 @@ class ColorPickerActivity : ComponentActivity() {
         const val RESULT_COLOR_NAME = "color_name"
         const val RESULT_COLOR_VALUE = "color_value"
 
+        const val INPUT_COLOR_NAME_PLACEHOLDER = "color_name"
+
         fun newInstance(context: Context) = Intent(context, ColorPickerActivity::class.java)
     }
+
+    private lateinit var colorName: String
 
     @ExperimentalComposeUiApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        colorName = intent.getStringExtra(INPUT_COLOR_NAME_PLACEHOLDER) ?: ""
+
         setContent {
             ColorPickerDemoTheme {
                 colorPicker()
@@ -58,7 +64,7 @@ class ColorPickerActivity : ComponentActivity() {
     @ExperimentalComposeUiApi
     fun colorPicker(){
         val controller = rememberColorPickerController()
-        var colorName by remember { mutableStateOf("") }
+        var colorName by remember { mutableStateOf(colorName) }
         var colorValue = "#ffffff"
 
         val keyboardController = LocalSoftwareKeyboardController.current
@@ -147,7 +153,7 @@ class ColorPickerActivity : ComponentActivity() {
                                 ),
                                 onValueChange = {
                                     var resultString = it
-                                    val regex = Regex("[^A-Za-z0-9]")
+                                    val regex = Regex("[^A-Za-z0-9_ -]")
                                     resultString = regex.replace(resultString, "")
                                     colorName = resultString
                                 },
