@@ -41,16 +41,19 @@ class ColorPickerActivity : ComponentActivity() {
         const val RESULT_COLOR_VALUE = "color_value"
 
         const val INPUT_COLOR_NAME_PLACEHOLDER = "color_name"
+        const val INPUT_COLOR_VALUE = "color_value"
 
         fun newInstance(context: Context) = Intent(context, ColorPickerActivity::class.java)
     }
 
     private lateinit var colorName: String
+    private lateinit var colorValue: String
 
     @ExperimentalComposeUiApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         colorName = intent.getStringExtra(INPUT_COLOR_NAME_PLACEHOLDER) ?: ""
+        colorValue = intent.getStringExtra(INPUT_COLOR_VALUE) ?: "#ffffff"
 
         setContent {
             ColorPickerDemoTheme {
@@ -65,7 +68,7 @@ class ColorPickerActivity : ComponentActivity() {
     fun colorPicker(){
         val controller = rememberColorPickerController()
         var colorName by remember { mutableStateOf(colorName) }
-        var colorValue = "#ffffff"
+        var colorValue = colorValue
 
         val keyboardController = LocalSoftwareKeyboardController.current
         val localFocusManager = LocalFocusManager.current

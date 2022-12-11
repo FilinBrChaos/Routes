@@ -113,7 +113,7 @@ class DbManager(context: Context?) : SQLiteOpenHelper(context, "app_data", null,
             selectQuery = "SELECT * " +
                     "FROM $TABLE_COLORS C, $TABLE_WALLS W " +
                     "WHERE C.$COLUMN_COLOR_PARENT_WALL = W.$COLUMN_WALL_ID AND " +
-                    "W.$COLUMN_WALL_ID = (SELECT $COLUMN_WALL_ID FROM $TABLE_WALLS WHERE $COLUMN_WALL_NAME = '$wallName') limit 1";
+                    "W.$COLUMN_WALL_NAME = '$wallName'";
             resultWall.wallName = wallName
         } else { throw Exception("Wall name don't existed") }
 
@@ -141,7 +141,7 @@ class DbManager(context: Context?) : SQLiteOpenHelper(context, "app_data", null,
         return true
     }
 
-    fun addColorToWall(color: MyColor){
+    fun addColorToWall(color: MyColor): Boolean{
         val db = this.readableDatabase
         var wallId = 0
         val cursor = db.rawQuery("select id from $TABLE_WALLS where $COLUMN_WALL_NAME = '${color.wallName}'", null)
@@ -156,25 +156,31 @@ class DbManager(context: Context?) : SQLiteOpenHelper(context, "app_data", null,
         var res: Long = db.insert(TABLE_COLORS, null, contentValues)
         db.close()
         onDbChanged()
+        return res > 0
     }
 
-    fun removeColorFromTheWall(colorId: Int){
+    fun removeColorFromTheWall(colorId: Int): Boolean{
         val db = this.readableDatabase
 
         var res: Int = db.delete(TABLE_COLORS,
             "$COLUMN_COLOR_ID=$colorId", null)
-        if (res == -1) println("failed")
         onDbChanged()
+        return res > 0
     }
 
-//    fun updateColorOnTheWall(color: MyColor){
-//        val db = this.readableDatabase
-//
-//        if (tableNameValidation(color.wallName)) db.execSQL("UPDATE " + color.wallName +
-//                " SET " + COLUMN_WALL_COLOR_NAME + " = '" + color.colorName + "', " +
-//                COLUMN_WALL_COLOR_VALUE + " = '" + color.colorValue + "' " +
-//                "WHERE " + COLUMN_WALL_ID + " = '" + color.id + "';")
-//    }
+    fun updateColorOnTheWall(color: MyColor): Boolean{
+        val db = this.readableDatabase
+
+        val contentValues = ContentValues()
+        contentValues.put(COLUMN_COLOR_NAME, color.colorName)
+        contentValues.put(COLUMN_COLOR_VALUE, color.colorValue)
+        contentValues.put(COLUMN_COLOR_CHECKED, if (color.isCheckedInLocalSettings) 1 else 0)
+
+        var res: Int = db.update(TABLE_COLORS, contentValues, "$COLUMN_COLOR_ID = ${color.id}", null)
+        db.close()
+        onDbChanged()
+        return res > 0
+    }
 
     private fun wallNameValidation(wallName: String): Boolean{
         return WALLS_NAMES.contains(wallName)

@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.routes.AppRuntimeData
 import com.example.routes.cardsStuff.CardAdapter
-import com.example.routes.dataStuff.DataManager
 import com.example.routes.dataStuff.DbManager
 import com.example.routes.dataStuff.RouteDTO
 import com.example.routes.databinding.ActivityRoutesListBinding
@@ -13,18 +12,19 @@ import com.example.routes.routeViewActivity.RouteActivity
 
 class RoutesListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRoutesListBinding
-    private lateinit var dataManager: DataManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRoutesListBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        dataManager = DataManager(this)
+//        dataManager = DataManager(this)
+        // TODO: this
         updateRoutesCardsList()
     }
 
     private fun updateRoutesCardsList(){
-        val routes = dataManager.getAllRoutes()
+        //val routes = dataManager.getAllRoutes()
+        val routes = arrayListOf<RouteDTO>()
         if (routes.isNotEmpty())
             CardAdapter.drawRouteCards(binding.routesListLinearLayout, routes, ::openRouteActivity)
     }

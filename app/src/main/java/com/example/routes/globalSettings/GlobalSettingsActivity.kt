@@ -26,7 +26,8 @@ class GlobalSettingsActivity : AppCompatActivity() {
 
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var colorPickerCallerButton: Button
-    private val resultLauncher = registerForActivityResult(
+    private lateinit var updatedColor: MyColor
+    private val colorPickerCreateNewColorResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()){ result ->
         if (result.resultCode == Activity.RESULT_OK){
             val data: Intent? = result.data
@@ -35,6 +36,20 @@ class GlobalSettingsActivity : AppCompatActivity() {
                     val colorName = getStringExtra(ColorPickerActivity.RESULT_COLOR_NAME)
                     val colorValue = getStringExtra(ColorPickerActivity.RESULT_COLOR_VALUE)
                     if (colorName != null && colorValue != null) { saveColor(colorName, colorValue) }
+                }
+            else {}
+        }
+    }
+
+    private val colorPickerUpdateColorResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()){ result ->
+        if (result.resultCode == Activity.RESULT_OK){
+            val data: Intent? = result.data
+            if (data != null)
+                data.apply {
+                    val colorName = getStringExtra(ColorPickerActivity.RESULT_COLOR_NAME)
+                    val colorValue = getStringExtra(ColorPickerActivity.RESULT_COLOR_VALUE)
+                    if (colorName != null && colorValue != null) { updateColor(colorName, colorValue) }
                 }
             else {}
         }
@@ -50,24 +65,24 @@ class GlobalSettingsActivity : AppCompatActivity() {
         binding.addButtonWallA.setOnClickListener{
             colorPickerCallerButton = binding.addButtonWallA
             val intent = Intent(this, ColorPickerActivity::class.java)
-            resultLauncher.launch(intent)
+            colorPickerCreateNewColorResultLauncher.launch(intent)
         }
         binding.addButtonWallB.setOnClickListener{
             colorPickerCallerButton = binding.addButtonWallB
             val intent = Intent(this, ColorPickerActivity::class.java)
-            resultLauncher.launch(intent)
+            colorPickerCreateNewColorResultLauncher.launch(intent)
         }
         binding.addButtonWallC.setOnClickListener{
             colorPickerCallerButton = binding.addButtonWallC
             val intent = Intent(this, ColorPickerActivity::class.java)
-            resultLauncher.launch(intent)
+            colorPickerCreateNewColorResultLauncher.launch(intent)
         }
 
         dbManager = DbManager(this)
 
         updateRecyclerView(binding.linearLayoutWallA)
-        //updateRecyclerView(binding.linearLayoutWallB)
-        //updateRecyclerView(binding.linearLayoutWallC)
+        updateRecyclerView(binding.linearLayoutWallB)
+        updateRecyclerView(binding.linearLayoutWallC)
     }
 
     private fun updateRecyclerView(linearLayout: LinearLayout){
@@ -82,6 +97,12 @@ class GlobalSettingsActivity : AppCompatActivity() {
             dialogBuilder.setTitle("Confirm edit")
             dialogBuilder.setMessage("You want to edit this item")
             dialogBuilder.setPositiveButton("Yes", DialogInterface.OnClickListener{ dialog, _ ->
+                updatedColor = color
+                val intent = Intent(this, ColorPickerActivity::class.java)
+                intent.putExtra(ColorPickerActivity.INPUT_COLOR_NAME_PLACEHOLDER, color.colorName)
+                intent.putExtra(ColorPickerActivity.INPUT_COLOR_VALUE, color.colorValue)
+                colorPickerUpdateColorResultLauncher.launch(intent)
+                updateRecyclerView(linearLayout)
                 dialog.cancel()
             })
             dialogBuilder.setNegativeButton("No", DialogInterface.OnClickListener{ dialog, _ ->
@@ -115,6 +136,12 @@ class GlobalSettingsActivity : AppCompatActivity() {
             binding.addButtonWallB -> dbManager.addColorToWall(MyColor(DbManager.WALLS_NAMES[1], colorName, colorValue, false))
             binding.addButtonWallC -> dbManager.addColorToWall(MyColor(DbManager.WALLS_NAMES[2], colorName, colorValue, false))
         }
+    }
+
+    private fun updateColor(colorName: String, colorValue: String){
+        updatedColor.colorName = colorName
+        updatedColor.colorValue = colorValue
+        dbManager.updateColorOnTheWall(updatedColor)
     }
 
     fun changeColorMode(view: View) {
