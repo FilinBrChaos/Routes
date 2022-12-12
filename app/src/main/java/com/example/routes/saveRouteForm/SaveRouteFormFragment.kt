@@ -30,21 +30,18 @@ import java.time.format.DateTimeFormatter
 
 class SaveRouteFormFragment : Fragment() {
     private var _binding: SaveRouteFragmentBinding? = null
-    private lateinit var dbManager: DbManager
     private lateinit var imageManager: ImageManager
+    private lateinit var dbManager: DbManager
     private val images = arrayListOf<Bitmap>()
     private val resultLauncherImageEditor = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()){ result ->
         if (result.resultCode == Activity.RESULT_OK){
             val uri: Uri = result.data!!.data!!
 
-            Toast.makeText(activity, "Photo added", Toast.LENGTH_SHORT).show()
-
             val bitmap = imageManager.convertUriToBitmap(uri)
-
             images.add(bitmap)
-
             updateImageRecyclerView()
+            Toast.makeText(activity, "Photo added", Toast.LENGTH_SHORT).show()
 
 //            val data: Uri = result.data!!.data!!
 //            val intent = Intent(activity, DsPhotoEditorActivity::class.java)
@@ -92,8 +89,8 @@ class SaveRouteFormFragment : Fragment() {
     ): View? {
         _binding = SaveRouteFragmentBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
-        dbManager = DbManager(activity)
         imageManager = ImageManager(requireActivity())
+        dbManager = DbManager(requireActivity())
         return binding.root
     }
 
@@ -111,27 +108,23 @@ class SaveRouteFormFragment : Fragment() {
 
         binding.saveRouteButton.setOnClickListener {
 
-
-            var imagesNames: ArrayList<String> = arrayListOf()
+            val imagesNames: ArrayList<String> = arrayListOf()
             for (image in images) {
-                var name = imageManager.createUniqueName()
+                val name = imageManager.createUniqueName()
                 imagesNames.add(name)
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    imageManager.createDirectoryAndSaveImage(image, name)
+                    imageManager.saveBitmap(image, name)
                 }
             }
 
-            val currentWall = sharedSettingsPreferences.getString("currentWall", DbManager.TABLE_WALL_A)
+            val currentWall = sharedSettingsPreferences.getString("currentWall", DbManager.WALLS_NAMES[0])
             val currentDate = LocalDateTime.now()
             val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
-            dbManager.addRouteRecord(RouteDTO(1,
-                binding.routeNameTextField.text.toString(),
-                currentWall!!,
-                currentDate.format(formatter),
-                binding.routeCreatorTextField.text.toString(),
-                AppRuntimeData.currentGeneratedRouteColors,
-                imagesNames.joinToString(separator = ", ")))
+
+            dbManager.saveRoute(RouteDTO(binding.routeNameTextField.text.toString(),
+            currentWall!!, currentDate.format(formatter), binding.routeCreatorTextField.text.toString(),
+            AppRuntimeData.currentGeneratedRouteColors, imagesNames))
 
             Toast.makeText(activity, "Route saved", Toast.LENGTH_SHORT).show()
             activity?.onBackPressed()
@@ -146,8 +139,8 @@ class SaveRouteFormFragment : Fragment() {
 //        super.onPrepareOptionsMenu(menu)
 //    }
 
-    fun updateImageRecyclerView(){
-        CardAdapter.drawImageCards(binding.saveRouteImagesLinearLayout, images)
+    private fun updateImageRecyclerView(){
+        if (images.isNotEmpty()) CardAdapter.drawImageCards(binding.saveRouteImagesLinearLayout, images)
     }
 
     override fun onDestroyView() {

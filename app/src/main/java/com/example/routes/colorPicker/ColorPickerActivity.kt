@@ -6,12 +6,9 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.focusable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.material.ripple.RippleAlpha
@@ -40,12 +37,21 @@ class ColorPickerActivity : ComponentActivity() {
         const val RESULT_COLOR_NAME = "color_name"
         const val RESULT_COLOR_VALUE = "color_value"
 
+        const val INPUT_COLOR_NAME_PLACEHOLDER = "color_name"
+        const val INPUT_COLOR_VALUE = "color_value"
+
         fun newInstance(context: Context) = Intent(context, ColorPickerActivity::class.java)
     }
+
+    private lateinit var colorName: String
+    private lateinit var colorValue: String
 
     @ExperimentalComposeUiApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        colorName = intent.getStringExtra(INPUT_COLOR_NAME_PLACEHOLDER) ?: ""
+        colorValue = intent.getStringExtra(INPUT_COLOR_VALUE) ?: "#ffffff"
+
         setContent {
             ColorPickerDemoTheme {
                 colorPicker()
@@ -58,8 +64,8 @@ class ColorPickerActivity : ComponentActivity() {
     @ExperimentalComposeUiApi
     fun colorPicker(){
         val controller = rememberColorPickerController()
-        var colorName by remember { mutableStateOf("") }
-        var colorValue = "#ffffff"
+        var colorName by remember { mutableStateOf(colorName) }
+        var colorValue = colorValue
 
         val keyboardController = LocalSoftwareKeyboardController.current
         val localFocusManager = LocalFocusManager.current
@@ -71,7 +77,7 @@ class ColorPickerActivity : ComponentActivity() {
                     .padding(all = 30.dp)
                     .focusable(enabled = true)
                     .verticalScroll(rememberScrollState())
-                    //.weight(weight = 1f, fill = false)
+                    .background(MaterialTheme.colors.primarySurface)
             ) {
                 // TODO: make constraint layout here
 
@@ -147,7 +153,7 @@ class ColorPickerActivity : ComponentActivity() {
                                 ),
                                 onValueChange = {
                                     var resultString = it
-                                    val regex = Regex("[^A-Za-z0-9]")
+                                    val regex = Regex("[^A-Za-z0-9_ -]")
                                     resultString = regex.replace(resultString, "")
                                     colorName = resultString
                                 },
@@ -171,6 +177,7 @@ class ColorPickerActivity : ComponentActivity() {
                 ) {
                     Button(
                         // TODO: make validation before return result
+
                         modifier = Modifier.fillMaxWidth(),
                         onClick = {
                             //println(colorName + " " + colorValue)
