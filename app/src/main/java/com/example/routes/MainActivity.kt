@@ -89,7 +89,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onResume() {
         binding.activityMainDrawerLayout.closeDrawer(GravityCompat.START)
-        //TODO make beautiful drawer closing
         super.onResume()
     }
 }

@@ -1,8 +1,10 @@
 package com.example.routes.saveRouteForm
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
@@ -16,6 +18,8 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import com.dsphotoeditor.sdk.activity.DsPhotoEditorActivity
+import com.dsphotoeditor.sdk.utils.DsPhotoEditorConstants
 import com.example.routes.*
 import com.example.routes.cardsStuff.CardAdapter
 import com.example.routes.dataStuff.DbManager
@@ -36,38 +40,35 @@ class SaveRouteFormFragment : Fragment() {
     private val resultLauncherImageEditor = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()){ result ->
         if (result.resultCode == Activity.RESULT_OK){
-            val uri: Uri = result.data!!.data!!
+//            val uri: Uri = result.data!!.data!!
 
-            val bitmap = imageManager.convertUriToBitmap(uri)
-            images.add(bitmap)
-            updateImageRecyclerView()
-            Toast.makeText(activity, "Photo added", Toast.LENGTH_SHORT).show()
+//            val bitmap = imageManager.convertUriToBitmap(uri)
+//            images.add(bitmap)
+//            updateImageRecyclerView()
+//            Toast.makeText(activity, "Photo added", Toast.LENGTH_SHORT).show()
 
-//            val data: Uri = result.data!!.data!!
-//            val intent = Intent(activity, DsPhotoEditorActivity::class.java)
-//            intent.data = data
-            //intent.putExtra(DsPhotoEditorConstants.DS_PHOTO_EDITOR_OUTPUT_DIRECTORY, "Images")
-            //intent.putExtra(DsPhotoEditorConstants.DS_TOOL_BAR_BACKGROUND_COLOR, R.color.dark_primary)
-            //intent.putExtra(DsPhotoEditorConstants.DS_MAIN_BACKGROUND_COLOR, R.color.dark_secondary_variant)
-//            val toolsToHide = intArrayOf(DsPhotoEditorActivity.TOOL_WARMTH,
-//                DsPhotoEditorActivity.TOOL_PIXELATE,
-//                DsPhotoEditorActivity.TOOL_CONTRAST,
-//                DsPhotoEditorActivity.TOOL_FILTER,
-//                DsPhotoEditorActivity.TOOL_SHARPNESS,
-//                DsPhotoEditorActivity.TOOL_VIGNETTE,
-//                DsPhotoEditorActivity.TOOL_FRAME,
-//                DsPhotoEditorActivity.TOOL_ROUND)
-//            intent.putExtra(DsPhotoEditorConstants.DS_PHOTO_EDITOR_TOOLS_TO_HIDE, toolsToHide)
-//            resultLauncherGetImageAfterEditor.launch(intent)
+            val data: Uri = result.data!!.data!!
+            val intent = Intent(activity, DsPhotoEditorActivity::class.java)
+            intent.data = data
+            intent.putExtra(DsPhotoEditorConstants.DS_PHOTO_EDITOR_OUTPUT_DIRECTORY, "Images")
+            intent.putExtra(DsPhotoEditorConstants.DS_TOOL_BAR_BACKGROUND_COLOR, R.color.dark_primary)
+            intent.putExtra(DsPhotoEditorConstants.DS_MAIN_BACKGROUND_COLOR, R.color.dark_secondary_variant)
+            val toolsToHide = intArrayOf(DsPhotoEditorActivity.TOOL_WARMTH,
+                DsPhotoEditorActivity.TOOL_PIXELATE,
+                DsPhotoEditorActivity.TOOL_CONTRAST,
+                DsPhotoEditorActivity.TOOL_FILTER,
+                DsPhotoEditorActivity.TOOL_SHARPNESS,
+                DsPhotoEditorActivity.TOOL_VIGNETTE,
+                DsPhotoEditorActivity.TOOL_FRAME,
+                DsPhotoEditorActivity.TOOL_ROUND)
+            intent.putExtra(DsPhotoEditorConstants.DS_PHOTO_EDITOR_TOOLS_TO_HIDE, toolsToHide)
+            resultLauncherGetImageAfterEditor.launch(intent)
         }
     }
-/*
     private val resultLauncherGetImageAfterEditor = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()){ result ->
         if (result.resultCode == Activity.RESULT_OK){
             val uri: Uri = result.data!!.data!!
-            println(uri.toString() + "Normal uri!!!!!!!!!!!!!!!!")
-            //TODO remove this
             Toast.makeText(activity, "Photo added", Toast.LENGTH_SHORT).show()
 
             val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -75,12 +76,11 @@ class SaveRouteFormFragment : Fragment() {
             } else {
                 MediaStore.Images.Media.getBitmap(requireContext().contentResolver, uri)
             }
-            images.add(uri)
+            images.add(bitmap)
 
             updateImageRecyclerView()
         }
     }
-*/
 
     @Suppress("DEPRECATION")
     override fun onCreateView(
@@ -140,7 +140,22 @@ class SaveRouteFormFragment : Fragment() {
 //    }
 
     private fun updateImageRecyclerView(){
-        if (images.isNotEmpty()) CardAdapter.drawImageCards(binding.saveRouteImagesLinearLayout, images)
+        var cardOnClickHandler = { image: Bitmap ->
+            val dialogBuilder = AlertDialog.Builder(requireActivity())
+            dialogBuilder.setTitle("Confirm delete")
+            dialogBuilder.setMessage("Are you sure to delete this item")
+            dialogBuilder.setPositiveButton("Yes", DialogInterface.OnClickListener{ dialog, _ ->
+                images.remove(image)
+                updateImageRecyclerView()
+                dialog.cancel()
+            })
+            dialogBuilder.setNegativeButton("No", DialogInterface.OnClickListener{ dialog, _ ->
+                dialog.cancel()
+            })
+            val alert = dialogBuilder.create()
+            alert.show()
+        }
+        CardAdapter.drawImageCards(binding.saveRouteImagesLinearLayout, images, cardOnClickHandler)
     }
 
     override fun onDestroyView() {
