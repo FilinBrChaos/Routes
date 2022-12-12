@@ -24,7 +24,6 @@ class DbManager(context: Context?) : SQLiteOpenHelper(context, "app_data", null,
         private const val COLUMN_COLOR_VALUE = "value"
         private const val COLUMN_COLOR_CHECKED = "checked"
         private const val COLUMN_COLOR_PARENT_WALL = "parent_wall"
-        private const val COLUMN_COLOR_PARENT_WALL_FK = "parent_wall_fk"
 
         private const val TABLE_ROUTES = "routes"
         private const val COLUMN_ROUTE_ID = "id"
@@ -38,13 +37,11 @@ class DbManager(context: Context?) : SQLiteOpenHelper(context, "app_data", null,
         private const val COLUMN_ROUTE_COLOR_NAME = "name"
         private const val COLUMN_ROUTE_COLOR_VALUE = "value"
         private const val COLUMN_ROUTE_COLOR_PARENT_ROUTE = "parent_route"
-        private const val COLUMN_ROUTE_COLOR_PARENT_ROUTE_FK = "parent_route_fk"
 
         private const val TABLE_ROUTES_IMAGES = "routes_images"
         private const val COLUMN_ROUTE_IMAGE_ID = "id"
         private const val COLUMN_ROUTE_IMAGE_NAME = "name"
         private const val COLUMN_ROUTE_IMAGE_PARENT_ROUTE = "parent_route"
-        private const val COLUMN_ROUTE_IMAGE_PARENT_ROUTE_FK = "parent_route_fk"
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
@@ -130,7 +127,11 @@ class DbManager(context: Context?) : SQLiteOpenHelper(context, "app_data", null,
         }
 
         for (image in route.picturesData){
+            val routeImages = ContentValues()
+            routeImages.put(COLUMN_ROUTE_IMAGE_NAME, image)
+            routeImages.put(COLUMN_ROUTE_IMAGE_PARENT_ROUTE, routeId)
 
+            db.insert(TABLE_ROUTES_IMAGES, null, routeImages)
         }
 
         db.close()

@@ -43,24 +43,26 @@ class RouteActivity : AppCompatActivity() {
 
         val routeIndex = intent.getIntExtra(ROUTE_ID, 0)
 
-        if (routeIndex != 0){
-            route = dbManager.getRoute(routeIndex)
+        route = dbManager.getRoute(routeIndex)
 
-            if (route.picturesData.isEmpty()) binding.imagesLayoutBlock.visibility = View.GONE
-            else {
-                val images = arrayListOf<Bitmap>()
-                for (imageName in route.picturesData){
-                    images.add(imageManager.loadImage(imageName)!!)
-                }
-                if (images.isNotEmpty()) CardAdapter.drawImageCards(binding.routeImagesLinearLayout, images)
+        if (route.picturesData.isEmpty()) binding.imagesLayoutBlock.visibility = View.GONE
+        else {
+            val images = arrayListOf<Bitmap>()
+            for (imageName in route.picturesData){
+                images.add(imageManager.loadImage(imageName)!!)
             }
-
-            title = route.routeName
-            binding.creatorTextView.text = route.routeCreator
-            binding.dateTextView.text = route.creationDate
-            binding.usedWallsTextView.text = route.wallName
+            if (images.isNotEmpty()) CardAdapter.drawImageCards(binding.routeImagesLinearLayout, images)
         }
-        else { Log.e("Route activity", "No extra string passed in this activity"); onBackPressed(); }
+
+        if (route.routeColors.isEmpty()) binding.routeColorLinearLayout.visibility = View.GONE
+        else {
+            CardAdapter.drawColorCards(binding.routeColorLinearLayout, route.routeColors)
+        }
+
+        title = route.routeName
+        binding.creatorTextView.text = route.routeCreator
+        binding.dateTextView.text = route.creationDate
+        binding.usedWallsTextView.text = route.wallName
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
