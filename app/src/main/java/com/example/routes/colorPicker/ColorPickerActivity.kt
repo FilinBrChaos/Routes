@@ -153,8 +153,8 @@ class ColorPickerActivity : ComponentActivity() {
                                 ),
                                 onValueChange = {
                                     var resultString = it
-                                    val regex = Regex("[^A-Za-z0-9_ -]")
-                                    resultString = regex.replace(resultString, "")
+                                    //val regex = Regex("[^A-Za-z0-9_ -]")
+                                    //resultString = regex.replace(resultString, "")
                                     colorName = resultString
                                 },
                                 label = { Text("Color name") },
@@ -176,11 +176,8 @@ class ColorPickerActivity : ComponentActivity() {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Button(
-                        // TODO: make validation before return result
-
                         modifier = Modifier.fillMaxWidth(),
                         onClick = {
-                            //println(colorName + " " + colorValue)
                             returnResult(colorName, colorValue)
                         }) { Text(text = "add") }
                 }

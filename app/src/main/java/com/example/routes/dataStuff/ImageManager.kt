@@ -80,6 +80,19 @@ class ImageManager(val context: Context) {
         return file.delete()
     }
 
+    fun reduceImageQuality(){
+        //this code reducing image quality in image card preview
+
+//            val byteArrayOutputStream = ByteArrayOutputStream()
+//            image.compress(Bitmap.CompressFormat.JPEG, 0, byteArrayOutputStream)
+//            val byteArray = byteArrayOutputStream.toByteArray()
+//            val imageEncoded = Base64.encodeToString(byteArray, Base64.DEFAULT)
+//            val compressedImage: Bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+
+
+        //binding.image.setImageBitmap(compressedImage)
+    }
+
     fun convertUriToBitmap(uri: Uri): Bitmap {
 
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)

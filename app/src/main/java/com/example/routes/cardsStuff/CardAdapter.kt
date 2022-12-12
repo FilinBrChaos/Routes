@@ -36,12 +36,14 @@ class CardAdapter {
             return ImageCardViewHolder(binding)
         }
 
-        fun drawImageCards(parentElement: LinearLayout, images: ArrayList<Bitmap>) {
+        fun drawImageCards(parentElement: LinearLayout,
+                           images: ArrayList<Bitmap>,
+                           onCardClickHandler: (image: Bitmap) -> Unit) {
             parentElement.removeAllViews()
             val cards: ArrayList<ImageCardViewHolder> = arrayListOf()
             for (i in 0 until images.size) {
                 cards.add(createImageCardViewHolder(parentElement))
-                cards[i].bindCard(images[i])
+                cards[i].bindCard(images[i], onCardClickHandler)
                 parentElement.addView(cards[i].binding.root)
             }
         }

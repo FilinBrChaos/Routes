@@ -51,7 +51,8 @@ class RouteActivity : AppCompatActivity() {
             for (imageName in route.picturesData){
                 images.add(imageManager.loadImage(imageName)!!)
             }
-            if (images.isNotEmpty()) CardAdapter.drawImageCards(binding.routeImagesLinearLayout, images)
+            var imageOnClickHandler = { image: Bitmap ->  var som = image }
+            if (images.isNotEmpty()) CardAdapter.drawImageCards(binding.routeImagesLinearLayout, images, imageOnClickHandler)
         }
 
         if (route.routeColors.isEmpty()) binding.routeColorLinearLayout.visibility = View.GONE

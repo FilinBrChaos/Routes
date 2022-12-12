@@ -91,7 +91,6 @@ class DbManager(context: Context?) : SQLiteOpenHelper(context, "app_data", null,
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, p1: Int, p2: Int) {
-        //TODO make migration
         db?.execSQL("DROP TABLE IF EXISTS $TABLE_WALLS")
         db?.execSQL("DROP TABLE IF EXISTS $TABLE_COLORS")
         db?.execSQL("DROP TABLE IF EXISTS $TABLE_ROUTES")
