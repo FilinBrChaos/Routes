@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.routes.cardsStuff.CardAdapter
 import com.example.routes.dataStuff.DbManager
+import com.example.routes.dataStuff.MyColor
 import com.example.routes.dataStuff.WallDTO
 import com.example.routes.databinding.FragmentLocalSettingsBinding
 
@@ -37,18 +38,18 @@ class LocalSettingsFrag : Fragment() {
 
         val lastUsedWall = sharedSettingsPreferences.getString("currentWall", DbManager.WALLS_NAMES[0])
         when(lastUsedWall){
-//            DataManager.WALL_A_NAME -> binding.wallARadioBtn.isChecked = true
-//            DataManager.WALL_B_NAME -> binding.wallBRadioBtn.isChecked = true
-//            DataManager.WALL_C_NAME -> binding.wallCRadioBtn.isChecked = true
+            DbManager.WALLS_NAMES[0] -> binding.wallARadioBtn.isChecked = true
+            DbManager.WALLS_NAMES[1] -> binding.wallBRadioBtn.isChecked = true
+            DbManager.WALLS_NAMES[2] -> binding.wallCRadioBtn.isChecked = true
             else -> { binding.wallARadioBtn.isChecked = true }
         }
         updateRecyclerView(lastUsedWall!!)
-//todo this
+
         binding.radioGroup.setOnCheckedChangeListener { radioGroup, checkedId ->
             var currentWall = when (binding.radioGroup.checkedRadioButtonId.toString()){
-//                binding.wallARadioBtn.id.toString() -> DataManager.WALL_A_NAME
-//                binding.wallBRadioBtn.id.toString() -> DataManager.WALL_B_NAME
-//                binding.wallCRadioBtn.id.toString() -> DataManager.WALL_C_NAME
+                binding.wallARadioBtn.id.toString() -> DbManager.WALLS_NAMES[0]
+                binding.wallBRadioBtn.id.toString() -> DbManager.WALLS_NAMES[1]
+                binding.wallCRadioBtn.id.toString() -> DbManager.WALLS_NAMES[2]
                 else -> ""
             }
             sharedPreferencesEditor.putString("currentWall", currentWall)
@@ -61,19 +62,16 @@ class LocalSettingsFrag : Fragment() {
 
     private fun updateRecyclerView(wall: String){
         val colorsToDraw = when(wall){
-            DbManager.WALLS_NAMES[0] -> walls[0].colorsOnTheWall
-//            DataManager.WALL_B_NAME -> walls[1].colorsOnTheWall
-//            DataManager.WALL_C_NAME -> walls[2].colorsOnTheWall
+            DbManager.WALLS_NAMES[0] -> dbManager.getWall(DbManager.WALLS_NAMES[0]).colorsOnTheWall
+            DbManager.WALLS_NAMES[1] -> dbManager.getWall(DbManager.WALLS_NAMES[1]).colorsOnTheWall
+            DbManager.WALLS_NAMES[2] -> dbManager.getWall(DbManager.WALLS_NAMES[2]).colorsOnTheWall
             else -> arrayListOf()
         }
-        if (colorsToDraw.isNotEmpty())
-            CardAdapter.drawCheckableColorCards(binding.localSettingsLinearLayout, colorsToDraw)
-    }
-
-    private fun saveAllWalls(){
-//        dataManager.saveWall(walls[0])
-//        dataManager.saveWall(walls[1])
-//        dataManager.saveWall(walls[2])
+        val checkChangedHandler = {color: MyColor ->
+            color.isCheckedInLocalSettings = !color.isCheckedInLocalSettings
+            val result = dbManager.updateColorOnTheWall(color)
+        }
+        CardAdapter.drawCheckableColorCards(binding.localSettingsLinearLayout, colorsToDraw, checkChangedHandler)
     }
 
     override fun onResume() {
@@ -82,13 +80,7 @@ class LocalSettingsFrag : Fragment() {
         super.onResume()
     }
 
-    override fun onPause() {
-        saveAllWalls()
-        super.onPause()
-    }
-
     override fun onDestroyView() {
-        saveAllWalls()
         _binding = null
         super.onDestroyView()
     }

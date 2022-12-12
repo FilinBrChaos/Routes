@@ -18,12 +18,14 @@ class CardAdapter {
             return CheckableColorCardViewHolder(binding)
         }
 
-        fun drawCheckableColorCards(parentElement: LinearLayout, colors: ArrayList<MyColor>) {
+        fun drawCheckableColorCards(parentElement: LinearLayout,
+                                    colors: ArrayList<MyColor>,
+                                    checkChangedHandler: (color: MyColor) -> Unit) {
             parentElement.removeAllViews()
             val cards: ArrayList<CheckableColorCardViewHolder> = arrayListOf()
             for (i in 0 until colors.size) {
                 cards.add(createCheckableColorCardViewHolder(parentElement))
-                cards[i].bindCard(colors[i])
+                cards[i].bindCard(colors[i], checkChangedHandler)
                 parentElement.addView(cards[i].binding.root)
             }
         }

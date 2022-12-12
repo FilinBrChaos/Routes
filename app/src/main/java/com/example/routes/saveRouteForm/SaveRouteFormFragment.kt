@@ -121,13 +121,10 @@ class SaveRouteFormFragment : Fragment() {
             val currentWall = sharedSettingsPreferences.getString("currentWall", DbManager.WALLS_NAMES[0])
             val currentDate = LocalDateTime.now()
             val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
-//            dataManager.saveRoute(RouteDTO(binding.routeNameTextField.text.toString(),
-//            currentWall!!,
-//            currentDate.format(formatter),
-//            binding.routeCreatorTextField.text.toString(),
-//            AppRuntimeData.currentGeneratedRouteColors,
-//            imagesNames))
-            dbManager.saveRoute()
+
+            dbManager.saveRoute(RouteDTO(binding.routeNameTextField.text.toString(),
+            currentWall!!, currentDate.format(formatter), binding.routeCreatorTextField.text.toString(),
+            AppRuntimeData.currentGeneratedRouteColors, imagesNames))
 
             Toast.makeText(activity, "Route saved", Toast.LENGTH_SHORT).show()
             activity?.onBackPressed()

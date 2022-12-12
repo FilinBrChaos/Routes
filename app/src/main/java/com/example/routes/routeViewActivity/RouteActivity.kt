@@ -23,7 +23,7 @@ import com.example.routes.databinding.ActivityRouteBinding
 
 class RouteActivity : AppCompatActivity() {
     companion object{
-        const val ROUTE_FILE_NAME = "route_file_name"
+        const val ROUTE_ID = "route_index"
     }
     private lateinit var binding: ActivityRouteBinding
     private lateinit var dbManager: DbManager
@@ -41,11 +41,10 @@ class RouteActivity : AppCompatActivity() {
         val actionBar: ActionBar = supportActionBar!!
         actionBar.setDisplayHomeAsUpEnabled(true)
 
-        val routeFileName = intent.getStringExtra(ROUTE_FILE_NAME) ?: ""
+        val routeIndex = intent.getIntExtra(ROUTE_ID, 0)
 
-        if (routeFileName != ""){
-            route = dbManager.getRoute()
-            //todo this
+        if (routeIndex != 0){
+            route = dbManager.getRoute(routeIndex)
 
             if (route.picturesData.isEmpty()) binding.imagesLayoutBlock.visibility = View.GONE
             else {

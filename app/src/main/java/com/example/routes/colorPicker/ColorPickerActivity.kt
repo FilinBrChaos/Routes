@@ -6,12 +6,9 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.focusable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.material.ripple.RippleAlpha
@@ -80,7 +77,7 @@ class ColorPickerActivity : ComponentActivity() {
                     .padding(all = 30.dp)
                     .focusable(enabled = true)
                     .verticalScroll(rememberScrollState())
-                    //.weight(weight = 1f, fill = false)
+                    .background(MaterialTheme.colors.primarySurface)
             ) {
                 // TODO: make constraint layout here
 
@@ -180,6 +177,7 @@ class ColorPickerActivity : ComponentActivity() {
                 ) {
                     Button(
                         // TODO: make validation before return result
+
                         modifier = Modifier.fillMaxWidth(),
                         onClick = {
                             //println(colorName + " " + colorValue)

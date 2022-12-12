@@ -9,7 +9,7 @@ class RouteDTO(val routeName: String = "---",
                val routeCreator: String = "---",
                val routeColors: ArrayList<MyColor> = arrayListOf(),
                val picturesData: ArrayList<String> = arrayListOf(),
-               var fileName: String = ""){
+               var id: Int = 0){
     fun isEmpty(): Boolean{
         return wallName == "---" && creationDate == "---"
     }
