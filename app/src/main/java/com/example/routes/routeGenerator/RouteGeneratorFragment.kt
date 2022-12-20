@@ -40,15 +40,15 @@ class RouteGeneratorFragment : Fragment() {
 
         updateColorsListRecyclerView(AppRuntimeData.currentGeneratedRouteColors)
         binding.randomButton.setOnClickListener {
-            val myRandomList = getAllCheckedColors(getLastChosenWallFromFile())
-            if (myRandomList.size <= 1) {
+            val localSettingsCheckedColors = getAllCheckedColors(getLastChosenWallFromFile())
+            if (localSettingsCheckedColors.size <= 1) {
                 Toast.makeText(activity, "There is not enough colors to create random sequence", Toast.LENGTH_SHORT).show();
                 return@setOnClickListener
             }
             val randomSequence: ArrayList<MyColor> = arrayListOf()
 
             for (i in 1..20){
-                var tempColor = myRandomList[Random.nextInt(myRandomList.size)].clone() as MyColor
+                var tempColor = localSettingsCheckedColors[Random.nextInt(localSettingsCheckedColors.size)].clone() as MyColor
                 tempColor.colorName = i.toString() + ") " + tempColor.colorName
                 randomSequence.add(tempColor)
             }
@@ -58,18 +58,12 @@ class RouteGeneratorFragment : Fragment() {
         }
 
         binding.saveRouteButton.setOnClickListener { findNavController().navigate(R.id.action_RouteGeneratorFrag_to_SaveRouteFrag) }
-//        binding.saveRouteButton.setOnClickListener { DbManager(activity).deleteFrom(DbManager.TABLE_ROUTES) }
         binding.localSettingsButton.setOnClickListener { findNavController().navigate(R.id.action_RouteGeneratorFrag_to_localSettingsFrag) }
     }
 
-    fun getLastChosenWallFromFile(): ArrayList<MyColor>{
-        return when(requireActivity().getSharedPreferences("settings", Context.MODE_PRIVATE).getString("currentWall", DbManager.WALLS_NAMES[0])){
-            DbManager.WALLS_NAMES[0] -> dbManager.getWall(DbManager.WALLS_NAMES[0]).colorsOnTheWall
-            //todo this
-//            DataManager.WALL_B_NAME -> dataManager.getWall(DataManager.WALL_B_NAME)!!.colorsOnTheWall
-//            DataManager.WALL_C_NAME -> dataManager.getWall(DataManager.WALL_C_NAME)!!.colorsOnTheWall
-            else -> { arrayListOf() }
-        }
+    private fun getLastChosenWallFromFile(): ArrayList<MyColor>{
+        val wallName = requireActivity().getSharedPreferences("settings", Context.MODE_PRIVATE).getString("currentWall", DbManager.WALLS_NAMES[0])
+        return dbManager.getWall(wallName!!).colorsOnTheWall
     }
 
     private fun getAllCheckedColors(colors: ArrayList<MyColor>): ArrayList<MyColor>{
@@ -79,7 +73,6 @@ class RouteGeneratorFragment : Fragment() {
     }
 
     private fun updateColorsListRecyclerView(randomSequence: ArrayList<MyColor>) {
-//        if (randomSequence.isNotEmpty())
         CardAdapter.drawColorCards(binding.routeGeneratorLinearLayout, randomSequence)
     }
 

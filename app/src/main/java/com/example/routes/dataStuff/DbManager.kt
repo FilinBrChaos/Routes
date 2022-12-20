@@ -189,6 +189,10 @@ class DbManager(context: Context?) : SQLiteOpenHelper(context, "app_data", null,
         return resultRoute
     }
 
+    fun getAllRoutesPreviews(){
+        // TODO: implement get all routes previews
+    }
+
     fun getAllRoutes(): ArrayList<RouteDTO>{
         val db = this.readableDatabase
         val routesIdsRaw: Cursor?
@@ -254,6 +258,10 @@ class DbManager(context: Context?) : SQLiteOpenHelper(context, "app_data", null,
         db.close()
         onDbChanged()
         return res > 0
+    }
+
+    fun getAllCheckedColorsOnWall(){
+
     }
 
     fun getWall(wallName: String): WallDTO{
