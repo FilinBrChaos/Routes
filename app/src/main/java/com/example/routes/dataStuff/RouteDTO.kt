@@ -8,9 +8,5 @@ class RouteDTO(val routeName: String = "---",
                val creationDate: String = "---",
                val routeCreator: String = "---",
                val routeColors: ArrayList<MyColor> = arrayListOf(),
-               val picturesData: ArrayList<String> = arrayListOf(),
                var id: Int = 0){
-    fun isEmpty(): Boolean{
-        return wallName == "---" && creationDate == "---"
-    }
 }

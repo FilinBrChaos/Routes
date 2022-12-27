@@ -19,54 +19,6 @@
             android:layout_height="wrap_content">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/images_layout_block"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:background="@drawable/round_corners_for_settings_block"
-                android:padding="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
-                    android:id="@+id/textView6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Images"
-                    android:textSize="20sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <HorizontalScrollView
-                    android:id="@+id/scrollView2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="10dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView6">
-
-                    <LinearLayout
-                        android:id="@+id/save_route_images_linear_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal" />
-                </HorizontalScrollView>
-
-                <Button
-                    android:id="@+id/save_route_add_image_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="2dp"
-                    android:background="@drawable/button_theme"
-                    android:text="add"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -76,16 +28,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.8"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/images_layout_block">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     android:id="@+id/textView4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Route name"
-                    android:textSize="22sp"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
+                    android:text="@string/route_name"
+                    android:textSize="22sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -93,9 +45,9 @@
                     android:id="@+id/route_name_text_field"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/input_background_round_corners"
-                    android:hint="Route name"
                     android:layout_marginTop="10dp"
+                    android:background="@drawable/input_background_round_corners"
+                    android:hint="@string/route_name"
                     android:minHeight="48dp"
                     android:paddingLeft="20dp"
                     android:paddingTop="10dp"
@@ -109,10 +61,10 @@
                     android:id="@+id/textView5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Route creator"
-                    android:textSize="22sp"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="20dp"
+                    android:text="@string/route_creator"
+                    android:textSize="22sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/route_name_text_field" />
 
@@ -120,9 +72,9 @@
                     android:id="@+id/route_creator_text_field"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:background="@drawable/input_background_round_corners"
-                    android:hint="Route creator"
                     android:layout_marginTop="10dp"
+                    android:background="@drawable/input_background_round_corners"
+                    android:hint="@string/route_creator"
                     android:minHeight="48dp"
                     android:paddingLeft="20dp"
                     android:paddingTop="10dp"

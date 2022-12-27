@@ -25,4 +25,12 @@
     <string name="leve_colors_for_random_sequence">Leve colors for random sequence</string>
     <string name="drawer_open">drawer open</string>
     <string name="drawer_close">drawer close</string>
+    <string name="route_creator">Route creator</string>
+    <string name="route_name">Route name</string>
+    <string name="creator">Creator:</string>
+    <string name="date">Date:</string>
+    <string name="used_walls">Used walls:</string>
+    <string name="colors">Colors</string>
+    <string name="full_screen">full screen</string>
+    <string name="you_can_add_and_remove_permanent_colors_on_the_wall">you can add and remove permanent colors on the wall</string>
 </resources>

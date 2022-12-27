@@ -1,86 +1,26 @@
 package com.example.routes.saveRouteForm
 
-import android.app.Activity
-import android.app.AlertDialog
-import android.content.ContentValues
 import android.content.Context
-import android.content.DialogInterface
-import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.ImageDecoder
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
-import android.provider.MediaStore
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import com.dsphotoeditor.sdk.activity.DsPhotoEditorActivity
-import com.dsphotoeditor.sdk.utils.DsPhotoEditorConstants
-import com.example.routes.*
-import com.example.routes.cardsStuff.CardAdapter
+import com.example.routes.AppRuntimeData
 import com.example.routes.dataStuff.DbManager
-import com.example.routes.dataStuff.ImageManager
 import com.example.routes.dataStuff.RouteDTO
 import com.example.routes.databinding.SaveRouteFragmentBinding
-import java.io.File
-import java.io.IOException
-import java.io.OutputStream
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class SaveRouteFormFragment : Fragment() {
     private var _binding: SaveRouteFragmentBinding? = null
-    private lateinit var imageManager: ImageManager
     private lateinit var dbManager: DbManager
     private val images = arrayListOf<Bitmap>()
-    private val resultLauncherImageEditor = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()){ result ->
-        if (result.resultCode == Activity.RESULT_OK){
-//            val uri: Uri = result.data!!.data!!
-
-//            val bitmap = imageManager.convertUriToBitmap(uri)
-//            images.add(bitmap)
-//            updateImageRecyclerView()
-//            Toast.makeText(activity, "Photo added", Toast.LENGTH_SHORT).show()
-
-            val data: Uri = result.data!!.data!!
-            val intent = Intent(activity, DsPhotoEditorActivity::class.java)
-            intent.data = data
-            intent.putExtra(DsPhotoEditorConstants.DS_PHOTO_EDITOR_OUTPUT_DIRECTORY, "Images")
-            intent.putExtra(DsPhotoEditorConstants.DS_TOOL_BAR_BACKGROUND_COLOR, R.color.dark_primary)
-            intent.putExtra(DsPhotoEditorConstants.DS_MAIN_BACKGROUND_COLOR, R.color.dark_secondary_variant)
-            val toolsToHide = intArrayOf(DsPhotoEditorActivity.TOOL_WARMTH,
-                DsPhotoEditorActivity.TOOL_PIXELATE,
-                DsPhotoEditorActivity.TOOL_CONTRAST,
-                DsPhotoEditorActivity.TOOL_FILTER,
-                DsPhotoEditorActivity.TOOL_SHARPNESS,
-                DsPhotoEditorActivity.TOOL_VIGNETTE,
-                DsPhotoEditorActivity.TOOL_FRAME,
-                DsPhotoEditorActivity.TOOL_ROUND)
-            intent.putExtra(DsPhotoEditorConstants.DS_PHOTO_EDITOR_TOOLS_TO_HIDE, toolsToHide)
-            resultLauncherGetImageAfterEditor.launch(intent)
-        }
-    }
-    private val resultLauncherGetImageAfterEditor = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()){ result ->
-        if (result.resultCode == Activity.RESULT_OK){
-            val uri: Uri = result.data!!.data!!
-            Toast.makeText(activity, "Photo added", Toast.LENGTH_SHORT).show()
-
-            val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                ImageDecoder.decodeBitmap(ImageDecoder.createSource(requireContext().contentResolver, uri))
-            } else {
-                MediaStore.Images.Media.getBitmap(requireContext().contentResolver, uri)
-            }
-            images.add(bitmap)
-
-            updateImageRecyclerView()
-        }
-    }
 
     @Suppress("DEPRECATION")
     override fun onCreateView(
@@ -89,7 +29,6 @@ class SaveRouteFormFragment : Fragment() {
     ): View? {
         _binding = SaveRouteFragmentBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
-        imageManager = ImageManager(requireActivity())
         dbManager = DbManager(requireActivity())
         return binding.root
     }
@@ -100,31 +39,14 @@ class SaveRouteFormFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val sharedSettingsPreferences = requireActivity().getSharedPreferences("settings", Context.MODE_PRIVATE)
 
-        binding.saveRouteAddImageButton.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = "image/*"
-            resultLauncherImageEditor.launch(intent)
-        }
-
         binding.saveRouteButton.setOnClickListener {
-
-            val imagesNames: ArrayList<String> = arrayListOf()
-            for (image in images) {
-                val name = imageManager.createUniqueName()
-                imagesNames.add(name)
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    imageManager.saveBitmap(image, name)
-                }
-            }
-
             val currentWall = sharedSettingsPreferences.getString("currentWall", DbManager.WALLS_NAMES[0])
             val currentDate = LocalDateTime.now()
             val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
 
             dbManager.saveRoute(RouteDTO(binding.routeNameTextField.text.toString(),
             currentWall!!, currentDate.format(formatter), binding.routeCreatorTextField.text.toString(),
-            AppRuntimeData.currentGeneratedRouteColors, imagesNames))
+            AppRuntimeData.currentGeneratedRouteColors))
 
             Toast.makeText(activity, "Route saved", Toast.LENGTH_SHORT).show()
             activity?.onBackPressed()
@@ -138,25 +60,6 @@ class SaveRouteFormFragment : Fragment() {
 //        menu.findItem(R.id.action_home)?.isVisible = false
 //        super.onPrepareOptionsMenu(menu)
 //    }
-
-    private fun updateImageRecyclerView(){
-        var cardOnClickHandler = { image: Bitmap ->
-            val dialogBuilder = AlertDialog.Builder(requireActivity())
-            dialogBuilder.setTitle("Confirm delete")
-            dialogBuilder.setMessage("Are you sure to delete this item")
-            dialogBuilder.setPositiveButton("Yes", DialogInterface.OnClickListener{ dialog, _ ->
-                images.remove(image)
-                updateImageRecyclerView()
-                dialog.cancel()
-            })
-            dialogBuilder.setNegativeButton("No", DialogInterface.OnClickListener{ dialog, _ ->
-                dialog.cancel()
-            })
-            val alert = dialogBuilder.create()
-            alert.show()
-        }
-        CardAdapter.drawImageCards(binding.saveRouteImagesLinearLayout, images, cardOnClickHandler)
-    }
 
     override fun onDestroyView() {
         _binding = null

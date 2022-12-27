@@ -3,15 +3,8 @@
     android:color="?attr/colorSecondary">
     <item android:state_active="true">
         <shape>
-            <solid android:color="?attr/colorOnSecondary"/>
+            <solid android:color="?attr/colorSecondary"/>
             <corners android:radius="20dp"/>
         </shape>
     </item>
-
-<!--    <item>-->
-<!--        <shape>-->
-<!--            <solid android:color="?attr/colorOnSecondary"/>-->
-<!--            <corners android:radius="20dp"/>-->
-<!--        </shape>-->
-<!--    </item>-->
 </ripple>

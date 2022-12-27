@@ -6,7 +6,6 @@ import android.os.Build
 import com.example.routes.*
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -14,10 +13,8 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.routes.cardsStuff.CardAdapter
 import com.example.routes.dataStuff.DbManager
-import com.example.routes.dataStuff.ImageManager
 import com.example.routes.dataStuff.RouteDTO
 import com.example.routes.databinding.ActivityRouteBinding
 
@@ -36,7 +33,6 @@ class RouteActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         dbManager = DbManager(this)
-        val imageManager = ImageManager(this)
 
         val actionBar: ActionBar = supportActionBar!!
         actionBar.setDisplayHomeAsUpEnabled(true)
@@ -44,16 +40,6 @@ class RouteActivity : AppCompatActivity() {
         val routeIndex = intent.getIntExtra(ROUTE_ID, 0)
 
         route = dbManager.getRoute(routeIndex)
-
-        if (route.picturesData.isEmpty()) binding.imagesLayoutBlock.visibility = View.GONE
-        else {
-            val images = arrayListOf<Bitmap>()
-            for (imageName in route.picturesData){
-                images.add(imageManager.loadImage(imageName)!!)
-            }
-            var imageOnClickHandler = { image: Bitmap ->  var som = image }
-            if (images.isNotEmpty()) CardAdapter.drawImageCards(binding.routeImagesLinearLayout, images, imageOnClickHandler)
-        }
 
         if (route.routeColors.isEmpty()) binding.routeColorLinearLayout.visibility = View.GONE
         else {
@@ -87,7 +73,7 @@ class RouteActivity : AppCompatActivity() {
                 dialogBuilder.setTitle("Confirm delete")
                 dialogBuilder.setMessage("Are you sure to delete this route record?")
                 dialogBuilder.setPositiveButton("Yes", DialogInterface.OnClickListener{ dialog, _ ->
-                    if (dbManager.deleteRoute()) //todo this
+                    if (dbManager.deleteRoute(route.id))
                         Toast.makeText(this, "Deleted successfully", Toast.LENGTH_LONG).show()
                     else Toast.makeText(this, "Error, something went wrong while deleting this route", Toast.LENGTH_LONG).show()
                     this.finish()
