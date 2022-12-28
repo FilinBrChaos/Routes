@@ -10,11 +10,11 @@
         <item name="colorSecondaryVariant">@color/light_secondary_variant</item>
         <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/gray</item>
         <!-- Customize your theme here. -->
-        <item name="android:textColorPrimary">#654242</item>
-        <item name="android:textColorSecondary">@color/dark_primary_variant</item>
-        <item name="iconTint">@color/icons</item>
+
+        <item name="android:textColor">@color/text_light</item>
+        <item name="iconTint">@color/icons_light</item>
     </style>
 
     <style name="Theme.Routes.NoActionBar">
