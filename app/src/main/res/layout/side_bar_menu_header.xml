@@ -6,7 +6,7 @@
     android:layout_height="250dp"
     android:orientation="vertical"
     android:gravity="bottom"
-    android:background="?attr/colorOnPrimary"
+    android:background="?attr/colorPrimaryVariant"
     android:paddingTop="30dp"
     android:paddingBottom="20dp">
 
