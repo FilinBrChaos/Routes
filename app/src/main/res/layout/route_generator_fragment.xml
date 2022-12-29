@@ -44,8 +44,9 @@
         android:layout_marginHorizontal="10dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/button_theme"
-        android:paddingHorizontal="40dp"
+        android:paddingHorizontal="25dp"
         android:text="@string/random"
+        android:textColor="?attr/textColorPrimaryInverse"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/local_settings_button"
         app:layout_constraintStart_toStartOf="parent" />
@@ -72,6 +73,7 @@
         android:background="@drawable/button_theme"
         android:paddingHorizontal="40dp"
         android:text="@string/save"
+        android:textColor="?attr/textColorPrimaryInverse"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/local_settings_button" />

@@ -28,7 +28,8 @@
                     android:layout_height="200dp"
                     android:layout_gravity="center"
                     android:src="@drawable/mountain_icon"
-                    android:background="@drawable/round_corners_for_settings_block"/>
+                    android:layout_marginTop="-30dp"
+                    android:layout_marginBottom="-30dp"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -67,7 +68,7 @@
                         android:layout_centerVertical="true"
                         android:background="@drawable/round_corners_for_settings_block_variant1"
                         android:padding="12dp"
-                        android:src="@drawable/always_stay_awake_icon"/>
+                        android:src="@drawable/always_stay_awake_icon" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -162,6 +163,7 @@
                     android:layout_margin="20dp"
                     android:background="@drawable/button_theme"
                     android:text="@string/add_new_color"
+                    android:textColor="?attr/textColorPrimaryInverse"
                     app:layout_constraintTop_toBottomOf="@+id/textView3"
                     tools:layout_editor_absoluteX="15dp" />
 
@@ -219,6 +221,7 @@
                     android:layout_margin="20dp"
                     android:background="@drawable/button_theme"
                     android:text="@string/add_new_color"
+                    android:textColor="?attr/textColorPrimaryInverse"
                     app:layout_constraintTop_toBottomOf="@+id/wall_b_description"
                     tools:layout_editor_absoluteX="15dp" />
 
@@ -271,6 +274,7 @@
                     android:layout_margin="20dp"
                     android:background="@drawable/button_theme"
                     android:text="@string/add_new_color"
+                    android:textColor="?attr/textColorPrimaryInverse"
                     app:layout_constraintTop_toBottomOf="@+id/wall_c_description"
                     tools:layout_editor_absoluteX="15dp" />
 

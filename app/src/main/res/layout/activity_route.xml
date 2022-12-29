@@ -120,6 +120,7 @@
                     android:background="@drawable/button_theme"
                     android:paddingHorizontal="10dp"
                     android:text="@string/full_screen"
+                    android:textColor="?attr/textColorPrimaryInverse"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 

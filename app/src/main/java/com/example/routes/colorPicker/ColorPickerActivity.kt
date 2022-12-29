@@ -145,11 +145,11 @@ class ColorPickerActivity : ComponentActivity() {
                             OutlinedTextField(
                                 value = colorName,
                                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                                    focusedBorderColor = colorResource(R.color.palette_light_blue),
-                                    unfocusedBorderColor = colorResource(R.color.palette_light_blue),
-                                    textColor = colorResource(R.color.palette_light_yellow),
-                                    focusedLabelColor = colorResource(R.color.palette_light_blue),
-                                    unfocusedLabelColor = colorResource(R.color.palette_light_blue)
+                                    focusedBorderColor = colorResource(R.color.color_accent_primary_light),
+                                    unfocusedBorderColor = colorResource(R.color.color_accent_primary_light),
+                                    textColor = colorResource(R.color.text_color_primary_light),
+                                    focusedLabelColor = colorResource(R.color.text_color_secondary_light),
+                                    unfocusedLabelColor = colorResource(R.color.text_color_secondary_light)
                                 ),
                                 onValueChange = {
                                     var resultString = it
@@ -205,15 +205,15 @@ class ColorPickerActivity : ComponentActivity() {
         val nightMode = sharedPreferences.getBoolean("nightMode", false)
         val colors = if (nightMode) {
             darkColors(
-                primary = colorResource(R.color.dark_primary),
-                primaryVariant = colorResource(R.color.dark_primary_variant),
-                secondary = colorResource(R.color.dark_secondary)
+                primary = colorResource(R.color.bg_color_primary_dark),
+                primaryVariant = colorResource(R.color.bg_color_secondary_dark),
+                secondary = colorResource(R.color.color_accent_primary_dark)
             )
         } else {
             lightColors(
-                primary = colorResource(R.color.light_primary),
-                primaryVariant = colorResource(R.color.light_primary_variant),
-                secondary = colorResource(R.color.light_secondary),
+                primary = colorResource(R.color.bg_color_primary_light),
+                primaryVariant = colorResource(R.color.bg_color_secondary_light),
+                secondary = colorResource(R.color.color_accent_primary_light)
 
 
                 /* Other default colors to override

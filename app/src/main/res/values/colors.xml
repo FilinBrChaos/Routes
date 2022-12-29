@@ -9,19 +9,24 @@
     <color name="palette_light_pink">#f1dfde</color>
     <color name="palette_dark_pink">#AC9F9F</color>
 
-    <!--Night mode-->
-    <color name="dark_primary">#363636</color>
-    <color name="dark_primary_variant">#2a2a2a</color>
-    <color name="dark_secondary">#879a97</color>
-    <color name="dark_secondary_variant">#515f5d</color>
-    <color name="icons_dark">#FFFFFF</color>
-    <color name="text_dark">#FFFFFF</color>
+    <!--Light theme-->
+    <color name="bg_color_primary_light">#FFFFFF</color>
+    <color name="bg_color_secondary_light">#EAEAEA</color>
+    <color name="color_accent_primary_light">#F3AF3C</color>
+    <color name="color_accent_primary_variant_light">#E48A02</color>
+    <color name="color_accent_secondary_light">#527980</color>
+    <color name="text_color_primary_light">#000000</color>
+    <color name="text_color_secondary_light">#2C2C2C</color>
+    <color name="text_color_primary_inverse_light">#FFFFFF</color>
 
-    <color name="light_primary">#D6A184</color>
-    <color name="light_primary_variant">#A77C69</color>
-    <color name="light_secondary">#FFA686</color>
-    <color name="light_secondary_variant">#FFB48E</color>
-    <color name="icons_light">#000000</color>
-    <color name="text_light">#000000</color>
+    <!--Dark theme-->
+    <color name="bg_color_primary_dark">#272727</color>
+    <color name="bg_color_secondary_dark">@color/color_accent_secondary_dark</color>
+    <color name="color_accent_primary_dark">#FABE59</color>
+    <color name="color_accent_primary_variant_dark">#DA8B15</color>
+    <color name="color_accent_secondary_dark">#434A4C</color>
+    <color name="text_color_primary_dark">#F4F4F4</color>
+    <color name="text_color_secondary_dark">#C5C5C5</color>
+    <color name="text_color_primary_inverse_dark">#151515</color>
 
 </resources>
