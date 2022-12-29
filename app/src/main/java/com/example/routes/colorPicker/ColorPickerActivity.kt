@@ -118,6 +118,51 @@ class ColorPickerActivity : ComponentActivity() {
                                     .height(35.dp),
                                 controller = controller,
                             )
+                        }
+                        BrightnessSlider(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(10.dp)
+                                .height(35.dp),
+                            controller = controller,
+                        )
+                        HsvColorPicker(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(400.dp)
+                                .padding(10.dp),
+                            controller = controller,
+                            onColorChanged = {
+                                //Log.d("Color", it.hexCode)
+                                colorValue = "#" + it.hexCode
+                                localFocusManager.clearFocus()
+                                //println("Color: " + colorValue)
+                            }
+                        )
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(20.dp)
+                                .focusRequester(focusRequester),
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            OutlinedTextField(
+                                value = colorName,
+                                colors = TextFieldDefaults.outlinedTextFieldColors(
+                                    focusedBorderColor = colorResource(R.color.color_accent_primary_light),
+                                    unfocusedBorderColor = colorResource(R.color.color_accent_primary_light),
+                                    textColor = colorResource(R.color.text_color_primary_light),
+                                    focusedLabelColor = colorResource(R.color.text_color_secondary_light),
+                                    unfocusedLabelColor = colorResource(R.color.text_color_secondary_light)
+                                ),
+                                onValueChange = {
+                                    var resultString = it
+                                    //val regex = Regex("[^A-Za-z0-9_ -]")
+                                    //resultString = regex.replace(resultString, "")
+                                    colorName = resultString
+                                },
+                                label = { Text("Color name") },
                             HsvColorPicker(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -201,11 +246,12 @@ class ColorPickerActivity : ComponentActivity() {
         val nightMode = sharedPreferences.getBoolean("nightMode", false)
         val colors = if (nightMode) {
             darkColors(
-                background = colorResource(R.color.dark_primary),
+
+                background = colorResource(R.color.bg_color_primary_dark),
 
                 primary = colorResource(R.color.dark_primary),
-                primaryVariant = colorResource(R.color.dark_primary_variant),
-                secondary = colorResource(R.color.dark_secondary),
+                primaryVariant = colorResource(R.color.bg_color_secondary_dark),
+                secondary = colorResource(R.color.color_accent_primary_dark),
                 secondaryVariant = colorResource(R.color.dark_secondary_variant)
             )
         } else {
@@ -213,13 +259,12 @@ class ColorPickerActivity : ComponentActivity() {
                 background = colorResource(R.color.light_primary),
                 onBackground = colorResource(R.color.light_primary),
                 surface = colorResource(R.color.light_primary),
-                primary = colorResource(R.color.light_primary),
-                primaryVariant = colorResource(R.color.light_primary_variant),
+                primary = colorResource(R.color.bg_color_primary_light),
+                primaryVariant = colorResource(R.color.bg_color_secondary_light),
                 onPrimary = colorResource(R.color.light_primary),
-                secondary = colorResource(R.color.light_secondary),
+                secondary = colorResource(R.color.color_accent_primary_light),
                 secondaryVariant = colorResource(R.color.light_secondary_variant),
                 onSecondary = colorResource(R.color.light_secondary)
-
 
 
                 /* Other default colors to override

@@ -21,32 +21,33 @@
             android:padding="10dp"
             android:background="@drawable/button_theme">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+<!--            <androidx.cardview.widget.CardView-->
+<!--                android:id="@+id/cardView2"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:cardCornerRadius="10dp"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent">-->
 
-                <ImageView
-                    android:id="@+id/image_view"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@color/light_primary" />
-            </androidx.cardview.widget.CardView>
+<!--                <ImageView-->
+<!--                    android:id="@+id/image_view"-->
+<!--                    android:layout_width="50dp"-->
+<!--                    android:layout_height="50dp"-->
+<!--                    android:background="?attr/textColorSecondary" />-->
+<!--            </androidx.cardview.widget.CardView>-->
 
             <TextView
                 android:id="@+id/route_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
-                android:text="Route name"
-                android:textSize="20sp"
                 android:singleLine="true"
+                android:text="Route name"
+                android:textColor="?attr/textColorPrimaryInverse"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/cardView2"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -56,9 +57,10 @@
                 android:layout_marginHorizontal="10dp"
                 android:layout_marginTop="2dp"
                 android:text="Route creator"
+                android:textColor="?attr/textColorPrimaryInverse"
                 android:textSize="13sp"
                 app:layout_constraintEnd_toStartOf="@+id/creation_date_text_view"
-                app:layout_constraintStart_toEndOf="@+id/cardView2"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/route_name" />
 
             <TextView
@@ -66,6 +68,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="creation date"
+                android:textColor="?attr/textColorPrimaryInverse"
                 android:textSize="13sp"
                 android:layout_marginTop="2dp"
                 android:layout_marginEnd="10dp"

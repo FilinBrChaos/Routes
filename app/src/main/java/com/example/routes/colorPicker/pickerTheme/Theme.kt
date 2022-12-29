@@ -18,15 +18,15 @@ fun ColorPickerDemoThemeOther(
 ) {
     val colors = if (darkTheme) {
         darkColors(
-            primary = colorResource(R.color.dark_primary),
-            primaryVariant = colorResource(R.color.dark_primary_variant),
-            secondary = colorResource(R.color.dark_secondary)
+            primary = colorResource(R.color.bg_color_primary_dark),
+            primaryVariant = colorResource(R.color.bg_color_secondary_dark),
+            secondary = colorResource(R.color.color_accent_primary_dark)
         )
     } else {
         lightColors(
-            primary = colorResource(R.color.light_primary),
-            primaryVariant = colorResource(R.color.light_primary_variant),
-            secondary = colorResource(R.color.light_secondary),
+            primary = colorResource(R.color.bg_color_primary_light),
+            primaryVariant = colorResource(R.color.bg_color_secondary_light),
+            secondary = colorResource(R.color.color_accent_primary_light)
 
 
         /* Other default colors to override
