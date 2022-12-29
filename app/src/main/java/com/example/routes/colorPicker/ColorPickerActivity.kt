@@ -1,5 +1,6 @@
 package com.example.routes.colorPicker
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -74,46 +75,50 @@ class ColorPickerActivity : ComponentActivity() {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(all = 30.dp)
                     .focusable(enabled = true)
-                    .verticalScroll(rememberScrollState())
                     .background(MaterialTheme.colors.primarySurface)
             ) {
                 // TODO: make constraint layout here
-
-                CompositionLocalProvider(
-                    LocalRippleTheme provides ClearRippleTheme
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(all = 30.dp)
+                        .focusable(enabled = true)
+                        .verticalScroll(rememberScrollState())
+                        .background(MaterialTheme.colors.primarySurface)
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable(enabled = true) {
-                                localFocusManager.clearFocus()
-                            }
-                            .wrapContentHeight()
+                    CompositionLocalProvider(
+                        LocalRippleTheme provides ClearRippleTheme
                     ) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.Center,
-                            verticalAlignment = Alignment.CenterVertically
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable(enabled = true) {
+                                    localFocusManager.clearFocus()
+                                }
+                                .wrapContentHeight()
                         ) {
-                            AlphaTile(
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.Center,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                AlphaTile(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(60.dp)
+                                        .clip(RoundedCornerShape(6.dp)),
+                                    controller = controller
+                                )
+                            }
+                            BrightnessSlider(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(60.dp)
-                                    .clip(RoundedCornerShape(6.dp)),
-                                controller = controller
+                                    .padding(10.dp)
+                                    .height(35.dp),
+                                controller = controller,
                             )
                         }
-                        //                    AlphaSlider(
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .padding(10.dp)
-//                            .height(35.dp),
-//                        controller = controller,
-//                        tileOddColor = Color.White,
-//                        tileEvenColor = Color.Black
-//                    )
                         BrightnessSlider(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -158,29 +163,64 @@ class ColorPickerActivity : ComponentActivity() {
                                     colorName = resultString
                                 },
                                 label = { Text("Color name") },
+                            HsvColorPicker(
                                 modifier = Modifier
-                                    .focusRequester(focusRequester)
-                                    .onFocusChanged {
-                                        if (!it.isFocused) keyboardController?.hide()
-                                    }
+                                    .fillMaxWidth()
+                                    .height(400.dp)
+                                    .padding(10.dp),
+                                controller = controller,
+                                onColorChanged = {
+                                    colorValue = "#" + it.hexCode
+                                    localFocusManager.clearFocus()
+                                }
                             )
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(20.dp)
+                                    .focusRequester(focusRequester),
+                                horizontalArrangement = Arrangement.Center,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                OutlinedTextField(
+                                    value = colorName,
+                                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                                        focusedBorderColor = MaterialTheme.colors.primaryVariant,
+                                        textColor = MaterialTheme.colors.primaryVariant,
+                                        focusedLabelColor = MaterialTheme.colors.primaryVariant
+                                    ),
+                                    onValueChange = {
+                                        var resultString = it
+                                        //val regex = Regex("[^A-Za-z0-9_ -]")
+                                        //resultString = regex.replace(resultString, "")
+                                        colorName = resultString
+                                    },
+                                    label = { Text("Color name") },
+                                    modifier = Modifier
+                                        .focusRequester(focusRequester)
+                                        .onFocusChanged {
+                                            if (!it.isFocused) keyboardController?.hide()
+                                        }
+                                )
+                            }
                         }
+                    }
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(20.dp),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Button(
+                            modifier = Modifier.fillMaxWidth(),
+                            onClick = {
+                                returnResult(colorName, colorValue)
+                            }) { Text(text = "add") }
                     }
                 }
 
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(20.dp),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Button(
-                        modifier = Modifier.fillMaxWidth(),
-                        onClick = {
-                            returnResult(colorName, colorValue)
-                        }) { Text(text = "add") }
-                }
             }
 
 
@@ -199,21 +239,32 @@ class ColorPickerActivity : ComponentActivity() {
         )
     }
 
+    @SuppressLint("ConflictingOnColor")
     @Composable
     fun ColorPickerDemoTheme(content: @Composable () -> Unit) {
         var sharedPreferences: SharedPreferences = getSharedPreferences("settings", Context.MODE_PRIVATE)
         val nightMode = sharedPreferences.getBoolean("nightMode", false)
         val colors = if (nightMode) {
             darkColors(
-                primary = colorResource(R.color.bg_color_primary_dark),
+
+                background = colorResource(R.color.bg_color_primary_dark),
+
+                primary = colorResource(R.color.dark_primary),
                 primaryVariant = colorResource(R.color.bg_color_secondary_dark),
-                secondary = colorResource(R.color.color_accent_primary_dark)
+                secondary = colorResource(R.color.color_accent_primary_dark),
+                secondaryVariant = colorResource(R.color.dark_secondary_variant)
             )
         } else {
             lightColors(
+                background = colorResource(R.color.light_primary),
+                onBackground = colorResource(R.color.light_primary),
+                surface = colorResource(R.color.light_primary),
                 primary = colorResource(R.color.bg_color_primary_light),
                 primaryVariant = colorResource(R.color.bg_color_secondary_light),
-                secondary = colorResource(R.color.color_accent_primary_light)
+                onPrimary = colorResource(R.color.light_primary),
+                secondary = colorResource(R.color.color_accent_primary_light),
+                secondaryVariant = colorResource(R.color.light_secondary_variant),
+                onSecondary = colorResource(R.color.light_secondary)
 
 
                 /* Other default colors to override
@@ -229,8 +280,6 @@ class ColorPickerActivity : ComponentActivity() {
 
         MaterialTheme(
             colors = colors,
-            typography = Typography,
-            shapes = Shapes,
             content = content
         )
     }
