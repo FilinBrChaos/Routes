@@ -76,7 +76,7 @@ class ColorPickerActivity : ComponentActivity() {
                 modifier = Modifier
                     .fillMaxSize()
                     .focusable(enabled = true)
-                    .background(MaterialTheme.colors.primarySurface)
+                    .background(MaterialTheme.colors.background)
             ) {
                 // TODO: make constraint layout here
                 Column(
@@ -84,8 +84,7 @@ class ColorPickerActivity : ComponentActivity() {
                         .fillMaxSize()
                         .padding(all = 30.dp)
                         .focusable(enabled = true)
-                        .verticalScroll(rememberScrollState())
-                        .background(MaterialTheme.colors.primarySurface)
+                        //.verticalScroll(rememberScrollState())
                 ) {
                     CompositionLocalProvider(
                         LocalRippleTheme provides ClearRippleTheme
@@ -118,51 +117,6 @@ class ColorPickerActivity : ComponentActivity() {
                                     .height(35.dp),
                                 controller = controller,
                             )
-                        }
-                        BrightnessSlider(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(10.dp)
-                                .height(35.dp),
-                            controller = controller,
-                        )
-                        HsvColorPicker(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(400.dp)
-                                .padding(10.dp),
-                            controller = controller,
-                            onColorChanged = {
-                                //Log.d("Color", it.hexCode)
-                                colorValue = "#" + it.hexCode
-                                localFocusManager.clearFocus()
-                                //println("Color: " + colorValue)
-                            }
-                        )
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(20.dp)
-                                .focusRequester(focusRequester),
-                            horizontalArrangement = Arrangement.Center,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            OutlinedTextField(
-                                value = colorName,
-                                colors = TextFieldDefaults.outlinedTextFieldColors(
-                                    focusedBorderColor = colorResource(R.color.color_accent_primary_light),
-                                    unfocusedBorderColor = colorResource(R.color.color_accent_primary_light),
-                                    textColor = colorResource(R.color.text_color_primary_light),
-                                    focusedLabelColor = colorResource(R.color.text_color_secondary_light),
-                                    unfocusedLabelColor = colorResource(R.color.text_color_secondary_light)
-                                ),
-                                onValueChange = {
-                                    var resultString = it
-                                    //val regex = Regex("[^A-Za-z0-9_ -]")
-                                    //resultString = regex.replace(resultString, "")
-                                    colorName = resultString
-                                },
-                                label = { Text("Color name") },
                             HsvColorPicker(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -174,33 +128,34 @@ class ColorPickerActivity : ComponentActivity() {
                                     localFocusManager.clearFocus()
                                 }
                             )
-                            Row(
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(20.dp)
+                                .focusRequester(focusRequester),
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            OutlinedTextField(
+                                value = colorName,
+                                colors = TextFieldDefaults.outlinedTextFieldColors(
+                                    focusedBorderColor = MaterialTheme.colors.secondary,
+                                    textColor = MaterialTheme.colors.primaryVariant,
+                                    focusedLabelColor = MaterialTheme.colors.secondary,
+                                    cursorColor = MaterialTheme.colors.secondary
+                                ),
+                                onValueChange = {
+                                    var resultString = it
+                                    //val regex = Regex("[^A-Za-z0-9_ -]")
+                                    //resultString = regex.replace(resultString, "")
+                                    colorName = resultString
+                                },
+                                label = { Text("Color name") },
                                 modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(20.dp)
-                                    .focusRequester(focusRequester),
-                                horizontalArrangement = Arrangement.Center,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                OutlinedTextField(
-                                    value = colorName,
-                                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                                        focusedBorderColor = MaterialTheme.colors.primaryVariant,
-                                        textColor = MaterialTheme.colors.primaryVariant,
-                                        focusedLabelColor = MaterialTheme.colors.primaryVariant
-                                    ),
-                                    onValueChange = {
-                                        var resultString = it
-                                        //val regex = Regex("[^A-Za-z0-9_ -]")
-                                        //resultString = regex.replace(resultString, "")
-                                        colorName = resultString
-                                    },
-                                    label = { Text("Color name") },
-                                    modifier = Modifier
-                                        .focusRequester(focusRequester)
-                                        .onFocusChanged {
-                                            if (!it.isFocused) keyboardController?.hide()
-                                        }
+                                    .focusRequester(focusRequester)
+                                    .onFocusChanged {
+                                        if (!it.isFocused) keyboardController?.hide()
+                                    }
                                 )
                             }
                         }
@@ -214,16 +169,15 @@ class ColorPickerActivity : ComponentActivity() {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Button(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.secondary),
                             onClick = {
                                 returnResult(colorName, colorValue)
                             }) { Text(text = "add") }
                     }
                 }
-
             }
-
-
     }
 
     object ClearRippleTheme : RippleTheme {
@@ -239,32 +193,25 @@ class ColorPickerActivity : ComponentActivity() {
         )
     }
 
-    @SuppressLint("ConflictingOnColor")
     @Composable
     fun ColorPickerDemoTheme(content: @Composable () -> Unit) {
         var sharedPreferences: SharedPreferences = getSharedPreferences("settings", Context.MODE_PRIVATE)
         val nightMode = sharedPreferences.getBoolean("nightMode", false)
         val colors = if (nightMode) {
             darkColors(
+                background = colorResource(R.color.bg_color_secondary_dark),
 
-                background = colorResource(R.color.bg_color_primary_dark),
-
-                primary = colorResource(R.color.dark_primary),
-                primaryVariant = colorResource(R.color.bg_color_secondary_dark),
-                secondary = colorResource(R.color.color_accent_primary_dark),
-                secondaryVariant = colorResource(R.color.dark_secondary_variant)
+                primary = colorResource(R.color.bg_color_primary_dark),
+                primaryVariant = colorResource(R.color.text_color_primary_dark),
+                secondary = colorResource(R.color.color_accent_primary_dark)
             )
         } else {
             lightColors(
-                background = colorResource(R.color.light_primary),
-                onBackground = colorResource(R.color.light_primary),
-                surface = colorResource(R.color.light_primary),
+                background = colorResource(R.color.bg_color_secondary_light),
+
                 primary = colorResource(R.color.bg_color_primary_light),
-                primaryVariant = colorResource(R.color.bg_color_secondary_light),
-                onPrimary = colorResource(R.color.light_primary),
-                secondary = colorResource(R.color.color_accent_primary_light),
-                secondaryVariant = colorResource(R.color.light_secondary_variant),
-                onSecondary = colorResource(R.color.light_secondary)
+                primaryVariant = colorResource(R.color.text_color_primary_light),
+                secondary = colorResource(R.color.color_accent_primary_light)
 
 
                 /* Other default colors to override

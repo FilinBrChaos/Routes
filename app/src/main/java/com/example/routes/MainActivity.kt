@@ -3,7 +3,6 @@ package com.example.routes
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.Gravity
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -14,12 +13,9 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.GravityCompat
 import com.example.routes.RoutesListActivity.RoutesListActivity
-import com.example.routes.dataStuff.DbManager
-import com.example.routes.dataStuff.MyColor
 import com.example.routes.databinding.ActivityMainBinding
 import com.example.routes.globalSettings.GlobalSettingsActivity
 import com.google.android.material.navigation.NavigationView
-import java.util.ArrayList
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -36,6 +32,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
+        binding.appBarLayout.toolbar.title = "Generator"
         setContentView(binding.root)
         setSupportActionBar(binding.appBarLayout.toolbar)
 
@@ -53,17 +50,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-//            R.id.action_settings -> {
-//                val intent = Intent(this, GlobalSettingsActivity::class.java)
-//                startActivity(intent)
-//                true
-//            }
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
