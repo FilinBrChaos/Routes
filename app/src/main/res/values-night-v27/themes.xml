@@ -9,7 +9,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/color_accent_secondary_dark
         </item>
-        <item name="android:navigationBarColor">@color/bg_color_secondary_dark</item>
+        <item name="android:navigationBarColor">@color/bg_color_primary_dark</item>
 
         <item name="android:windowLightNavigationBar">false</item>
         <!-- Customize your theme here. -->
