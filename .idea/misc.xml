@@ -36,6 +36,7 @@
         <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layout/activity_main.xml" value="0.30512514898688914" />
         <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layout/activity_route.xml" value="0.40145228215767637" />
         <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layout/activity_routes_list.xml" value="0.195382642154767" />
+        <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layout/activity_routes_list_sidebar_wrapper.xml" value="0.31765711842667804" />
         <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layout/app_bar_layout.xml" value="0.31680205215904234" />
         <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layout/card_for_local_settings.xml" value="0.25" />
         <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layout/card_for_random_route.xml" value="0.38697916666666665" />
@@ -53,6 +54,7 @@
         <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layout/route_card.xml" value="0.5" />
         <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layout/route_generator_fragment.xml" value="0.2557291666666667" />
         <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layout/routes_list_fragment.xml" value="0.38697916666666665" />
+        <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layout/routes_list_layout.xml" value="0.31765711842667804" />
         <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layout/save_route_activity.xml" value="0.2557291666666667" />
         <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layout/save_route_fragment.xml" value="0.41773308957952465" />
         <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layout/side_bar_menu_header.xml" value="0.31680205215904234" />
