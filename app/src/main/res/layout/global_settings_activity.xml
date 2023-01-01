@@ -1,290 +1,343 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.drawerlayout.widget.DrawerLayout
+    android:id="@+id/global_settings_drawer_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".globalSettings.GlobalSettingsActivity">
+    tools:context=".globalSettings.GlobalSettingsActivity"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start">
 
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <LinearLayout
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <LinearLayout
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:theme="@style/Theme.Routes.AppBarOverlay">
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorAccentSecondary" />
+        </com.google.android.material.appbar.AppBarLayout>
 
-                <ImageView
-                    android:id="@+id/settings_main_icon"
-                    android:layout_width="200dp"
-                    android:layout_height="200dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/mountain_icon"
-                    android:background="@drawable/round_corners_for_settings_field_3"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/app_version_label"
-                    android:layout_marginTop="10dp"
-                    android:textSize="19sp"
-                    android:layout_gravity="center"/>
-                <TextView
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
 
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/release_date"
-                    android:layout_gravity="center"/>
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:background="@drawable/round_corners_for_settings_block"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:padding="20dp"
-                android:orientation="vertical"
-                android:elevation="5dp">
-
-                <!--always stay awake-->
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:minHeight="48dp">
-
-                    <ImageView
-                        android:id="@+id/stay_awake_field_icon"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/round_corners_for_settings_field_1"
-                        android:padding="12dp"
-                        android:src="@drawable/always_stay_awake_icon" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="17dp"
-                        android:layout_toEndOf="@+id/stay_awake_field_icon"
-                        android:text="@string/always_stay_awake"
-                        android:textStyle="bold" />
-
-                    <androidx.appcompat.widget.SwitchCompat
-                        android:id="@+id/always_stay_awake_switch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:minWidth="50dp"
-                        android:minHeight="50dp" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:minHeight="48dp">
-
-                    <ImageView
-                        android:id="@+id/night_mode_field_button"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/round_corners_for_settings_field_2"
-                        android:padding="12dp"
-                        android:src="@drawable/night_mode_icon" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="17dp"
-                        android:layout_toEndOf="@+id/night_mode_field_button"
-                        android:text="@string/night_mode"
-                        android:textStyle="bold" />
-
-                    <androidx.appcompat.widget.SwitchCompat
-                        android:id="@+id/night_mode_switch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:onClick="changeColorMode"
-                        android:minWidth="50dp"
-                        android:minHeight="50dp" />
-                </RelativeLayout>
-            </LinearLayout>
-
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:background="@drawable/round_corners_for_settings_block"
-                android:elevation="5dp"
-                android:paddingBottom="25dp">
-
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
-                    android:text="@string/wall_a"
-                    android:textSize="24sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:maxWidth="250dp"
-                    android:text="you can add and remove permanent colors on the wall A"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-                <Button
-                    android:id="@+id/add_button_wall_a"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
-                    android:background="@drawable/button_theme"
-                    android:text="@string/add_new_color"
-                    app:layout_constraintTop_toBottomOf="@+id/textView3"
-                    tools:layout_editor_absoluteX="15dp" />
+                android:layout_height="match_parent"
+                android:background="@drawable/app_background">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/add_button_wall_a">
+                    android:orientation="vertical">
 
                     <LinearLayout
-                        android:id="@+id/linear_layout_wall_a"
-                        android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"/>
-                </LinearLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                        android:orientation="vertical"
+                        android:padding="20dp">
+
+                        <ImageView
+                            android:id="@+id/settings_main_icon"
+                            android:layout_width="200dp"
+                            android:layout_height="200dp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="-30dp"
+                            android:layout_marginBottom="-30dp"
+                            android:src="@drawable/mountain_icon" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/app_version_label"
+                            android:textSize="19sp" />
+
+                        <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="@string/release_date" />
+                    </LinearLayout>
 
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:background="@drawable/round_corners_for_settings_block"
-                android:elevation="5dp"
-                android:paddingBottom="20dp">
-
-                <TextView
-                    android:id="@+id/wall_b_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
-                    android:text="@string/wall_b"
-                    android:textSize="24sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/wall_b_description"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:maxWidth="250dp"
-                    android:text="you can ann and remove permanent colors on the wall B"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/wall_b_name"/>
-
-                <Button
-                    android:id="@+id/add_button_wall_b"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
-                    android:background="@drawable/button_theme"
-                    android:text="@string/add_new_color"
-                    app:layout_constraintTop_toBottomOf="@+id/wall_b_description"
-                    tools:layout_editor_absoluteX="15dp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@+id/add_button_wall_b">
                     <LinearLayout
-                        android:id="@+id/linear_layout_wall_b"
-                        android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"/>
-                </LinearLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:background="@drawable/round_corners_for_settings_block"
-                android:elevation="5dp"
-                android:paddingBottom="20dp">
-
-                <TextView
-                    android:id="@+id/wall_c_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
-                    android:text="@string/wall_c"
-                    android:textSize="24sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/wall_c_description"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:maxWidth="250dp"
-                    android:text="you can ann and remove permanent colors on the wall С"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/wall_c_name"/>
-
-                <Button
-                    android:id="@+id/add_button_wall_c"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
-                    android:background="@drawable/button_theme"
-                    android:text="@string/add_new_color"
-                    app:layout_constraintTop_toBottomOf="@+id/wall_c_description"
-                    tools:layout_editor_absoluteX="15dp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@+id/add_button_wall_c">
-                    <LinearLayout
-                        android:id="@+id/linear_layout_wall_c"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/round_corners_for_settings_block"
+                        android:elevation="5dp"
                         android:orientation="vertical"
+                        android:padding="20dp">
+
+                        <!--always stay awake-->
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:minHeight="48dp">
+
+                            <ImageView
+                                android:id="@+id/stay_awake_field_icon"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_centerVertical="true"
+                                android:background="@drawable/round_corners_for_settings_block_variant1"
+                                android:padding="12dp"
+                                android:src="@drawable/always_stay_awake_icon" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="17dp"
+                                android:layout_toEndOf="@+id/stay_awake_field_icon"
+                                android:text="@string/always_stay_awake"
+                                android:textStyle="bold"
+                                tools:ignore="RelativeOverlap" />
+
+                            <androidx.appcompat.widget.SwitchCompat
+                                android:id="@+id/always_stay_awake_switch"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:minWidth="50dp"
+                                android:minHeight="50dp" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:minHeight="48dp">
+
+                            <ImageView
+                                android:id="@+id/night_mode_field_button"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_centerVertical="true"
+                                android:background="@drawable/round_corners_for_settings_block_variant1"
+                                android:padding="12dp"
+                                android:src="@drawable/night_mode_icon" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="17dp"
+                                android:layout_toEndOf="@+id/night_mode_field_button"
+                                android:text="@string/night_mode"
+                                android:textStyle="bold"
+                                tools:ignore="RelativeOverlap" />
+
+                            <androidx.appcompat.widget.SwitchCompat
+                                android:id="@+id/night_mode_switch"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:minWidth="50dp"
+                                android:minHeight="50dp"
+                                android:onClick="changeColorMode" />
+                        </RelativeLayout>
+                    </LinearLayout>
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"/>
+                        android:layout_margin="10dp"
+                        android:background="@drawable/round_corners_for_settings_block"
+                        android:elevation="5dp"
+                        android:paddingBottom="25dp">
+
+                        <TextView
+                            android:id="@+id/textView2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="20dp"
+                            android:text="@string/wall_a"
+                            android:textSize="24sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textView3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:maxWidth="250dp"
+                            android:text="@string/you_can_add_and_remove_permanent_colors_on_the_wall"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+                        <Button
+                            android:id="@+id/add_button_wall_a"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="20dp"
+                            android:background="@drawable/button_theme"
+                            android:text="@string/add_new_color"
+                            android:textColor="?attr/textColorPrimaryInverse"
+                            app:layout_constraintTop_toBottomOf="@+id/textView3"
+                            tools:layout_editor_absoluteX="15dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/add_button_wall_a">
+
+                            <LinearLayout
+                                android:id="@+id/linear_layout_wall_a"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                android:orientation="vertical" />
+                        </LinearLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/round_corners_for_settings_block"
+                        android:elevation="5dp"
+                        android:paddingBottom="20dp">
+
+                        <TextView
+                            android:id="@+id/wall_b_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="20dp"
+                            android:text="@string/wall_b"
+                            android:textSize="24sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/wall_b_description"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:maxWidth="250dp"
+                            android:text="@string/you_can_add_and_remove_permanent_colors_on_the_wall"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/wall_b_name" />
+
+                        <Button
+                            android:id="@+id/add_button_wall_b"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="20dp"
+                            android:background="@drawable/button_theme"
+                            android:text="@string/add_new_color"
+                            android:textColor="?attr/textColorPrimaryInverse"
+                            app:layout_constraintTop_toBottomOf="@+id/wall_b_description"
+                            tools:layout_editor_absoluteX="15dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@+id/add_button_wall_b">
+
+                            <LinearLayout
+                                android:id="@+id/linear_layout_wall_b"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                android:orientation="vertical" />
+                        </LinearLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/round_corners_for_settings_block"
+                        android:elevation="5dp"
+                        android:paddingBottom="20dp">
+
+                        <TextView
+                            android:id="@+id/wall_c_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="20dp"
+                            android:text="@string/wall_c"
+                            android:textSize="24sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/wall_c_description"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:maxWidth="250dp"
+                            android:text="@string/you_can_add_and_remove_permanent_colors_on_the_wall"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/wall_c_name" />
+
+                        <Button
+                            android:id="@+id/add_button_wall_c"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="20dp"
+                            android:background="@drawable/button_theme"
+                            android:text="@string/add_new_color"
+                            android:textColor="?attr/textColorPrimaryInverse"
+                            app:layout_constraintTop_toBottomOf="@+id/wall_c_description"
+                            tools:layout_editor_absoluteX="15dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@+id/add_button_wall_c">
+
+                            <LinearLayout
+                                android:id="@+id/linear_layout_wall_c"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                android:orientation="vertical" />
+                        </LinearLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
                 </LinearLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </ScrollView>
 
-        </LinearLayout>
-    </ScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/global_settings_navigation_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/side_bar_menu_header"
+        app:menu="@menu/drawer_menu"/>
+
+</androidx.drawerlayout.widget.DrawerLayout>

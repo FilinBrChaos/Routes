@@ -9,7 +9,7 @@
         android:id="@+id/whole_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="?attr/colorPrimary">
+        app:cardBackgroundColor="?attr/colorPrimaryVariant">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

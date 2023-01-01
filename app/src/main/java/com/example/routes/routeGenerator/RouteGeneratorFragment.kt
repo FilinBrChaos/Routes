@@ -58,16 +58,14 @@ class RouteGeneratorFragment : Fragment() {
         }
 
         binding.saveRouteButton.setOnClickListener { findNavController().navigate(R.id.action_RouteGeneratorFrag_to_SaveRouteFrag) }
-//        binding.saveRouteButton.setOnClickListener { DbManager(activity).deleteFrom(DbManager.TABLE_ROUTES) }
         binding.localSettingsButton.setOnClickListener { findNavController().navigate(R.id.action_RouteGeneratorFrag_to_localSettingsFrag) }
     }
 
     fun getLastChosenWallFromFile(): ArrayList<MyColor>{
         return when(requireActivity().getSharedPreferences("settings", Context.MODE_PRIVATE).getString("currentWall", DbManager.WALLS_NAMES[0])){
             DbManager.WALLS_NAMES[0] -> dbManager.getWall(DbManager.WALLS_NAMES[0]).colorsOnTheWall
-            //todo this
-//            DataManager.WALL_B_NAME -> dataManager.getWall(DataManager.WALL_B_NAME)!!.colorsOnTheWall
-//            DataManager.WALL_C_NAME -> dataManager.getWall(DataManager.WALL_C_NAME)!!.colorsOnTheWall
+            DbManager.WALLS_NAMES[1] -> dbManager.getWall(DbManager.WALLS_NAMES[1]).colorsOnTheWall
+            DbManager.WALLS_NAMES[2] -> dbManager.getWall(DbManager.WALLS_NAMES[2]).colorsOnTheWall
             else -> { arrayListOf() }
         }
     }
@@ -79,7 +77,6 @@ class RouteGeneratorFragment : Fragment() {
     }
 
     private fun updateColorsListRecyclerView(randomSequence: ArrayList<MyColor>) {
-//        if (randomSequence.isNotEmpty())
         CardAdapter.drawColorCards(binding.routeGeneratorLinearLayout, randomSequence)
     }
 

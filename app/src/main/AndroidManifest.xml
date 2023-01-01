@@ -9,20 +9,23 @@
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
-        android:requestLegacyExternalStorage="true"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Routes"
         tools:targetApi="31">
         <activity
             android:name=".routeViewActivity.RouteActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".RoutesListActivity.RoutesListActivity"
+            android:theme="@style/Theme.Routes.NoActionBar"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".colorPicker.ColorPickerActivity"
@@ -31,11 +34,11 @@
         <activity
             android:name=".globalSettings.GlobalSettingsActivity"
             android:exported="false"
+            android:theme="@style/Theme.Routes.NoActionBar"
             android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Routes.NoActionBar">
             <intent-filter>

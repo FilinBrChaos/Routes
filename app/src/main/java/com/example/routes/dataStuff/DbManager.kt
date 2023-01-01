@@ -37,11 +37,6 @@ class DbManager(context: Context?) : SQLiteOpenHelper(context, "app_data", null,
         private const val COLUMN_ROUTE_COLOR_NAME = "name"
         private const val COLUMN_ROUTE_COLOR_VALUE = "value"
         private const val COLUMN_ROUTE_COLOR_PARENT_ROUTE = "parent_route"
-
-        private const val TABLE_ROUTES_IMAGES = "routes_images"
-        private const val COLUMN_ROUTE_IMAGE_ID = "id"
-        private const val COLUMN_ROUTE_IMAGE_NAME = "name"
-        private const val COLUMN_ROUTE_IMAGE_PARENT_ROUTE = "parent_route"
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
@@ -80,14 +75,6 @@ class DbManager(context: Context?) : SQLiteOpenHelper(context, "app_data", null,
                 "foreign key ($COLUMN_ROUTE_COLOR_PARENT_ROUTE) references $TABLE_ROUTES($COLUMN_ROUTE_ID) " +
                 "on delete cascade" +
                 ");")
-
-        db?.execSQL("create table $TABLE_ROUTES_IMAGES(" +
-                "$COLUMN_ROUTE_IMAGE_ID integer NOT NULL PRIMARY KEY AUTOINCREMENT, " +
-                "$COLUMN_ROUTE_IMAGE_NAME text, " +
-                "$COLUMN_ROUTE_IMAGE_PARENT_ROUTE integer, " +
-                "foreign key ($COLUMN_ROUTE_IMAGE_PARENT_ROUTE) references $TABLE_ROUTES($COLUMN_ROUTE_ID) " +
-                "on delete cascade" +
-                ");")
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, p1: Int, p2: Int) {
@@ -95,7 +82,6 @@ class DbManager(context: Context?) : SQLiteOpenHelper(context, "app_data", null,
         db?.execSQL("DROP TABLE IF EXISTS $TABLE_COLORS")
         db?.execSQL("DROP TABLE IF EXISTS $TABLE_ROUTES")
         db?.execSQL("DROP TABLE IF EXISTS $TABLE_ROUTES_COLORS")
-        db?.execSQL("DROP TABLE IF EXISTS $TABLE_ROUTES_IMAGES")
         onCreate(db)
     }
 
@@ -125,14 +111,6 @@ class DbManager(context: Context?) : SQLiteOpenHelper(context, "app_data", null,
             db.insert(TABLE_ROUTES_COLORS, null, colorsOnRoute)
         }
 
-        for (image in route.picturesData){
-            val routeImages = ContentValues()
-            routeImages.put(COLUMN_ROUTE_IMAGE_NAME, image)
-            routeImages.put(COLUMN_ROUTE_IMAGE_PARENT_ROUTE, routeId)
-
-            db.insert(TABLE_ROUTES_IMAGES, null, routeImages)
-        }
-
         db.close()
         onDbChanged()
         return res > 0
@@ -144,8 +122,6 @@ class DbManager(context: Context?) : SQLiteOpenHelper(context, "app_data", null,
         var resultRoute = RouteDTO()
         val routeColorsRaw: Cursor?
         val routeColors: ArrayList<MyColor> = arrayListOf()
-        val routeImagesRaw: Cursor?
-        val routeImages: ArrayList<String> = arrayListOf()
         var selectQuery = ""
 
         selectQuery = "select * " +
@@ -160,18 +136,6 @@ class DbManager(context: Context?) : SQLiteOpenHelper(context, "app_data", null,
             } while (routeColorsRaw.moveToNext())
         }
 
-        selectQuery = "select * " +
-                "from $TABLE_ROUTES_IMAGES " +
-                "where $COLUMN_ROUTE_IMAGE_PARENT_ROUTE = $routeId"
-
-        try { routeImagesRaw = db.rawQuery(selectQuery, null) }
-        catch (e: Exception) { e.printStackTrace(); throw e }
-
-        if (routeImagesRaw.moveToFirst()){
-            do { routeImages.add(routeImagesRaw.getString(1))
-            } while (routeImagesRaw.moveToNext())
-        }
-
         selectQuery = "SELECT * " +
                 "FROM $TABLE_ROUTES " +
                 "WHERE $COLUMN_ROUTE_ID = $routeId "
@@ -184,8 +148,9 @@ class DbManager(context: Context?) : SQLiteOpenHelper(context, "app_data", null,
                                    routeRaw.getString(2),
                                 routeRaw.getString(3),
                                 routeRaw.getString(4),
-                                routeColors, routeImages, routeId)
+                                routeColors, routeId)
         }
+        db.close()
         return resultRoute
     }
 
@@ -208,11 +173,18 @@ class DbManager(context: Context?) : SQLiteOpenHelper(context, "app_data", null,
         }
 
         for (id in routesIds) resultRoutes.add(getRoute(id))
+        db.close()
         return resultRoutes
     }
 
-    fun deleteRoute(): Boolean{
-        return true
+    fun deleteRoute(routeId: Int): Boolean{
+        val db = this.readableDatabase
+
+        var res: Int = db.delete(TABLE_ROUTES,
+            "$COLUMN_ROUTE_ID=$routeId", null)
+        db.close()
+        onDbChanged()
+        return res > 0
     }
 
     fun addColorToWall(color: MyColor): Boolean{
@@ -238,6 +210,7 @@ class DbManager(context: Context?) : SQLiteOpenHelper(context, "app_data", null,
 
         var res: Int = db.delete(TABLE_COLORS,
             "$COLUMN_COLOR_ID=$colorId", null)
+        db.close()
         onDbChanged()
         return res > 0
     }
@@ -279,6 +252,7 @@ class DbManager(context: Context?) : SQLiteOpenHelper(context, "app_data", null,
                 resultWall.colorsOnTheWall.add(MyColor(resultWall.wallName, tableData.getString(1), tableData.getString(2), checked, tableData.getInt(0))) }
             while (tableData.moveToNext())
         }
+        db.close()
         return resultWall
     }
 
@@ -286,58 +260,4 @@ class DbManager(context: Context?) : SQLiteOpenHelper(context, "app_data", null,
         return WALLS_NAMES.contains(wallName)
     }
 
-//    fun addRouteRecord(routeData: RouteDTO){
-//        val db: SQLiteDatabase = this.readableDatabase
-//
-//        val contentValues = ContentValues()
-//        contentValues.put(COLUMN_ROUTES_ROUTE_NAME, routeData.routeName)
-//        contentValues.put(COLUMN_ROUTES_WALL_NAME, routeData.wallName)
-//        contentValues.put(COLUMN_ROUTES_CREATION_DATE, routeData.creationDate)
-//        contentValues.put(COLUMN_ROUTES_CREATOR, routeData.routeCreator)
-//        contentValues.put(COLUMN_ROUTES_ROUTE_COLORS, routeData.getRouteColorsInString())
-//        contentValues.put(COLUMN_ROUTES_PICTURES_DATA, routeData.picturesData)
-//
-//        val res: Long = db.insert(TABLE_ROUTES, null, contentValues)
-//        if (res == -1L) println("failed")
-//    }
-
-//    @SuppressLint("Recycle")
-//    fun getAllRoutesRecords(): ArrayList<RouteDTO>{
-//        val db = this.readableDatabase
-//        val result: ArrayList<RouteDTO> = arrayListOf()
-//        val tableData: Cursor?
-//        val selectQuery = "SELECT * FROM $TABLE_ROUTES"
-//
-//        try { tableData = db.rawQuery(selectQuery, null) }
-//        catch (e: Exception) { e.printStackTrace(); throw e }
-//        if (tableData.moveToFirst()){
-//            do {
-//                //println("table data" + tableData.getString(0))
-//                result.add(
-//                    RouteDTO(tableData.getInt(0),
-//                    tableData.getString(1),
-//                    tableData.getString(2),
-//                    tableData.getString(3),
-//                    tableData.getString(4),
-//                    RouteDTO.parseColorsFromSolidJsonStr(tableData.getString(5)),
-//                    tableData.getString(6))
-//                )
-//            }
-//            while (tableData.moveToNext())
-//        }
-//        return result
-//    }
-
-    fun removeRouteRecord(routeId: Int){
-//        val db: SQLiteDatabase = this.readableDatabase
-//        val res: Int = db.delete(TABLE_ROUTES, COLUMN_ROUTES_ID + "=" + routeId, null)
-//        if (res == -1) println("failed")
-        onDbChanged()
-    }
-
-    fun deleteFrom(tableName: String){
-//        if (tableNameValidation(tableName)){
-//            this.readableDatabase.execSQL("delete from $tableName")
-//        }
-    }
 }

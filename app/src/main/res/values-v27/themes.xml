@@ -1,17 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+
     <style name="Theme.Routes" parent="Theme.AppCompat.DayNight">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/bg_color_primary_light</item>
         <item name="colorPrimaryVariant">@color/bg_color_secondary_light</item>
         <item name="colorOnPrimary">@color/bg_color_primary_light</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/color_accent_primary_light</item>
-        <item name="colorSecondaryVariant">@color/color_accent_secondary_light</item>
-        <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">@color/color_accent_secondary_light</item>
+        <item name="android:statusBarColor" tools:targetApi="l">
+            @color/color_accent_secondary_light
+        </item>
         <item name="android:navigationBarColor">@color/bg_color_primary_light</item>
+        <item name="android:windowLightNavigationBar">true</item>
         <!-- Customize your theme here. -->
 
         <item name="android:textColor">@color/text_color_primary_light</item>
@@ -25,15 +25,4 @@
         <item name="colorAccentVariant">@color/color_accent_primary_variant_light</item>
         <item name="colorAccentSecondary">@color/color_accent_secondary_light</item>
     </style>
-
-    <style name="Toolbar"></style>
-
-    <style name="Theme.Routes.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="Theme.Routes.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="Theme.Routes.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

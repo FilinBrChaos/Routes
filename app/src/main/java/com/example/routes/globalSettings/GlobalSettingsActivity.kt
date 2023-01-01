@@ -8,19 +8,29 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.view.GravityCompat
+import androidx.navigation.ui.AppBarConfiguration
+import com.example.routes.MainActivity
+import com.example.routes.R
+import com.example.routes.RoutesListActivity.RoutesListActivity
 import com.example.routes.cardsStuff.CardAdapter
 import com.example.routes.colorPicker.ColorPickerActivity
 import com.example.routes.dataStuff.DbManager
 import com.example.routes.dataStuff.MyColor
 import com.example.routes.dataStuff.WallDTO
 import com.example.routes.databinding.GlobalSettingsActivityBinding
+import com.google.android.material.navigation.NavigationView
 
-class GlobalSettingsActivity : AppCompatActivity() {
+class GlobalSettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+    private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
     private lateinit var binding: GlobalSettingsActivityBinding
     private  lateinit var dbManager: DbManager
 
@@ -58,8 +68,10 @@ class GlobalSettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = GlobalSettingsActivityBinding.inflate(layoutInflater)
+        binding.toolbar.title = "Global settings"
         sharedPreferences = getSharedPreferences("settings", Context.MODE_PRIVATE)
         setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
         binding.nightModeSwitch.isChecked = sharedPreferences.getBoolean("nightMode", false)
 
         binding.addButtonWallA.setOnClickListener{
@@ -83,6 +95,16 @@ class GlobalSettingsActivity : AppCompatActivity() {
         updateRecyclerView(binding.linearLayoutWallA)
         updateRecyclerView(binding.linearLayoutWallB)
         updateRecyclerView(binding.linearLayoutWallC)
+
+        appBarConfiguration = AppBarConfiguration(setOf(
+            R.id.side_bar_share_activity, R.id.side_bar_discover_activity,
+            R.id.side_bar_generator_activity, R.id.side_bar_my_routes_activity, R.id.side_bar_global_settings_activity), binding.globalSettingsDrawerLayout)
+
+        actionBarDrawerToggle = ActionBarDrawerToggle(this, binding.globalSettingsDrawerLayout, binding.toolbar,
+            R.string.drawer_open, R.string.drawer_close)
+        binding.globalSettingsDrawerLayout.addDrawerListener(actionBarDrawerToggle)
+        actionBarDrawerToggle.syncState()
+        binding.globalSettingsNavigationView.setNavigationItemSelectedListener(this)
     }
 
     private fun updateRecyclerView(linearLayout: LinearLayout){
@@ -157,11 +179,27 @@ class GlobalSettingsActivity : AppCompatActivity() {
         editor.apply()
     }
 
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId) {
+            R.id.side_bar_generator_activity -> {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                false
+            }
+            R.id.side_bar_my_routes_activity -> {
+                val intent = Intent(this, RoutesListActivity::class.java)
+                startActivity(intent)
+                false
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     override fun onResume() {
+        binding.globalSettingsDrawerLayout.closeDrawer(GravityCompat.START)
         updateRecyclerView(binding.linearLayoutWallA)
         updateRecyclerView(binding.linearLayoutWallB)
         updateRecyclerView(binding.linearLayoutWallC)
         super.onResume()
     }
-
 }
