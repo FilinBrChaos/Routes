@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 class MyColor(val wallName: String = "blank",
               var colorName: String = "black",
               var colorValue: String = "#000000",
-              var isCheckedInLocalSettings: Boolean = false,
+              var isCheckedInLocalSettings: Boolean = true,
               var id: Int = 0):Cloneable{
 
     public override fun clone(): Any {

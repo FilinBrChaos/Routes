@@ -75,6 +75,23 @@ class DbManager(context: Context?) : SQLiteOpenHelper(context, "app_data", null,
                 "foreign key ($COLUMN_ROUTE_COLOR_PARENT_ROUTE) references $TABLE_ROUTES($COLUMN_ROUTE_ID) " +
                 "on delete cascade" +
                 ");")
+
+//        addColorToWall(MyColor(WALLS_NAMES[0], "красный", "#FF0000", true))
+//        addColorToWall(MyColor(WALLS_NAMES[0], "синий", "#33A8FF", true))
+//        addColorToWall(MyColor(WALLS_NAMES[0], "зеленый", "#27A227", true))
+//        addColorToWall(MyColor(WALLS_NAMES[0], "салатовый", "#34E734", true))
+//        addColorToWall(MyColor(WALLS_NAMES[0], "желтый", "#FFFC2C", true))
+//        addColorToWall(MyColor(WALLS_NAMES[1], "красный", "#FF0000", true))
+//        addColorToWall(MyColor(WALLS_NAMES[1], "синий", "#33A8FF", true))
+//        addColorToWall(MyColor(WALLS_NAMES[1], "зеленый", "#27A227", true))
+//        addColorToWall(MyColor(WALLS_NAMES[1], "салатовый", "#34E734", true))
+//        addColorToWall(MyColor(WALLS_NAMES[1], "фиолетовый", "#A4239E", true))
+//        addColorToWall(MyColor(WALLS_NAMES[1], "бело-розовый", "#FCA3F8", true))
+//        addColorToWall(MyColor(WALLS_NAMES[2], "красный", "#FF0000", true))
+//        addColorToWall(MyColor(WALLS_NAMES[2], "синий", "#33A8FF", true))
+//        addColorToWall(MyColor(WALLS_NAMES[2], "зеленый", "#27A227", true))
+//        addColorToWall(MyColor(WALLS_NAMES[2], "салатовый", "#34E734", true))
+//        addColorToWall(MyColor(WALLS_NAMES[2], "желтый", "#FFFC2C", true))
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, p1: Int, p2: Int) {

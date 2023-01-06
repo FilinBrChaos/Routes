@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.navigation.ui.AppBarConfiguration
@@ -15,6 +16,8 @@ import com.example.routes.dataStuff.DbManager
 import com.example.routes.dataStuff.RouteDTO
 import com.example.routes.databinding.ActivityRoutesListBinding
 import com.example.routes.globalSettings.GlobalSettingsActivity
+import com.example.routes.net.DiscoverNewRoutesActivity
+import com.example.routes.net.ShareYourRoutesActivity
 import com.example.routes.routeViewActivity.RouteActivity
 import com.google.android.material.navigation.NavigationView
 
@@ -48,12 +51,23 @@ class RoutesListActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
 
     private fun updateRoutesCardsList(){
         val routes = dbManager.getAllRoutes()
-        if (routes.isNotEmpty())
-            CardAdapter.drawRouteCards(binding.routesListLinearLayout, routes, ::openRouteActivity)
+        CardAdapter.drawRouteCards(binding.routesListLinearLayout, routes, ::openRouteActivity)
+        if (routes.isEmpty()) binding.noSavedRoutesMessage.visibility = View.VISIBLE
+        else binding.noSavedRoutesMessage.visibility = View.GONE
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         return when(item.itemId) {
+            R.id.side_bar_share_activity -> {
+                val intent = Intent(this, ShareYourRoutesActivity::class.java)
+                startActivity(intent)
+                false
+            }
+            R.id.side_bar_discover_activity -> {
+                val intent = Intent(this, DiscoverNewRoutesActivity::class.java)
+                startActivity(intent)
+                false
+            }
             R.id.side_bar_generator_activity -> {
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)

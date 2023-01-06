@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.example.routes.AppRuntimeData
+import com.example.routes.DrawerLocker
 import com.example.routes.dataStuff.DbManager
 import com.example.routes.dataStuff.RouteDTO
 import com.example.routes.databinding.SaveRouteFragmentBinding
@@ -52,6 +53,7 @@ class SaveRouteFormFragment : Fragment() {
             activity?.onBackPressed()
         }
         super.onViewCreated(view, savedInstanceState)
+        (activity as DrawerLocker).setDrawerEnabled(false)
     }
 
 //    @Suppress("DEPRECATION")
@@ -62,6 +64,7 @@ class SaveRouteFormFragment : Fragment() {
 //    }
 
     override fun onDestroyView() {
+        (activity as DrawerLocker).setDrawerEnabled(false)
         _binding = null
         super.onDestroyView()
     }

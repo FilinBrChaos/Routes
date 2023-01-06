@@ -26,6 +26,8 @@ import com.example.routes.dataStuff.DbManager
 import com.example.routes.dataStuff.MyColor
 import com.example.routes.dataStuff.WallDTO
 import com.example.routes.databinding.GlobalSettingsActivityBinding
+import com.example.routes.net.DiscoverNewRoutesActivity
+import com.example.routes.net.ShareYourRoutesActivity
 import com.google.android.material.navigation.NavigationView
 
 class GlobalSettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -112,7 +114,7 @@ class GlobalSettingsActivity : AppCompatActivity(), NavigationView.OnNavigationI
             binding.linearLayoutWallA -> dbManager.getWall(DbManager.WALLS_NAMES[0]).colorsOnTheWall
             binding.linearLayoutWallB -> dbManager.getWall(DbManager.WALLS_NAMES[1]).colorsOnTheWall
             binding.linearLayoutWallC -> dbManager.getWall(DbManager.WALLS_NAMES[2]).colorsOnTheWall
-            else -> { throw Exception("No colors on that wall") }
+            else -> { throw Exception("That wall doesn't exist") }
         }
         val editButtonHandler = { color: MyColor ->
             val dialogBuilder = AlertDialog.Builder(this)
@@ -154,9 +156,9 @@ class GlobalSettingsActivity : AppCompatActivity(), NavigationView.OnNavigationI
 
     private fun saveColor(colorName: String, colorValue: String){
         when(colorPickerCallerButton){
-            binding.addButtonWallA -> dbManager.addColorToWall(MyColor(DbManager.WALLS_NAMES[0], colorName, colorValue, false))
-            binding.addButtonWallB -> dbManager.addColorToWall(MyColor(DbManager.WALLS_NAMES[1], colorName, colorValue, false))
-            binding.addButtonWallC -> dbManager.addColorToWall(MyColor(DbManager.WALLS_NAMES[2], colorName, colorValue, false))
+            binding.addButtonWallA -> dbManager.addColorToWall(MyColor(DbManager.WALLS_NAMES[0], colorName, colorValue, true))
+            binding.addButtonWallB -> dbManager.addColorToWall(MyColor(DbManager.WALLS_NAMES[1], colorName, colorValue, true))
+            binding.addButtonWallC -> dbManager.addColorToWall(MyColor(DbManager.WALLS_NAMES[2], colorName, colorValue, true))
         }
     }
 
@@ -181,6 +183,16 @@ class GlobalSettingsActivity : AppCompatActivity(), NavigationView.OnNavigationI
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         return when(item.itemId) {
+            R.id.side_bar_share_activity -> {
+                val intent = Intent(this, ShareYourRoutesActivity::class.java)
+                startActivity(intent)
+                false
+            }
+            R.id.side_bar_discover_activity -> {
+                val intent = Intent(this, DiscoverNewRoutesActivity::class.java)
+                startActivity(intent)
+                false
+            }
             R.id.side_bar_generator_activity -> {
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)

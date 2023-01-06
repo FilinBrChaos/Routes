@@ -16,8 +16,8 @@
     <string name="wall_b">Wall B</string>
     <string name="wall_a">Wall A</string>
     <string name="wall_adjustments">Wall adjustments</string>
-    <string name="app_version_label">Version 1.1</string>
-    <string name="release_date">Date release: 01.01.2023</string>
+    <string name="app_version_label">Version 1.2</string>
+    <string name="release_date">Last update: 01.02.2023</string>
     <string name="always_stay_awake">Always stay awake</string>
     <string name="night_mode">Night mode</string>
     <string name="random">random</string>

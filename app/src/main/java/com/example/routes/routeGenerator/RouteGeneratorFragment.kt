@@ -42,7 +42,7 @@ class RouteGeneratorFragment : Fragment() {
         binding.randomButton.setOnClickListener {
             val myRandomList = getAllCheckedColors(getLastChosenWallFromFile())
             if (myRandomList.size <= 1) {
-                Toast.makeText(activity, "There is not enough colors to create random sequence", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "Error. Add more colors in Local or Global settings", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             val randomSequence: ArrayList<MyColor> = arrayListOf()
@@ -78,6 +78,8 @@ class RouteGeneratorFragment : Fragment() {
 
     private fun updateColorsListRecyclerView(randomSequence: ArrayList<MyColor>) {
         CardAdapter.drawColorCards(binding.routeGeneratorLinearLayout, randomSequence)
+        if (randomSequence.isEmpty()) binding.emptyRandomSequenceMessage.visibility = View.VISIBLE
+        else binding.emptyRandomSequenceMessage.visibility = View.GONE
     }
 
     override fun onResume() {

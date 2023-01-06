@@ -25,7 +25,7 @@
         tools:layout="@layout/save_route_fragment"/>
     <fragment
         android:id="@+id/localSettingsFrag"
-        android:name="com.example.routes.appFragments.LocalSettingsFrag"
+        android:name="com.example.routes.localSettingsFragment.LocalSettingsFrag"
         android:label="Local settings"
         tools:layout="@layout/fragment_local_settings"/>
 </navigation>

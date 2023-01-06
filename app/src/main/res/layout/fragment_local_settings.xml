@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".appFragments.LocalSettingsFrag">
+    tools:context=".localSettingsFragment.LocalSettingsFrag">
 
     <RadioGroup
         android:id="@+id/radioGroup"
@@ -55,17 +55,6 @@
         app:layout_constraintTop_toBottomOf="@+id/radioGroup"
         android:background="@drawable/round_corners_for_settings_block">
 
-<!--
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginVertical="25dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
--->
         <ScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -77,10 +66,22 @@
             tools:ignore="SpeakableTextPresentCheck">
 
             <LinearLayout
-                android:id="@+id/local_settings_linear_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" />
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/no_added_colors_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="You haven't added any colors here yet. You can add them in Global settings."/>
+
+                <LinearLayout
+                    android:id="@+id/local_settings_linear_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+            </LinearLayout>
 
         </ScrollView>
 

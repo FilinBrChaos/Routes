@@ -12,16 +12,19 @@ import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import com.example.routes.RoutesListActivity.RoutesListActivity
 import com.example.routes.databinding.ActivityMainBinding
 import com.example.routes.globalSettings.GlobalSettingsActivity
+import com.example.routes.net.DiscoverNewRoutesActivity
+import com.example.routes.net.ShareYourRoutesActivity
 import com.google.android.material.navigation.NavigationView
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, DrawerLocker {
 
+    private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
-    private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val sharedPreferences = getSharedPreferences("settings", Context.MODE_PRIVATE)
@@ -54,6 +57,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         return when(item.itemId) {
+            R.id.side_bar_share_activity -> {
+                val intent = Intent(this, ShareYourRoutesActivity::class.java)
+                startActivity(intent)
+                false
+            }
+            R.id.side_bar_discover_activity -> {
+                val intent = Intent(this, DiscoverNewRoutesActivity::class.java)
+                startActivity(intent)
+                false
+            }
             R.id.side_bar_my_routes_activity -> {
                 val intent = Intent(this, RoutesListActivity::class.java)
                 startActivity(intent)
@@ -75,7 +88,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onResume() {
+        setDrawerEnabled(true)
         binding.activityMainDrawerLayout.closeDrawer(GravityCompat.START)
         super.onResume()
+    }
+
+    override fun setDrawerEnabled(enabled: Boolean) {
+        val locker = if (enabled) DrawerLayout.LOCK_MODE_UNLOCKED
+                     else DrawerLayout.LOCK_MODE_LOCKED_CLOSED
+        binding.activityMainDrawerLayout.setDrawerLockMode(locker)
+        actionBarDrawerToggle.isDrawerIndicatorEnabled = enabled
     }
 }

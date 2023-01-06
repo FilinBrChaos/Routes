@@ -3,8 +3,6 @@ package com.example.routes
 import com.example.routes.dataStuff.MyColor
 
 object AppRuntimeData {
-    init {
-        println("AppRuntimeData was started")
-    }
+    init { /*this object creates DON'T DELETE THIS*/ }
     var currentGeneratedRouteColors: ArrayList<MyColor> = arrayListOf()
 }

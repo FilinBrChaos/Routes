@@ -1,4 +1,4 @@
-package com.example.routes.appFragments
+package com.example.routes.localSettingsFragment
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.routes.DrawerLocker
 import com.example.routes.cardsStuff.CardAdapter
 import com.example.routes.dataStuff.DbManager
 import com.example.routes.dataStuff.MyColor
@@ -45,8 +46,10 @@ class LocalSettingsFrag : Fragment() {
         }
         updateRecyclerView(lastUsedWall!!)
 
+        (activity as DrawerLocker).setDrawerEnabled(false)
+
         binding.radioGroup.setOnCheckedChangeListener { radioGroup, checkedId ->
-            var currentWall = when (binding.radioGroup.checkedRadioButtonId.toString()){
+            var currentWall = when (binding.radioGroup.checkedRadioButtonId.toString()) {
                 binding.wallARadioBtn.id.toString() -> DbManager.WALLS_NAMES[0]
                 binding.wallBRadioBtn.id.toString() -> DbManager.WALLS_NAMES[1]
                 binding.wallCRadioBtn.id.toString() -> DbManager.WALLS_NAMES[2]
@@ -72,6 +75,8 @@ class LocalSettingsFrag : Fragment() {
             val result = dbManager.updateColorOnTheWall(color)
         }
         CardAdapter.drawCheckableColorCards(binding.localSettingsLinearLayout, colorsToDraw, checkChangedHandler)
+        if (colorsToDraw.isEmpty()) binding.noAddedColorsMessage.visibility = View.VISIBLE
+        else binding.noAddedColorsMessage.visibility = View.GONE
     }
 
     override fun onResume() {
@@ -81,6 +86,8 @@ class LocalSettingsFrag : Fragment() {
     }
 
     override fun onDestroyView() {
+        (activity as DrawerLocker).setDrawerEnabled(true)
+
         _binding = null
         super.onDestroyView()
     }
