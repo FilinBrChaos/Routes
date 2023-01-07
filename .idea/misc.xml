@@ -38,6 +38,7 @@
         <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layout/activity_route.xml" value="0.40145228215767637" />
         <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layout/activity_routes_list.xml" value="0.195382642154767" />
         <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layout/activity_routes_list_sidebar_wrapper.xml" value="0.31765711842667804" />
+        <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layout/activity_share_route.xml" value="0.31765711842667804" />
         <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layout/activity_share_your_routes.xml" value="0.31765711842667804" />
         <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layout/app_bar_layout.xml" value="0.31680205215904234" />
         <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layout/card_for_local_settings.xml" value="0.25" />
@@ -49,6 +50,7 @@
         <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layout/fragment_first.xml" value="0.358695652173913" />
         <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layout/fragment_local_settings.xml" value="0.25" />
         <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layout/fragment_second.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layout/fragment_share_route.xml" value="0.31765711842667804" />
         <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layout/global_settings_activity.xml" value="0.33" />
         <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layout/global_settings_fragment.xml" value="0.13177083333333334" />
         <entry key="..\:/Users/lushn/AndroidStudioProjects/Routes/app/src/main/res/layout/image_card.xml" value="0.33" />

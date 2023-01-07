@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.view.GravityCompat
 import androidx.navigation.ui.AppBarConfiguration
 import com.example.routes.MainActivity
 import com.example.routes.R
@@ -60,5 +61,10 @@ class DiscoverNewRoutesActivity : AppCompatActivity(), NavigationView.OnNavigati
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onResume() {
+        binding.discoverNewRoutesDrawerLayout.closeDrawer(GravityCompat.START)
+        super.onResume()
     }
 }

@@ -5,6 +5,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -19,10 +20,13 @@
         android:theme="@style/Theme.Routes"
         tools:targetApi="31">
         <activity
+            android:name=".net.ShareRouteActivity"
+            android:exported="false" />
+        <activity
             android:name=".net.DiscoverNewRoutesActivity"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.Routes.NoActionBar"/>
+            android:theme="@style/Theme.Routes.NoActionBar" />
         <activity
             android:name=".net.ShareYourRoutesActivity"
             android:exported="false"
