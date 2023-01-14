@@ -20,6 +20,9 @@
         android:theme="@style/Theme.Routes"
         tools:targetApi="31">
         <activity
+            android:name=".globalSettings.UserActivity"
+            android:exported="false" />
+        <activity
             android:name=".net.ShareRouteActivity"
             android:exported="false" />
         <activity

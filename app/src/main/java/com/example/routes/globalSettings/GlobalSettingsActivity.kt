@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
@@ -17,6 +18,8 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.GravityCompat
 import androidx.navigation.ui.AppBarConfiguration
+import com.auth0.android.result.UserProfile
+import com.bumptech.glide.Glide
 import com.example.routes.MainActivity
 import com.example.routes.R
 import com.example.routes.RoutesListActivity.RoutesListActivity
@@ -24,11 +27,14 @@ import com.example.routes.cardsStuff.CardAdapter
 import com.example.routes.colorPicker.ColorPickerActivity
 import com.example.routes.dataStuff.DbManager
 import com.example.routes.dataStuff.MyColor
-import com.example.routes.dataStuff.WallDTO
 import com.example.routes.databinding.GlobalSettingsActivityBinding
 import com.example.routes.net.DiscoverNewRoutesActivity
 import com.example.routes.net.ShareYourRoutesActivity
 import com.google.android.material.navigation.NavigationView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 class GlobalSettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -168,6 +174,11 @@ class GlobalSettingsActivity : AppCompatActivity(), NavigationView.OnNavigationI
         dbManager.updateColorOnTheWall(updatedColor)
     }
 
+    private fun updateUserField(user: UserProfile) {
+        Glide.with(this).load(user.pictureURL).into(binding.userIcon)
+        Log.e("My url", user.pictureURL!!)
+    }
+
     fun changeColorMode(view: View) {
         var editor = sharedPreferences.edit()
         if (binding.nightModeSwitch.isChecked){
@@ -179,6 +190,11 @@ class GlobalSettingsActivity : AppCompatActivity(), NavigationView.OnNavigationI
             editor.putBoolean("nightMode", false)
         }
         editor.apply()
+    }
+
+    fun openUserActivity(view: View){
+        val intent = Intent(this, UserActivity::class.java)
+        startActivity(intent)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -212,6 +228,11 @@ class GlobalSettingsActivity : AppCompatActivity(), NavigationView.OnNavigationI
         updateRecyclerView(binding.linearLayoutWallA)
         updateRecyclerView(binding.linearLayoutWallB)
         updateRecyclerView(binding.linearLayoutWallC)
+
+        if (UserActivity.account != null && UserActivity.accessToken != null) {
+            UserActivity.getUserProfile(::updateUserField, UserActivity.account!!, UserActivity.accessToken!!)
+        }
+
         super.onResume()
     }
 }
