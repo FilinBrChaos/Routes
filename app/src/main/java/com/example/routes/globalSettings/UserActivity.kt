@@ -24,7 +24,6 @@ class UserActivity : AppCompatActivity() {
     companion object {
         var account: Auth0? = null
         var accessToken: String? = null
-        var user: UserProfile? = null
 
         fun getUserProfile(updateUI: (user: UserProfile) -> Unit, account: Auth0, accessToken: String) {
             val client = AuthenticationAPIClient(account)
@@ -66,7 +65,8 @@ class UserActivity : AppCompatActivity() {
             }
 
             override fun onSuccess(result: Credentials) {
-                accessToken = result.accessToken
+                AppRuntimeData.accessTokenAuth0 = result.accessToken
+                 result.refreshToken
             }
         }
 

@@ -96,7 +96,7 @@
                                 android:id="@+id/user_icon"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
-                                android:background="@drawable/round_corners_for_settings_block_variant1"
+                                android:background="@drawable/round_shape_background"
                                 android:padding="5dp"
                                 android:src="@drawable/ic_user_placeholder"
                                 app:layout_constraintBottom_toBottomOf="parent"
@@ -151,7 +151,7 @@
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:layout_centerVertical="true"
-                                android:background="@drawable/round_corners_for_settings_block_variant1"
+                                android:background="@drawable/round_shape_background"
                                 android:padding="12dp"
                                 android:src="@drawable/always_stay_awake_icon" />
 
@@ -185,7 +185,7 @@
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:layout_centerVertical="true"
-                                android:background="@drawable/round_corners_for_settings_block_variant1"
+                                android:background="@drawable/round_shape_background"
                                 android:padding="12dp"
                                 android:src="@drawable/night_mode_icon" />
 
@@ -391,6 +391,7 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/side_bar_menu_header"
-        app:menu="@menu/drawer_menu"/>
+        app:menu="@menu/drawer_menu"
+        android:visibility="gone"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>

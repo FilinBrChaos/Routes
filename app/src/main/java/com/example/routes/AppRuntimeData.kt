@@ -16,4 +16,5 @@ object AppRuntimeData {
     init { /*this is object initialization DON'T DELETE THIS*/ }
     var currentGeneratedRouteColors: ArrayList<MyColor> = arrayListOf()
     var user: UserProfile? = null
+    var accessTokenAuth0: String? = null
 }
