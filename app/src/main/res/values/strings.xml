@@ -35,4 +35,5 @@
     <string name="you_can_add_and_remove_permanent_colors_on_the_wall">you can add and remove permanent colors on the wall</string>
     <string name="client_id_auth0">ZAkGxvWXueqP5cxCtjINbd9kdgPHduNg</string>
     <string name="domain_auth0">dev-51ze16s1ilwnbz6p.us.auth0.com</string>
+    <string name="scheme_auth0">demo</string>
 </resources>

@@ -13,11 +13,16 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import com.auth0.android.Auth0
+import com.auth0.android.authentication.AuthenticationAPIClient
+import com.auth0.android.authentication.storage.CredentialsManager
+import com.auth0.android.authentication.storage.SharedPreferencesStorage
 import com.example.routes.RoutesListActivity.RoutesListActivity
 import com.example.routes.databinding.ActivityMainBinding
 import com.example.routes.globalSettings.GlobalSettingsActivity
 import com.example.routes.net.DiscoverNewRoutesActivity
 import com.example.routes.net.ShareYourRoutesActivity
+import com.example.routes.userStuff.AccountUtils
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, DrawerLocker {
@@ -38,6 +43,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding.appBarLayout.toolbar.title = "Generator"
         setContentView(binding.root)
         setSupportActionBar(binding.appBarLayout.toolbar)
+
+        val account = Auth0(getString(R.string.client_id_auth0), getString(R.string.domain_auth0))
+        val apiClient = AuthenticationAPIClient(account)
+        AppRuntimeData.accountUtils = AccountUtils(account, CredentialsManager(apiClient, SharedPreferencesStorage(this))
+
 
         appBarConfiguration = AppBarConfiguration(setOf(R.id.side_bar_share_activity, R.id.side_bar_discover_activity,
         R.id.side_bar_generator_activity, R.id.side_bar_my_routes_activity, R.id.side_bar_global_settings_activity), binding.activityMainDrawerLayout)
