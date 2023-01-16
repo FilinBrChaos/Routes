@@ -11,37 +11,21 @@ import com.auth0.android.callback.Callback
 import com.auth0.android.provider.WebAuthProvider
 import com.auth0.android.result.Credentials
 import com.auth0.android.result.UserProfile
+import com.bumptech.glide.Glide
 import com.example.routes.AppRuntimeData
 import com.example.routes.R
 import com.example.routes.databinding.ActivityUserBinding
 
 class UserActivity : AppCompatActivity() {
-    companion object {
-        fun actionUsingUserAccount(updateUI: (user: UserProfile) -> Unit, account: Auth0, accessToken: String) {
-            val client = AuthenticationAPIClient(account)
-
-            val callback: Callback<UserProfile, AuthenticationException> = object : Callback<UserProfile, AuthenticationException> {
-                override fun onFailure(error: AuthenticationException) {
-                    Log.e("User activity", "fail to get the user profile")
-                }
-
-                override fun onSuccess(result: UserProfile) {
-                    updateUI(result)
-                }
-            }
-
-            client.userInfo(accessToken).start(callback)
-        }
-    }
 
     private lateinit var binding: ActivityUserBinding
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.activityUserLoggedInBlock.visibility = View.GONE
+
+        updateUi()
 
         val account = Auth0(getString(R.string.client_id_auth0), getString(R.string.domain_auth0))
 
@@ -59,11 +43,13 @@ class UserActivity : AppCompatActivity() {
             .withScheme(getString(R.string.scheme_auth0))
             .start(this, object: Callback<Void?, AuthenticationException> {
                 override fun onSuccess(payload: Void?) {
+                    AppRuntimeData.accountUtils?.accountManager?.clearCredentials()
+                    updateUi()
                     // The user has been logged out!
                 }
 
                 override fun onFailure(error: AuthenticationException) {
-                    // Something went wrong!
+                    Log.e("User activity", "Logout failure")
                 }
             })
     }
@@ -75,7 +61,8 @@ class UserActivity : AppCompatActivity() {
             }
 
             override fun onSuccess(result: Credentials) {
-                //when authorization success
+                AppRuntimeData.accountUtils?.accountManager?.saveCredentials(result)
+                updateUi()
             }
         }
 
@@ -84,5 +71,33 @@ class UserActivity : AppCompatActivity() {
             .withScheme(getString(R.string.scheme_auth0))
             .withScope("openid profile email")
             .start(this, callback)
+    }
+
+    fun updateUi() {
+        val accountUtils = AppRuntimeData.accountUtils
+        if (accountUtils != null) {
+            if (accountUtils.isUserLoggedIn()) {
+                accountUtils.actionUsingUserCredentials { credentials ->
+                    binding.activityUserUsername.text = credentials.user.name
+                    binding.activityUserUserEmail.text = credentials.user.email
+                    //Glide.with(this).load(credentials.user.pictureURL).into(binding.activityUserUserIcon)
+                    binding.activityUserUserIcon
+                }
+                binding.activityUserLoginBlock.visibility = View.GONE
+                binding.activityUserLogoutBlock.visibility = View.VISIBLE
+            } else {
+                binding.activityUserUsername.text = getString(R.string.user_name)
+                binding.activityUserUserEmail.text = getString(R.string.useremail_gmail_com)
+
+                binding.activityUserLogoutBlock.visibility = View.GONE
+                binding.activityUserLoginBlock.visibility = View.VISIBLE
+            }
+
+        }
+    }
+
+    override fun onResume() {
+        updateUi()
+        super.onResume()
     }
 }

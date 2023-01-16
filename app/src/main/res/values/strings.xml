@@ -36,4 +36,6 @@
     <string name="client_id_auth0">ZAkGxvWXueqP5cxCtjINbd9kdgPHduNg</string>
     <string name="domain_auth0">dev-51ze16s1ilwnbz6p.us.auth0.com</string>
     <string name="scheme_auth0">demo</string>
+    <string name="user_name">User name</string>
+    <string name="useremail_gmail_com">useremail@gmail.com</string>
 </resources>

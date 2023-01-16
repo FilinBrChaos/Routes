@@ -45,7 +45,7 @@
                         android:id="@+id/activity_user_username"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="User name"
+                        android:text="@string/user_name"
                         android:textSize="19sp"
                         android:layout_marginTop="10dp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -53,9 +53,10 @@
                         app:layout_constraintTop_toBottomOf="@id/activity_user_user_icon" />
 
                     <TextView
+                        android:id="@+id/activity_user_user_email"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="useremail@gmail.com"
+                        android:text="@string/useremail_gmail_com"
                         android:textColor="?attr/textColorSecondary"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -103,7 +104,7 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/activity_user_logged_in_block"
+                        android:id="@+id/activity_user_login_block"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"

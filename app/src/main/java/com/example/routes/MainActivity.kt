@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val account = Auth0(getString(R.string.client_id_auth0), getString(R.string.domain_auth0))
         val apiClient = AuthenticationAPIClient(account)
-        AppRuntimeData.accountUtils = AccountUtils(account, CredentialsManager(apiClient, SharedPreferencesStorage(this))
+        AppRuntimeData.accountUtils = AccountUtils(account, CredentialsManager(apiClient, SharedPreferencesStorage(this)))
 
 
         appBarConfiguration = AppBarConfiguration(setOf(R.id.side_bar_share_activity, R.id.side_bar_discover_activity,

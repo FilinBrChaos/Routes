@@ -87,20 +87,9 @@ class GlobalSettingsActivity : AppCompatActivity(), NavigationView.OnNavigationI
 //            val intent = Intent(this, ColorPickerActivity::class.java)
 //            colorPickerCreateNewColorResultLauncher.launch(intent)
 
-            val ifLoggedIn = AppRuntimeData.accountUtils?.accountManager?.hasValidCredentials()
-            if (ifLoggedIn != null && ifLoggedIn){
-                val callback : Callback<Credentials, CredentialsManagerException> = object : Callback<Credentials, CredentialsManagerException> {
-                    override fun onFailure(error: CredentialsManagerException) {
-
-                    }
-
-                    override fun onSuccess(result: Credentials) {
-                        UserActivity.actionUsingUserAccount(::updateUserField, AppRuntimeData.userAccount!!, result.accessToken)
-                    }
-                }
-                AppRuntimeData.accountManager!!.getCredentials(callback)
+            AppRuntimeData.accountUtils?.actionIfUserLoggedIn {
+                AppRuntimeData.accountUtils?.actionUsingUserCredentials { credentials -> updateUserField(credentials.user) }
             }
-
         }
         binding.addButtonWallB.setOnClickListener{
             colorPickerCallerButton = binding.addButtonWallB
