@@ -83,13 +83,9 @@ class GlobalSettingsActivity : AppCompatActivity(), NavigationView.OnNavigationI
         binding.nightModeSwitch.isChecked = sharedPreferences.getBoolean("nightMode", false)
 
         binding.addButtonWallA.setOnClickListener{
-//            colorPickerCallerButton = binding.addButtonWallA
-//            val intent = Intent(this, ColorPickerActivity::class.java)
-//            colorPickerCreateNewColorResultLauncher.launch(intent)
-
-            AppRuntimeData.accountUtils?.actionIfUserLoggedIn {
-                AppRuntimeData.accountUtils?.actionUsingUserCredentials { credentials -> updateUserField(credentials.user) }
-            }
+            colorPickerCallerButton = binding.addButtonWallA
+            val intent = Intent(this, ColorPickerActivity::class.java)
+            colorPickerCreateNewColorResultLauncher.launch(intent)
         }
         binding.addButtonWallB.setOnClickListener{
             colorPickerCallerButton = binding.addButtonWallB
@@ -179,8 +175,10 @@ class GlobalSettingsActivity : AppCompatActivity(), NavigationView.OnNavigationI
     }
 
     private fun updateUserField(user: UserProfile) {
-        Glide.with(this).load(user.pictureURL).circleCrop()
-            .into(binding.userIcon)
+        runOnUiThread {
+            Glide.with(applicationContext).load(user.pictureURL).circleCrop()
+                .into(binding.userIcon)
+        }
     }
 
     fun changeColorMode(view: View) {

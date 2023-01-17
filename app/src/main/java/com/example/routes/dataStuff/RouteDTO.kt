@@ -9,4 +9,7 @@ class RouteDTO(val routeName: String = "---",
                val routeCreator: String = "---",
                val routeColors: ArrayList<MyColor> = arrayListOf(),
                var id: Int = 0){
+    fun getRouteColorsAsJson() {
+
+    }
 }

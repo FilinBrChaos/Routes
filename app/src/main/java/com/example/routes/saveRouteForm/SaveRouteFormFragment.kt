@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import com.example.routes.AppRuntimeData
 import com.example.routes.DrawerLocker
@@ -39,6 +40,15 @@ class SaveRouteFormFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val sharedSettingsPreferences = requireActivity().getSharedPreferences("settings", Context.MODE_PRIVATE)
+        (activity as DrawerLocker).setDrawerEnabled(false)
+
+//        binding.routeNameTextField.addTextChangedListener {
+//            binding.routeNameTextField.setText(getValidatedString(binding.routeNameTextField.text.toString()))
+//        }
+//
+//        binding.routeCreatorTextField.addTextChangedListener {
+//            binding.routeCreatorTextField.setText(getValidatedString(it.toString()))
+//        }
 
         binding.saveRouteButton.setOnClickListener {
             val currentWall = sharedSettingsPreferences.getString("currentWall", DbManager.WALLS_NAMES[0])
@@ -50,10 +60,15 @@ class SaveRouteFormFragment : Fragment() {
             AppRuntimeData.currentGeneratedRouteColors))
 
             Toast.makeText(activity, "Route saved", Toast.LENGTH_SHORT).show()
+
             activity?.onBackPressed()
         }
         super.onViewCreated(view, savedInstanceState)
-        (activity as DrawerLocker).setDrawerEnabled(false)
+    }
+
+    fun getValidatedString(resultString: String): String {
+        val regex = Regex("[^A-Za-zА-Яа-я\\d_ -]")
+        return regex.replace(resultString, "")
     }
 
 //    @Suppress("DEPRECATION")
@@ -64,7 +79,7 @@ class SaveRouteFormFragment : Fragment() {
 //    }
 
     override fun onDestroyView() {
-        (activity as DrawerLocker).setDrawerEnabled(false)
+        (activity as DrawerLocker).setDrawerEnabled(true)
         _binding = null
         super.onDestroyView()
     }

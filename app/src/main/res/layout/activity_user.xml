@@ -32,25 +32,25 @@
 
                     <ImageView
                         android:id="@+id/activity_user_user_icon"
-                        android:layout_width="200dp"
-                        android:layout_height="200dp"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
                         android:layout_marginTop="20dp"
+                        android:background="@drawable/round_shape_background"
+                        android:src="@drawable/ic_user_placeholder"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:src="@drawable/ic_user_placeholder"
-                        android:background="@drawable/round_shape_background"/>
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/activity_user_username"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="180dp"
                         android:text="@string/user_name"
                         android:textSize="19sp"
-                        android:layout_marginTop="10dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/activity_user_user_icon" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/activity_user_user_email"
@@ -61,6 +61,17 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/activity_user_username" />
+
+                    <ProgressBar
+                        android:id="@+id/activity_user_progress_bar"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="70dp"
+                        android:indeterminate="true"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <LinearLayout
@@ -87,6 +98,7 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/button_theme"
                             android:text="your account"
+                            android:textColor="?attr/textColorPrimaryInverse"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -98,6 +110,7 @@
                             android:layout_marginTop="20dp"
                             android:background="@drawable/button_theme"
                             android:text="Log out"
+                            android:textColor="?attr/textColorPrimaryInverse"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/activity_user_view_your_account_btn" />
@@ -117,6 +130,7 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/button_theme"
                             android:text="log in"
+                            android:textColor="?attr/textColorPrimaryInverse"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"

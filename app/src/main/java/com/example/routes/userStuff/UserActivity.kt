@@ -5,15 +5,14 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import com.auth0.android.Auth0
-import com.auth0.android.authentication.AuthenticationAPIClient
 import com.auth0.android.authentication.AuthenticationException
 import com.auth0.android.callback.Callback
 import com.auth0.android.provider.WebAuthProvider
 import com.auth0.android.result.Credentials
-import com.auth0.android.result.UserProfile
 import com.bumptech.glide.Glide
 import com.example.routes.AppRuntimeData
 import com.example.routes.R
+import com.example.routes.dataStuff.ImageManager
 import com.example.routes.databinding.ActivityUserBinding
 
 class UserActivity : AppCompatActivity() {
@@ -24,6 +23,7 @@ class UserActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.activityUserProgressBar.visibility = View.GONE
 
         updateUi()
 
@@ -32,7 +32,6 @@ class UserActivity : AppCompatActivity() {
         binding.activityUserLoginBtn.setOnClickListener {
             loginWithBrowser(account)
         }
-
         binding.activityUserLogOutBtn.setOnClickListener {
             logout(account)
         }
@@ -45,11 +44,11 @@ class UserActivity : AppCompatActivity() {
                 override fun onSuccess(payload: Void?) {
                     AppRuntimeData.accountUtils?.accountManager?.clearCredentials()
                     updateUi()
-                    // The user has been logged out!
                 }
 
                 override fun onFailure(error: AuthenticationException) {
                     Log.e("User activity", "Logout failure")
+                    updateUi()
                 }
             })
     }
@@ -57,7 +56,7 @@ class UserActivity : AppCompatActivity() {
     private fun loginWithBrowser(account: Auth0) {
         val callback : Callback<Credentials, AuthenticationException> = object : Callback<Credentials, AuthenticationException> {
             override fun onFailure(error: AuthenticationException) {
-                //when authorization failed
+                updateUi()
             }
 
             override fun onSuccess(result: Credentials) {
@@ -66,6 +65,7 @@ class UserActivity : AppCompatActivity() {
             }
         }
 
+        loadingStart()
         WebAuthProvider
             .login(account)
             .withScheme(getString(R.string.scheme_auth0))
@@ -77,23 +77,37 @@ class UserActivity : AppCompatActivity() {
         val accountUtils = AppRuntimeData.accountUtils
         if (accountUtils != null) {
             if (accountUtils.isUserLoggedIn()) {
+                loadingStart()
                 accountUtils.actionUsingUserCredentials { credentials ->
                     binding.activityUserUsername.text = credentials.user.name
                     binding.activityUserUserEmail.text = credentials.user.email
-                    //Glide.with(this).load(credentials.user.pictureURL).into(binding.activityUserUserIcon)
-                    binding.activityUserUserIcon
+                    runOnUiThread {
+                        ImageManager.drawInImageViewCircleCrop(applicationContext, credentials.user.pictureURL!!, binding.activityUserUserIcon)
+                        loadingEnd()
+                    }
                 }
                 binding.activityUserLoginBlock.visibility = View.GONE
                 binding.activityUserLogoutBlock.visibility = View.VISIBLE
             } else {
                 binding.activityUserUsername.text = getString(R.string.user_name)
                 binding.activityUserUserEmail.text = getString(R.string.useremail_gmail_com)
+                ImageManager.drawInImageView(applicationContext, R.drawable.ic_user_placeholder, binding.activityUserUserIcon)
 
                 binding.activityUserLogoutBlock.visibility = View.GONE
                 binding.activityUserLoginBlock.visibility = View.VISIBLE
             }
 
         }
+    }
+
+    fun loadingStart() {
+        binding.activityUserProgressBar.visibility = View.VISIBLE
+        binding.activityUserUserIcon.visibility = View.GONE
+    }
+
+    fun loadingEnd() {
+        binding.activityUserProgressBar.visibility = View.GONE
+        binding.activityUserUserIcon.visibility = View.VISIBLE
     }
 
     override fun onResume() {

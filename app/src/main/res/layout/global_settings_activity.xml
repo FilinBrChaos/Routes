@@ -377,10 +377,8 @@
                                 android:orientation="vertical" />
                         </LinearLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
-
                 </LinearLayout>
             </ScrollView>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -391,7 +389,6 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/side_bar_menu_header"
-        app:menu="@menu/drawer_menu"
-        android:visibility="gone"/>
+        app:menu="@menu/drawer_menu"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>
